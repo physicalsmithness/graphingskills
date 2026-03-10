@@ -19,9 +19,9 @@
         .nav-item.active { background-color: #34495e; border-left-color: #3498db; font-weight: bold; color: #fff;}
         .nav-item .mod-num { font-size: 0.8em; color: #bdc3c7; background: #1a252f; padding: 3px 6px; border-radius: 4px; flex-shrink: 0; margin-left: 10px;}
         
-        .dash-btn { background-color: #3498db; color: white; padding: 18px; text-align: center; font-weight: bold; cursor: pointer; transition: 0.2s; border-top: 1px solid #2980b9; font-size: 1.1em;}
-        .dash-btn:hover { background-color: #2980b9; }
-        .dash-btn.active { background-color: #1f618d; }
+        .dash-btn { background-color: #e67e22; color: white; padding: 18px; text-align: center; font-weight: bold; cursor: pointer; transition: 0.2s; border-top: 1px solid #d35400; font-size: 1.1em;}
+        .dash-btn:hover { background-color: #d35400; }
+        .dash-btn.active { background-color: #ba4a00; }
 
         /* Main Content Area */
         .main-content { flex: 1; display: flex; flex-direction: column; position: relative; }
@@ -31,40 +31,39 @@
         .content-area { flex: 1; position: relative; overflow: hidden; }
         iframe { width: 100%; height: 100%; border: none; position: absolute; top: 0; left: 0; background: #f4f7f6; }
         
-        /* Dashboard & Home Common Styles */
-        .view-panel { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #f4f7f6; padding: 40px; box-sizing: border-box; overflow-y: auto; display: none; z-index: 2; }
-        .dash-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding-bottom: 15px; border-bottom: 2px solid #dee2e6;}
+        /* View Panels */
+        .view-panel { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #f4f7f6; padding: 30px 40px; box-sizing: border-box; overflow-y: auto; display: none; z-index: 2; }
+        .dash-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid #dee2e6;}
         .dash-header h1 { margin: 0; color: #2c3e50; }
         
         /* Notice Banner */
-        .notice-banner { background: #eef2f5; border-left: 5px solid #3498db; padding: 20px; border-radius: 6px; margin-bottom: 30px; color: #2c3e50; font-size: 1.05em; line-height: 1.5;}
+        .notice-banner { background: #eef2f5; border-left: 5px solid #3498db; padding: 15px 20px; border-radius: 6px; margin-bottom: 30px; color: #2c3e50; font-size: 1em; line-height: 1.4;}
         .notice-banner strong { color: #2980b9; }
 
-        /* Home Screen Specifics */
+        /* Home Screen Cards */
         .home-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; }
-        .home-card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border: 1px solid #e9ecef; display: flex; flex-direction: column; transition: transform 0.2s, box-shadow 0.2s;}
-        .home-card:hover { transform: translateY(-3px); box-shadow: 0 6px 12px rgba(0,0,0,0.1); }
-        .home-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;}
-        .home-card h3 { margin: 0; color: #2c3e50; font-size: 1.15em; line-height: 1.3;}
-        .mod-badge { background: #3498db; color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.8em; font-weight: bold; flex-shrink: 0;}
-        .home-card p { color: #6c757d; font-size: 0.9em; line-height: 1.4; flex-grow: 1; margin: 0 0 20px 0;}
+        .home-card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border: 1px solid #e9ecef; display: flex; flex-direction: column; transition: transform 0.2s;}
+        .home-card:hover { transform: translateY(-3px); box-shadow: 0 6px 12px rgba(0,0,0,0.08); }
+        .home-card h3 { margin: 0 0 5px 0; color: #2c3e50; font-size: 1.15em;}
+        .home-card p { color: #6c757d; font-size: 0.9em; line-height: 1.4; flex-grow: 1; margin: 0 0 15px 0;}
+        .stat-box { background: #f8f9fa; padding: 10px; border-radius: 6px; border: 1px solid #e2e6ea; margin-bottom: 15px;}
+        .stat-row { display: flex; justify-content: space-between; font-size: 0.9em; margin-bottom: 5px; color: #495057;}
+        .stat-row:last-child { margin-bottom: 0; }
+        .stat-val { font-weight: bold; color: #28a745;}
         .home-card button { background: #f8f9fa; border: 1px solid #ced4da; color: #2c3e50; padding: 10px; border-radius: 4px; cursor: pointer; font-weight: bold; transition: 0.2s; width: 100%;}
         .home-card button:hover { background: #3498db; color: white; border-color: #3498db;}
 
-        /* Analytics Specifics */
-        .global-score { background: #28a745; color: white; padding: 12px 25px; border-radius: 30px; font-size: 1.3em; font-weight: bold; box-shadow: 0 4px 6px rgba(40,167,69,0.3);}
-        .domain-section { margin-bottom: 40px; background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.05); border-top: 4px solid #3498db;}
-        .domain-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 10px;}
-        .domain-header h2 { margin: 0; color: #2c3e50; font-size: 1.4em;}
-        .domain-score { font-size: 1.2em; font-weight: bold; color: #3498db; }
-        .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
-        .mod-card { background: #f8f9fa; padding: 20px; border-radius: 8px; border: 1px solid #e9ecef; }
-        .mod-card h4 { margin: 0 0 15px 0; color: #2c3e50; font-size: 1.05em; display: flex; justify-content: space-between; align-items: center;}
-        .mod-card h4 span { font-size: 0.8em; color: #6c757d; font-weight: normal; background: #e2e6ea; padding: 2px 8px; border-radius: 12px;}
-        .stat-row { display: flex; justify-content: space-between; font-size: 0.9em; margin-bottom: 8px; color: #495057;}
-        .stat-val { font-weight: bold; color: #212529;}
-        .progress-bg { height: 10px; background: #e9ecef; border-radius: 5px; overflow: hidden; margin-top: 15px; }
-        .progress-fill { height: 100%; background: #3498db; transition: width 0.5s ease-out; }
+        /* Diagnostics Specifics */
+        .diag-section { margin-bottom: 30px; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.05); border-top: 4px solid #e67e22;}
+        .diag-header { margin: 0 0 15px 0; color: #2c3e50; font-size: 1.2em;}
+        .diag-desc { font-size: 0.9em; color: #6c757d; margin-bottom: 15px;}
+        
+        .diag-table { width: 100%; border-collapse: collapse; font-size: 0.9em; margin-bottom: 15px; }
+        .diag-table th, .diag-table td { border: 1px solid #dee2e6; padding: 10px; text-align: left;}
+        .diag-table th { background-color: #f8f9fa; color: #495057;}
+        .err-val { color: #d9534f; font-weight: bold; text-align: center; width: 80px;}
+        .zero-val { color: #ccc; text-align: center; width: 80px;}
+        
         .btn-clear { background: #dc3545; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-size: 1em; font-weight: bold; margin-top: 20px; display: block; width: 100%;}
         .btn-clear:hover { background: #c82333; }
     </style>
@@ -76,10 +75,9 @@
             <h2>Graph Skills</h2>
             <p>🏠 HOME / SYLLABUS</p>
         </div>
-        <ul class="nav-list" id="nav-list">
-            </ul>
-        <div class="dash-btn" id="nav-dash" onclick="showDashboard()">
-            📊 Master Analytics
+        <ul class="nav-list" id="nav-list"></ul>
+        <div class="dash-btn" id="nav-dash" onclick="showDiagnostics()">
+            🩺 Diagnostic Breakdown
         </div>
     </div>
 
@@ -89,31 +87,31 @@
         </div>
         
         <div class="content-area">
-            
             <iframe id="module-frame" src=""></iframe>
 
             <div id="home-view" class="view-panel">
                 <div class="dash-header">
-                    <h1>Physics Graph Skills Curriculum</h1>
+                    <h1>Curriculum Modules</h1>
                 </div>
                 
                 <div class="notice-banner">
-                    <strong>🎓 Self-Paced Learning:</strong> This curriculum is designed to build your skills step-by-step. 
-                    You do not need to get a perfect score or answer every question to proceed. <strong>You are free to move on to the next module whenever you feel confident that you understand the concept.</strong> Use the buttons below or the sidebar to navigate.
+                    <strong>🎓 Skill-Building Focus:</strong> This curriculum is about developing robust habits, not passing a test. 
+                    Practice a module until you feel confident in the targeted skill, and then move on. Your accuracy is tracked below, and specific errors are logged in your Diagnostic Breakdown.
                 </div>
 
-                <div class="home-grid" id="home-grid">
-                    </div>
+                <div class="home-grid" id="home-grid"></div>
             </div>
             
             <div id="dashboard-view" class="view-panel">
                 <div class="dash-header">
-                    <h1>Student Progress Dashboard</h1>
-                    <div class="global-score" id="global-score">Overall Success: 0%</div>
+                    <h1>Error Diagnostic Breakdown</h1>
                 </div>
                 
-                <div id="dashboard-content">
-                    </div>
+                <div class="notice-banner" style="border-left-color: #e67e22;">
+                    <strong>🩺 Identify Your Habits:</strong> This page aggregates specific errors you've made across multiple different modules to help you identify bad habits (like consistently squashing the scale, or misreading gridlines).
+                </div>
+
+                <div id="dashboard-content"></div>
                 
                 <button class="btn-clear" onclick="clearData()">🗑️ Reset All My Progress Data</button>
             </div>
@@ -121,17 +119,16 @@
     </div>
 
 <script>
-    // The Curriculum Structure with Descriptions for the Home Screen
     const curriculum = [
-        { id: "1", file: "module1.html", title: "Choosing the Graph Type", domain: "Graph Design & Layout", desc: "Learn when to use scatter plots, line graphs, bar charts, and pie charts based on the type of data you are given." },
-        { id: "2", file: "module2.html", title: "Independent vs. Dependent Axes", domain: "Graph Design & Layout", desc: "Master the rules for assigning variables to the X and Y axes to correctly show cause and effect." },
-        { id: "3", file: "module3.html", title: "Perfect Axis Labels", domain: "Graph Design & Layout", desc: "Practice writing complete axis labels, ensuring you include the exact quantity, units, and necessary precision." },
-        { id: "4a", file: "module4a.html", title: "Scaling Axes (Quick)", domain: "Scaling & Plotting", desc: "Learn to choose appropriate starting values and scales to maximize the graph area without skewing the data." },
-        { id: "4b", file: "module4b.html", title: "Scaling Axes (Full)", domain: "Scaling & Plotting", desc: "Apply your scaling skills to properly number the axes on a grid and plot the data points accurately." },
-        { id: "5", file: "module5.html", title: "Precision Plotting", domain: "Scaling & Plotting", desc: "Develop high-precision plotting skills, including snapping to half-squares and dealing with decimal scales." },
-        { id: "6", file: "module6.html", title: "Trends & Outliers", domain: "Modeling & Analysis", desc: "Identify anomalies in the data and draw balanced, smooth lines or curves of best fit." },
-        { id: "7", file: "module7.html", title: "Interpolation & Extrapolation", domain: "Modeling & Analysis", desc: "Use your lines of best fit as predictive models to estimate values inside and outside your data range." },
-        { id: "8", file: "module8.html", title: "Calculating Gradients", domain: "Modeling & Analysis", desc: "Extract coordinates from your trend line to calculate rates of change and determine their correct physics units." }
+        { id: "1", file: "module1.html", title: "Choosing the Graph Type", desc: "Learn when to use scatter plots vs line graphs vs bar charts." },
+        { id: "2", file: "module2.html", title: "Assigning Axes", desc: "Master the rules for assigning independent and dependent variables." },
+        { id: "3", file: "module3.html", title: "Perfect Axis Labels", desc: "Practice writing complete labels containing quantity, units, and precision." },
+        { id: "4a", file: "module4a.html", title: "Scaling Axes (Quick)", desc: "Choose optimal starting values and scales to maximize graph area." },
+        { id: "4b", file: "module4b.html", title: "Scaling Axes (Full)", desc: "Number the axes cleanly and plot data perfectly without falling off the chart." },
+        { id: "5", file: "module5.html", title: "Precision Plotting", desc: "Develop high-precision plotting skills, snapping accurately to half-squares." },
+        { id: "6", file: "module6.html", title: "Trends & Outliers", desc: "Identify anomalies and draw balanced, smooth lines or curves of best fit." },
+        { id: "7", file: "module7.html", title: "Interpolating", desc: "Use your lines of best fit to carefully extract predicted grid values." },
+        { id: "8", file: "module8.html", title: "Calculating Gradients", desc: "Extract coordinates to accurately calculate physical rates of change." }
     ];
 
     const navList = document.getElementById('nav-list');
@@ -140,40 +137,18 @@
     const dashView = document.getElementById('dashboard-view');
     const topTitle = document.getElementById('top-title');
     const navDashBtn = document.getElementById('nav-dash');
-
-    // 1. Build Navigation Sidebar & Home Screen Cards
     const homeGrid = document.getElementById('home-grid');
 
+    // Build Navigation Sidebar
     curriculum.forEach(mod => {
-        // Sidebar Link
         let li = document.createElement('li');
         li.className = 'nav-item';
         li.id = `nav-mod-${mod.id}`;
         li.innerHTML = `${mod.title} <span class="mod-num">M${mod.id}</span>`;
         li.onclick = () => loadModule(mod);
         navList.appendChild(li);
-
-        // Home Screen Card
-        let card = document.createElement('div');
-        card.className = "home-card";
-        card.innerHTML = `
-            <div class="home-card-header">
-                <h3>${mod.title}</h3>
-                <span class="mod-badge">Mod ${mod.id}</span>
-            </div>
-            <p>${mod.desc}</p>
-            <button onclick="loadModuleById('${mod.id}')">Start Module &rarr;</button>
-        `;
-        homeGrid.appendChild(card);
     });
 
-    // Helper for Home Screen buttons
-    function loadModuleById(id) {
-        const mod = curriculum.find(m => m.id === id);
-        if (mod) loadModule(mod);
-    }
-
-    // 2. Navigation Logic
     function hideAllViews() {
         iframe.style.display = "none";
         homeView.style.display = "none";
@@ -182,98 +157,171 @@
         navDashBtn.classList.remove('active');
     }
 
-    function showHome() {
-        hideAllViews();
-        iframe.src = ""; // Stop module processing in background
-        topTitle.innerText = "Curriculum Home";
-        homeView.style.display = "block";
-    }
-
     function loadModule(mod) {
         hideAllViews();
         document.getElementById(`nav-mod-${mod.id}`).classList.add('active');
         topTitle.innerText = `Module ${mod.id}: ${mod.title}`;
-        
         iframe.style.display = "block";
         iframe.src = mod.file; 
     }
 
-    function showDashboard() {
+    // --- HOME SCREEN RENDERER (Positive Stats Only) ---
+    function showHome() {
         hideAllViews();
-        navDashBtn.classList.add('active');
-        topTitle.innerText = "Master Analytics Dashboard";
         iframe.src = ""; 
+        topTitle.innerText = "Curriculum Home";
+        homeView.style.display = "block";
         
-        dashView.style.display = "block";
-        renderDashboard();
+        homeGrid.innerHTML = "";
+        
+        curriculum.forEach(mod => {
+            let data = JSON.parse(localStorage.getItem(`gs_mod_${mod.id}`)) || { total: 0, details: {} };
+            let total = data.total;
+            let d = data.details;
+            
+            let statsHTML = "";
+            
+            if (total === 0) {
+                statsHTML = `<div class="stat-row"><span>Status:</span> <span style="color:#6c757d;">Not Started</span></div>`;
+            } else {
+                // Custom positive stat extraction per module
+                const pct = (val, tot) => tot > 0 ? Math.round((val/tot)*100) + "%" : "0%";
+                
+                if (mod.id === "1" || mod.id === "2") {
+                    statsHTML = `<div class="stat-row"><span>Attempts:</span> <span>${total}</span></div>
+                                 <div class="stat-row"><span>Overall Accuracy:</span> <span class="stat-val">${pct(data.correct, total)}</span></div>`;
+                } else if (mod.id === "3") {
+                    statsHTML = `<div class="stat-row"><span>Quantity Accuracy:</span> <span class="stat-val">${pct(d.qtyEarned, d.qtyTotal)}</span></div>
+                                 <div class="stat-row"><span>Unit Accuracy:</span> <span class="stat-val">${pct(d.unitEarned, d.unitTotal)}</span></div>
+                                 <div class="stat-row"><span>Precision Accuracy:</span> <span class="stat-val">${pct(d.precEarned, d.precTotal)}</span></div>`;
+                } else if (mod.id === "4a" || mod.id === "4b" || mod.id === "5") {
+                    statsHTML = `<div class="stat-row"><span>Total Plots:</span> <span>${total}</span></div>
+                                 <div class="stat-row"><span>Flawless Plots:</span> <span class="stat-val">${data.correct}</span></div>`;
+                } else if (mod.id === "6") {
+                    let pLine = (d.exec?.line?.perf || 0); let pCurve = (d.exec?.curve?.perf || 0);
+                    statsHTML = `<div class="stat-row"><span>Total Models Drawn:</span> <span>${total}</span></div>
+                                 <div class="stat-row"><span>Perfect Models:</span> <span class="stat-val">${pLine + pCurve}</span></div>`;
+                } else if (mod.id === "7") {
+                    let ex = (d.pred?.inter?.exa || 0) + (d.pred?.extra?.exa || 0);
+                    statsHTML = `<div class="stat-row"><span>Predictions Made:</span> <span>${total}</span></div>
+                                 <div class="stat-row"><span>Spot-On Readings:</span> <span class="stat-val">${ex}</span></div>`;
+                } else if (mod.id === "8") {
+                    statsHTML = `<div class="stat-row"><span>Calculations Made:</span> <span>${total}</span></div>
+                                 <div class="stat-row"><span>Flawless Math:</span> <span class="stat-val">${data.correct}</span></div>`;
+                }
+            }
+
+            let card = document.createElement('div');
+            card.className = "home-card";
+            card.innerHTML = `
+                <div style="flex-grow: 1;">
+                    <h3 style="display:flex; justify-content:space-between;">Module ${mod.id}</h3>
+                    <div style="font-weight:bold; color:#3498db; margin-bottom:10px;">${mod.title}</div>
+                    <p>${mod.desc}</p>
+                    <div class="stat-box">${statsHTML}</div>
+                </div>
+                <button onclick="loadModuleById('${mod.id}')">Practice Skill &rarr;</button>
+            `;
+            homeGrid.appendChild(card);
+        });
     }
 
-    // 3. Analytics Rendering Logic
-    function renderDashboard() {
+    function loadModuleById(id) {
+        const mod = curriculum.find(m => m.id === id);
+        if (mod) loadModule(mod);
+    }
+
+    // --- AGGREGATED DIAGNOSTICS RENDERER ---
+    function showDiagnostics() {
+        hideAllViews();
+        navDashBtn.classList.add('active');
+        topTitle.innerText = "Diagnostic Breakdown";
+        iframe.src = ""; 
+        dashView.style.display = "block";
+        
         const content = document.getElementById('dashboard-content');
         content.innerHTML = "";
+
+        // Helper to safely get nested data
+        const getD = (id) => (JSON.parse(localStorage.getItem(`gs_mod_${id}`)) || {}).details || {};
         
-        let globalCorrect = 0;
-        let globalAttempts = 0;
+        const formatCell = (val) => val > 0 ? `<td class="err-val">${val}</td>` : `<td class="zero-val">-</td>`;
 
-        const domains = [...new Set(curriculum.map(m => m.domain))];
+        let html = "";
 
-        domains.forEach(domainName => {
-            let domainMods = curriculum.filter(m => m.domain === domainName);
-            let domainCorrect = 0;
-            let domainAttempts = 0;
-            let cardsHTML = "";
+        // 1. SCALING ERRORS (Aggregates 4a and 4b)
+        let m4a = getD('4a'), m4b = getD('4b');
+        let errScale = {
+            falseZero: (m4a.falseZero || 0) + (m4b.nonZeroStart || 0),
+            awkward: (m4a.awkward || 0) + (m4b.awkwardScale || 0),
+            squashed: (m4a.squashed || 0) + (m4b.squashed || 0),
+            offChart: (m4a.offChart || 0) + (m4b.offChart || 0),
+            barError: (m4b.barChartError || 0),
+            lineError: (m4b.lineLabelError || 0)
+        };
+        
+        html += `
+        <div class="diag-section">
+            <h2 class="diag-header">Axis Scaling Profile (Modules 4a & 4b)</h2>
+            <p class="diag-desc">Tracks mechanical errors made when establishing the size, spacing, and logic of an axis.</p>
+            <table class="diag-table">
+                <tr><th>Error Type</th><th>Description</th><th>Occurrences</th></tr>
+                <tr><td><strong>False Zero</strong></td><td>Failing to break the axis for clumped data.</td>${formatCell(errScale.falseZero)}</tr>
+                <tr><td><strong>Squashed Scale</strong></td><td>Using less than 50% of the available grid space.</td>${formatCell(errScale.squashed)}</tr>
+                <tr><td><strong>Awkward Divisions</strong></td><td>Using a scale that doesn't easily divide by the minor grid lines.</td>${formatCell(errScale.awkward)}</tr>
+                <tr><td><strong>Off Chart</strong></td><td>Scale is too small; data falls off the top/side.</td>${formatCell(errScale.offChart)}</tr>
+                <tr><td><strong>Continuous in Spaces</strong></td><td>Writing numbers in the gaps instead of on the lines.</td>${formatCell(errScale.barError)}</tr>
+            </table>
+        </div>`;
 
-            domainMods.forEach(mod => {
-                let rawData = localStorage.getItem(`gs_mod_${mod.id}`);
-                let data = { correct: 0, total: 0 };
-                if (rawData) { try { data = JSON.parse(rawData); } catch(e) {} }
+        // 2. PLOTTING & READING ERRORS (Aggregates 5, 7, and 8)
+        let m5 = getD('5'), m7 = getD('7'), m8 = getD('8');
+        let plotMinor = (m5['1']?.h || 0) + (m5['2']?.h || 0) + (m5['3']?.h || 0) + (m5['4']?.h || 0);
+        let plotBad = (m5['1']?.b || 0) + (m5['2']?.b || 0) + (m5['3']?.b || 0) + (m5['4']?.b || 0);
+        
+        let readMinor = (m7.pred?.inter?.clo || 0) + (m7.pred?.extra?.clo || 0) + (m8.rd?.min || 0);
+        let readSwaps = (m8.rd?.sxy || 0) + (m8.rd?.sp12 || 0);
+        let readBad = (m7.pred?.inter?.wrg || 0) + (m7.pred?.extra?.wrg || 0) + (m8.rd?.off || 0);
 
-                domainCorrect += data.correct;
-                domainAttempts += data.total;
-                globalCorrect += data.correct;
-                globalAttempts += data.total;
+        html += `
+        <div class="diag-section">
+            <h2 class="diag-header">Grid Execution Profile (Modules 5, 7 & 8)</h2>
+            <p class="diag-desc">Tracks your physical precision when dropping points or reading coordinates from the grid.</p>
+            <table class="diag-table">
+                <tr><th>Error Type</th><th>Description</th><th>Occurrences</th></tr>
+                <tr><td><strong>Minor Misread</strong></td><td>Reading or plotting slightly off the exact gridline (by ~1 box).</td>${formatCell(readMinor + plotMinor)}</tr>
+                <tr><td><strong>Coordinate Swaps</strong></td><td>Mixing up (X, Y) coordinates or reading points backwards.</td>${formatCell(readSwaps)}</tr>
+                <tr><td><strong>Severe Inaccuracy</strong></td><td>Plotting/reading wildly far from the correct location.</td>${formatCell(readBad + plotBad)}</tr>
+            </table>
+        </div>`;
 
-                let pct = data.total > 0 ? Math.round((data.correct / data.total) * 100) : 0;
-                let color = pct >= 80 ? "#28a745" : (pct >= 50 ? "#f39c12" : (data.total > 0 ? "#e74c3c" : "#bdc3c7"));
+        // 3. MODELING & TREND ERRORS (Aggregates 6, 7, 8)
+        let m6 = getD('6');
+        let modWrong = (m6.trend?.linear?.curve || 0) + (m6.trend?.curve?.line || 0) + (m7.model?.linear?.curve || 0) + (m7.model?.curve?.line || 0);
+        let execUnbalanced = (m6.exec?.line?.unb || 0) + (m6.exec?.curve?.unb || 0);
+        let execShort = (m6.exec?.line?.far || 0) + (m6.exec?.curve?.far || 0);
+        let floatPoints = (m8.sel?.raw || 0) + (m8.sel?.flt || 0);
 
-                cardsHTML += `
-                    <div class="mod-card">
-                        <h4>${mod.title} <span>Mod ${mod.id}</span></h4>
-                        <div class="stat-row"><span>Successful Passes:</span> <span class="stat-val">${data.correct}</span></div>
-                        <div class="stat-row"><span>Total Attempts:</span> <span class="stat-val">${data.total}</span></div>
-                        <div class="progress-bg">
-                            <div class="progress-fill" style="width: ${pct}%; background-color: ${color};"></div>
-                        </div>
-                    </div>
-                `;
-            });
+        html += `
+        <div class="diag-section">
+            <h2 class="diag-header">Modeling Profile (Modules 6, 7 & 8)</h2>
+            <p class="diag-desc">Tracks how well you identify trends and utilize Lines of Best Fit.</p>
+            <table class="diag-table">
+                <tr><th>Error Type</th><th>Description</th><th>Occurrences</th></tr>
+                <tr><td><strong>Wrong Model Used</strong></td><td>Drawing a straight line when physics requires a curve (or vice versa).</td>${formatCell(modWrong)}</tr>
+                <tr><td><strong>Unbalanced Trend</strong></td><td>Leaving too many data points exclusively on one side of the line.</td>${formatCell(execUnbalanced)}</tr>
+                <tr><td><strong>Short/Far Trend</strong></td><td>Line doesn't cover the full data span, or strays too far from the points.</td>${formatCell(execShort)}</tr>
+                <tr><td><strong>Raw Data Reliance</strong></td><td>Using raw data dots for calculations instead of trusting the Model line.</td>${formatCell(floatPoints)}</tr>
+            </table>
+        </div>`;
 
-            let domPct = domainAttempts > 0 ? Math.round((domainCorrect / domainAttempts) * 100) : 0;
-            let domColor = domPct >= 80 ? "#28a745" : (domPct >= 50 ? "#f39c12" : (domainAttempts > 0 ? "#e74c3c" : "#95a5a6"));
-
-            let section = document.createElement('div');
-            section.className = "domain-section";
-            section.innerHTML = `
-                <div class="domain-header">
-                    <h2>${domainName}</h2>
-                    <div class="domain-score" style="color: ${domColor}">${domainAttempts > 0 ? domPct + '%' : 'No Data'}</div>
-                </div>
-                <div class="cards-grid">
-                    ${cardsHTML}
-                </div>
-            `;
-            content.appendChild(section);
-        });
-
-        let gPct = globalAttempts > 0 ? Math.round((globalCorrect / globalAttempts) * 100) : 0;
-        document.getElementById('global-score').innerText = `Overall Curriculum Success: ${gPct}%`;
+        content.innerHTML = html;
     }
 
     function clearData() {
         if(confirm("Are you sure you want to reset all your progress data? This cannot be undone!")) {
             curriculum.forEach(mod => localStorage.removeItem(`gs_mod_${mod.id}`));
-            renderDashboard();
+            showHome();
         }
     }
 

@@ -8,633 +8,232 @@
         .module-container { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         .app-layout { display: grid; grid-template-columns: 620px auto; gap: 30px; margin-top: 15px; }
         .graph-wrapper { position: relative; width: 620px; height: 620px; background: #fff; border: 1px solid #ccc; cursor: crosshair;}
-        canvas { display: block; position: absolute; top: 0; left: 0; }
-        #bgCanvas { z-index: 1; }
-        #drawCanvas { z-index: 2; }
+        canvas { display: block; position: absolute; top: 0; left: 0; } #bgCanvas { z-index: 1; } #drawCanvas { z-index: 2; }
         .info-panel { background: #f8f9fa; padding: 20px; border-radius: 8px; border: 1px solid #ddd; }
-        
         .scenario-box { padding: 15px; background: #eef2f5; border-radius: 6px; border: 1px solid #0056b3; margin-bottom: 20px; font-size: 1.05em; line-height: 1.4;}
-        
         .step-box { padding: 15px; background: #fff; border-radius: 6px; border-left: 5px solid #6c757d; margin-bottom: 15px; transition: 0.3s;}
         .step-box.active { border-left-color: #0056b3; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-
         .btn-main { display: block; padding: 12px; font-size: 1.1em; cursor: pointer; border: none; border-radius: 4px; background-color: #0056b3; color: white; width: 100%; margin-top: 10px;}
-        .btn-main:hover { background-color: #004494; }
-        .tool-btn { padding: 10px; border: 1px solid #ccc; background: #fff; cursor: pointer; border-radius: 4px; flex: 1; font-size: 0.9em;}
-        .tool-btn.active { background: #0056b3; color: white; border-color: #0056b3; }
-        .outlier-section { margin-top: 10px; padding: 8px; background: #fff4e5; border-radius: 4px; font-size: 0.9em; cursor: pointer; display: flex; align-items: center; gap: 8px;}
-        
-        .feedback { margin-top: 15px; padding: 12px; border-radius: 4px; display: none; line-height: 1.4; }
-        #next-btn { background-color: #28a745; margin-top: 10px;}
-        #next-btn:hover { background-color: #218838; }
-
+        .btn-main:hover { background-color: #004494; } .tool-btn { padding: 10px; border: 1px solid #ccc; background: #fff; cursor: pointer; border-radius: 4px; flex: 1; font-size: 0.9em;}
+        .tool-btn.active { background: #0056b3; color: white; border-color: #0056b3; } .outlier-section { margin-top: 10px; padding: 8px; background: #fff4e5; border-radius: 4px; font-size: 0.9em; cursor: pointer; display: flex; align-items: center; gap: 8px;}
+        .feedback { margin-top: 15px; padding: 12px; border-radius: 4px; display: none; line-height: 1.4; } #next-btn { background-color: #28a745; margin-top: 10px;} #next-btn:hover { background-color: #218838; }
         .golden-rule { background: #fff3cd; border-left: 4px solid #ffc107; padding: 10px; margin-bottom: 20px; font-style: italic; }
-
-        .settings-panel { background: #f1f3f5; border: 1px solid #ced4da; border-radius: 6px; padding: 10px 15px; margin-top: 20px; }
-        .settings-panel summary { font-weight: bold; cursor: pointer; color: #495057; outline: none;}
-        .settings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; font-size: 0.9em;}
-        .setting-item { display: flex; flex-direction: column; gap: 5px; }
-        .setting-item input[type=range] { width: 100%; }
-
-        .dash-container { margin-top: 20px; padding-top: 15px; }
-        .matrix-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 10px;}
-        .conf-matrix { width: 100%; border-collapse: collapse; font-size: 0.8em; background: #fff; text-align: center;}
-        .conf-matrix th, .conf-matrix td { border: 1px solid #aaa; padding: 4px; }
-        .conf-matrix th { background: #e9ecef; font-weight: bold;}
-        .mat-actual { font-weight: bold; text-align: left; background: #f8f9fa;}
-        .mat-match { background-color: #d4edda; font-weight: bold; color: #155724;}
-        .mat-meh { background-color: #fff3cd; color: #856404;}
-        .mat-err { background-color: #f8d7da; color: #721c24; font-weight: bold;}
-        .mat-na { background-color: #e9ecef; color: #aaa; }
-
-        /* Footer Styles */
-        .footer { text-align: center; margin-top: 30px; border-top: 1px solid #eee; padding-top: 15px; font-size: 0.9em; }
-        .footer a { color: #6c757d; text-decoration: none; }
-        .footer a:hover { color: #333; text-decoration: underline; }
+        .settings-panel { background: #f1f3f5; border: 1px solid #ced4da; border-radius: 6px; padding: 10px 15px; margin-top: 20px; } .settings-panel summary { font-weight: bold; cursor: pointer; color: #495057; outline: none;}
+        .settings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; font-size: 0.9em;} .setting-item { display: flex; flex-direction: column; gap: 5px; } .setting-item input[type=range] { width: 100%; }
+        .dash-container { margin-top: 20px; padding-top: 15px; } .matrix-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 10px;}
+        .conf-matrix { width: 100%; border-collapse: collapse; font-size: 0.8em; background: #fff; text-align: center;} .conf-matrix th, .conf-matrix td { border: 1px solid #aaa; padding: 4px; } .conf-matrix th { background: #e9ecef; font-weight: bold;}
+        .mat-actual { font-weight: bold; text-align: left; background: #f8f9fa;} .mat-match { background-color: #d4edda; font-weight: bold; color: #155724;} .mat-meh { background-color: #fff3cd; color: #856404;} .mat-err { background-color: #f8d7da; color: #721c24; font-weight: bold;} .mat-na { background-color: #e9ecef; color: #aaa; }
+        .footer { text-align: center; margin-top: 30px; border-top: 1px solid #eee; padding-top: 15px; font-size: 0.9em; } .footer a { color: #6c757d; text-decoration: none; }
     </style>
 </head>
 <body>
-
 <div class="module-container">
     <h2 style="margin-top:0;">Module 6: Contextual Trends & Outliers</h2>
-    
-    <div class="golden-rule">
-        <strong>The Golden Rule:</strong> Draw the simplest trend justified by the data. The line must span the valid data points, be balanced, and be smooth!
-    </div>
-
+    <div class="golden-rule"><strong>The Golden Rule:</strong> Draw the simplest trend justified by the data.</div>
     <div class="app-layout">
-        <div class="graph-wrapper">
-            <canvas id="bgCanvas" width="620" height="620"></canvas>
-            <canvas id="drawCanvas" width="620" height="620"></canvas>
-        </div>
-
+        <div class="graph-wrapper"><canvas id="bgCanvas" width="620" height="620"></canvas><canvas id="drawCanvas" width="620" height="620"></canvas></div>
         <div class="info-panel">
             <div class="scenario-box" id="scenario-text">Loading scenario...</div>
-
-            <div class="step-box active">
-                <strong>Step 1: Outlier Check</strong>
-                <label class="outlier-section">
-                    <input type="checkbox" id="outlier-mode" onchange="toggleOutlierMode()"> 
-                    <span>Is there a clear anomaly? (Check box, then click point)</span>
-                </label>
-            </div>
-
-            <div class="step-box active">
-                <strong>Step 2: Choose Trend Tool</strong>
-                <div style="display:flex; gap:5px; margin-top:10px;">
-                    <button id="tool-line" class="tool-btn active" onclick="setTool('line')">Straight Line</button>
-                    <button id="tool-curve" class="tool-btn" onclick="setTool('curve')">Smooth Curve</button>
-                    <button id="tool-join" class="tool-btn" onclick="setTool('join')">Join Dots</button>
-                </div>
-            </div>
-
-            <div class="step-box active">
-                <strong>Step 3: Draw</strong>
-                <p id="instr" style="font-size: 0.85em; color: #666; min-height: 35px;">Click and drag to draw a straight line of best fit.</p>
-                <button class="btn-main" id="eval-btn" onclick="evaluateTrend()">Evaluate My Graph</button>
-                <button id="next-btn" class="btn-main" style="display:none;" onclick="init()">Next Question</button>
-            </div>
-
+            <div class="step-box active"><strong>Step 1: Outlier Check</strong><label class="outlier-section"><input type="checkbox" id="outlier-mode" onchange="toggleOutlierMode()"> <span>Is there an anomaly? (Check, then click point)</span></label></div>
+            <div class="step-box active"><strong>Step 2: Choose Trend Tool</strong><div style="display:flex; gap:5px; margin-top:10px;"><button id="tool-line" class="tool-btn active" onclick="setTool('line')">Straight Line</button><button id="tool-curve" class="tool-btn" onclick="setTool('curve')">Smooth Curve</button><button id="tool-join" class="tool-btn" onclick="setTool('join')">Join Dots</button></div></div>
+            <div class="step-box active"><strong>Step 3: Draw</strong><p id="instr" style="font-size: 0.85em; color: #666; min-height: 35px;">Drag to draw a straight line.</p><button class="btn-main" id="eval-btn" onclick="evaluateTrend()">Evaluate My Graph</button><button id="next-btn" class="btn-main" style="display:none;" onclick="init()">Next Question</button></div>
             <div id="feedback" class="feedback"></div>
         </div>
     </div>
-
     <details class="settings-panel">
-        <summary>⚙️ Adjust Grading Strictness (Teacher Tools)</summary>
+        <summary>⚙️ Adjust Grading Strictness</summary>
         <div class="settings-grid">
-            <div class="setting-item">
-                <label>Line: Max Average Distance (<span id="val-tolLineErr">45</span>px)</label>
-                <input type="range" id="inp-tolLineErr" min="10" max="100" value="45" oninput="updateTols()">
-            </div>
-            <div class="setting-item">
-                <label>Line: Max Imbalance (Diff < <span id="val-tolLineBal">3</span> pts)</label>
-                <input type="range" id="inp-tolLineBal" min="1" max="5" value="3" oninput="updateTols()">
-            </div>
-            <div class="setting-item">
-                <label>Curve: Max Average Distance (<span id="val-tolCurveErr">50</span>px)</label>
-                <input type="range" id="inp-tolCurveErr" min="10" max="100" value="50" oninput="updateTols()">
-            </div>
-            <div class="setting-item">
-                <label>Curve: Wobble/Inflection Sens. (<span id="val-tolCurveWob">0.15</span>)</label>
-                <input type="range" id="inp-tolCurveWob" min="0.05" max="0.5" step="0.01" value="0.15" oninput="updateTols()">
-            </div>
+            <div class="setting-item"><label>Line: Max Avg Dist (<span id="val-tolLineErr">45</span>px)</label><input type="range" id="inp-tolLineErr" min="10" max="100" value="45" oninput="updateTols()"></div>
+            <div class="setting-item"><label>Line: Max Imbalance (<span id="val-tolLineBal">3</span> pts)</label><input type="range" id="inp-tolLineBal" min="1" max="5" value="3" oninput="updateTols()"></div>
+            <div class="setting-item"><label>Curve: Max Avg Dist (<span id="val-tolCurveErr">50</span>px)</label><input type="range" id="inp-tolCurveErr" min="10" max="100" value="50" oninput="updateTols()"></div>
+            <div class="setting-item"><label>Curve: Wobble Sens. (<span id="val-tolCurveWob">0.15</span>)</label><input type="range" id="inp-tolCurveWob" min="0.05" max="0.5" step="0.01" value="0.15" oninput="updateTols()"></div>
         </div>
     </details>
-
-    <div class="dash-container">
-        <h3 style="margin:0 0 5px 0;">Performance Analytics</h3>
+    <div class="dash-container"><h3 style="margin:0 0 5px 0;">Performance Analytics</h3>
         <div class="matrix-grid">
-            <div>
-                <table class="conf-matrix">
-                    <thead>
-                        <tr><th colspan="5" style="background:#0056b3; color:white;">1. Outlier Detection</th></tr>
-                        <tr><th>State \ Action</th><th>Correct</th><th>Debatable</th><th>Wrong</th><th>Missed</th></tr>
-                    </thead>
-                    <tbody>
-                        <tr><td class="mat-actual">Has Anomaly</td><td id="o-has-cor">0 (-)</td><td class="mat-na">-</td><td id="o-has-wrg">0</td><td id="o-has-ign">0</td></tr>
-                        <tr><td class="mat-actual">No Anomaly</td><td id="o-non-cor">0 (-)</td><td id="o-non-deb">0</td><td id="o-non-wrg">0</td><td class="mat-na">-</td></tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <div>
-                <table class="conf-matrix">
-                    <thead>
-                        <tr><th colspan="4" style="background:#0056b3; color:white;">2. Trend Tool Selection</th></tr>
-                        <tr><th>Actual \ Chosen</th><th>Line</th><th>Curve</th><th>Dots</th></tr>
-                    </thead>
-                    <tbody>
-                        <tr><td class="mat-actual">Linear</td><td id="t-lin-lin">0 (-)</td><td id="t-lin-cur">0</td><td id="t-lin-dot">0</td></tr>
-                        <tr><td class="mat-actual">Curve</td><td id="t-cur-lin">0</td><td id="t-cur-cur">0 (-)</td><td id="t-cur-dot">0</td></tr>
-                        <tr><td class="mat-actual">Sequential</td><td id="t-dot-lin">0</td><td id="t-dot-cur">0</td><td id="t-dot-dot">0 (-)</td></tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <div>
-                <table class="conf-matrix">
-                    <thead>
-                        <tr><th colspan="5" style="background:#0056b3; color:white;">3. Drawing Execution</th></tr>
-                        <tr><th>Tool</th><th>Perfect</th><th>Unbal-<br>anced</th><th>Too<br>Short/Far</th><th>Bad<br>Shape</th></tr>
-                    </thead>
-                    <tbody>
-                        <tr><td class="mat-actual">Line</td><td id="e-lin-perf">0 (-)</td><td id="e-lin-unb">0</td><td id="e-lin-far">0</td><td class="mat-na">-</td></tr>
-                        <tr><td class="mat-actual">Curve</td><td id="e-cur-perf">0 (-)</td><td id="e-cur-unb">0</td><td id="e-cur-far">0</td><td id="e-cur-shp">0</td></tr>
-                    </tbody>
-                </table>
-            </div>
+            <div><table class="conf-matrix"><thead><tr><th colspan="5" style="background:#0056b3; color:white;">1. Outlier Detection</th></tr><tr><th>State \ Action</th><th>Correct</th><th>Debat.</th><th>Wrong</th><th>Missed</th></tr></thead><tbody id="o-body">
+                <tr><td class="mat-actual">Has Anomaly</td><td id="o-has-cor">0 (-)</td><td class="mat-na">-</td><td id="o-has-wrg">0</td><td id="o-has-ign">0</td></tr>
+                <tr><td class="mat-actual">No Anomaly</td><td id="o-non-cor">0 (-)</td><td id="o-non-deb">0</td><td id="o-non-wrg">0</td><td class="mat-na">-</td></tr>
+            </tbody></table></div>
+            <div><table class="conf-matrix"><thead><tr><th colspan="4" style="background:#0056b3; color:white;">2. Trend Tool Selection</th></tr><tr><th>Actual \ Chosen</th><th>Line</th><th>Curve</th><th>Dots</th></tr></thead><tbody id="t-body">
+                <tr><td class="mat-actual">Linear</td><td id="t-lin-lin">0 (-)</td><td id="t-lin-cur">0</td><td id="t-lin-dot">0</td></tr>
+                <tr><td class="mat-actual">Curve</td><td id="t-cur-lin">0</td><td id="t-cur-cur">0 (-)</td><td id="t-cur-dot">0</td></tr>
+                <tr><td class="mat-actual">Sequential</td><td id="t-dot-lin">0</td><td id="t-dot-cur">0</td><td id="t-dot-dot">0 (-)</td></tr>
+            </tbody></table></div>
+            <div><table class="conf-matrix"><thead><tr><th colspan="5" style="background:#0056b3; color:white;">3. Drawing Execution</th></tr><tr><th>Tool</th><th>Perfect</th><th>Unbal.</th><th>Short</th><th>Shape</th></tr></thead><tbody id="e-body">
+                <tr><td class="mat-actual">Line</td><td id="e-lin-perf">0 (-)</td><td id="e-lin-unb">0</td><td id="e-lin-far">0</td><td class="mat-na">-</td></tr>
+                <tr><td class="mat-actual">Curve</td><td id="e-cur-perf">0 (-)</td><td id="e-cur-unb">0</td><td id="e-cur-far">0</td><td id="e-cur-shp">0</td></tr>
+            </tbody></table></div>
         </div>
     </div>
-
-    <div class="footer">
-        <a href="feedback.html" target="_blank">🐛 Report an Issue / Leave Feedback</a>
-    </div>
+    <div class="footer"><a href="feedback.html" target="_blank">🐛 Report an Issue / Leave Feedback</a></div>
 </div>
 
 <script>
-    const bgCanvas = document.getElementById('bgCanvas'), ctxBg = bgCanvas.getContext('2d');
-    const drawCanvas = document.getElementById('drawCanvas'), ctxDraw = drawCanvas.getContext('2d');
-    const pad = 60, size = 500;
-    
-    let points = [], outlierIdx = -1, userOutlier = -1;
-    let isDrawing = false, currentTool = 'line', drawingNodes = [];
-    let activeScenario = null;
-
+    const bgCanvas = document.getElementById('bgCanvas'), ctxBg = bgCanvas.getContext('2d'), drawCanvas = document.getElementById('drawCanvas'), ctxDraw = drawCanvas.getContext('2d'), pad = 60, size = 500;
+    let points = [], outlierIdx = -1, userOutlier = -1, isDrawing = false, currentTool = 'line', drawingNodes = [], activeScenario = null;
     let tolLineErr = 45, tolLineBal = 3, tolCurveErr = 50, tolCurveWob = 0.15;
+
+    // DATA HYDRATION
+    const MODULE_ID = "6";
+    let stats = { outlier: { has: { cor: 0, wrg: 0, ign: 0 }, non: { cor: 0, deb: 0, wrg: 0 } }, trend: { linear: { line: 0, curve: 0, join: 0 }, curve: { line: 0, curve: 0, join: 0 }, dots: { line: 0, curve: 0, join: 0 } }, exec: { line: { perf: 0, unb: 0, far: 0 }, curve: { perf: 0, unb: 0, far: 0, shp: 0 } } };
+    let totalPasses = 0, totalAttempts = 0;
+    let savedMem = JSON.parse(localStorage.getItem(`gs_mod_${MODULE_ID}`));
+    if (savedMem) { totalPasses = savedMem.correct || 0; totalAttempts = savedMem.total || 0; if (savedMem.details) stats = savedMem.details; }
+
     function updateTols() {
-        tolLineErr = parseFloat(document.getElementById('inp-tolLineErr').value);
-        tolLineBal = parseFloat(document.getElementById('inp-tolLineBal').value);
-        tolCurveErr = parseFloat(document.getElementById('inp-tolCurveErr').value);
-        tolCurveWob = parseFloat(document.getElementById('inp-tolCurveWob').value);
-        document.getElementById('val-tolLineErr').innerText = tolLineErr;
-        document.getElementById('val-tolLineBal').innerText = tolLineBal;
-        document.getElementById('val-tolCurveErr').innerText = tolCurveErr;
-        document.getElementById('val-tolCurveWob').innerText = tolCurveWob;
+        tolLineErr = parseFloat(document.getElementById('inp-tolLineErr').value); tolLineBal = parseFloat(document.getElementById('inp-tolLineBal').value);
+        tolCurveErr = parseFloat(document.getElementById('inp-tolCurveErr').value); tolCurveWob = parseFloat(document.getElementById('inp-tolCurveWob').value);
+        document.getElementById('val-tolLineErr').innerText = tolLineErr; document.getElementById('val-tolLineBal').innerText = tolLineBal; document.getElementById('val-tolCurveErr').innerText = tolCurveErr; document.getElementById('val-tolCurveWob').innerText = tolCurveWob;
     }
 
-    let stats = {
-        outlier: { has: { cor: 0, wrg: 0, ign: 0 }, non: { cor: 0, deb: 0, wrg: 0 } },
-        trend: { linear: { line: 0, curve: 0, join: 0 }, curve: { line: 0, curve: 0, join: 0 }, dots: { line: 0, curve: 0, join: 0 } },
-        exec: { line: { perf: 0, unb: 0, far: 0 }, curve: { perf: 0, unb: 0, far: 0, shp: 0 } }
-    };
-
     const scenarioBank = {
-        linear: [
-            { text: "<strong>Physics:</strong> Plotting extension of a metal spring against pulling force.", rationale: "Hooke's Law dictates a directly proportional straight line.", xLabel: "Force (N)", yLabel: "Extension (cm)" },
-            { text: "<strong>Electronics:</strong> Plotting voltage across a fixed resistor as current increases.", rationale: "Ohm's law requires a straight line of best fit.", xLabel: "Current (A)", yLabel: "Voltage (V)" },
-            { text: "<strong>Dynamics:</strong> Plotting the acceleration of a cart against the force applied.", rationale: "Newton's Second Law dictates a linear proportional relationship.", xLabel: "Force (N)", yLabel: "Acceleration (m/s²)" },
-            { text: "<strong>Kinematics:</strong> Plotting the velocity of a falling object over time.", rationale: "Constant acceleration creates a linear increase in velocity over time.", xLabel: "Time (s)", yLabel: "Velocity (m/s)" }
-        ],
-        curve: [
-            { text: "<strong>Thermodynamics:</strong> Plotting the temperature of a coffee as it cools over 30 mins.", rationale: "Cooling rates drop rapidly initially and then smoothly flatten out as they approach room temperature.", xLabel: "Time (min)", yLabel: "Temp (°C)", cType: "decay" },
-            { text: "<strong>Physics:</strong> Plotting the activity of a radioactive sample over several days.", rationale: "Radioactive decay follows a strict mathematical exponential curve downwards.", xLabel: "Time (Days)", yLabel: "Activity (Bq)", cType: "decay" },
-            { text: "<strong>Pharmacology:</strong> Concentration of a drug in the bloodstream over time.", rationale: "The body clears drugs at a proportional rate, creating a smooth decay curve.", xLabel: "Time (hrs)", yLabel: "Concentration (mg/L)", cType: "decay" },
-            { text: "<strong>Biology:</strong> Plotting bacterial population growth with unlimited food.", rationale: "Population growth compounds exponentially, creating an upward curve.", xLabel: "Time (hrs)", yLabel: "Population", cType: "growth" },
-            { text: "<strong>Optics:</strong> Plotting light intensity as you move further from a bulb.", rationale: "The inverse-square law means intensity drops rapidly and then smoothly levels out.", xLabel: "Distance (m)", yLabel: "Intensity (Lux)", cType: "inv_sq" }
-        ],
-        dots: [
-            { text: "<strong>Economics:</strong> Closing stock price of a tech company each day.", rationale: "Stock prices are unpredictable sequential events. Join the dots.", xLabel: "Day", yLabel: "Stock Price ($)" },
-            { text: "<strong>Meteorology:</strong> Total rainfall recorded each day over a week.", rationale: "Weather changes sporadically. You must simply connect the historical points.", xLabel: "Day", yLabel: "Rainfall (mm)" },
-            { text: "<strong>Ecology:</strong> Daily count of birds spotted at a specific feeder over a week.", rationale: "Wildlife spotting is heavily influenced by random daily events. Join the dots.", xLabel: "Day", yLabel: "Bird Count" }
-        ]
+        linear: [ { text: "<strong>Physics:</strong> Extension of a metal spring vs force.", rationale: "Hooke's Law dictates a directly proportional straight line.", xLabel: "Force (N)", yLabel: "Extension (cm)" }, { text: "<strong>Electronics:</strong> Voltage vs current.", rationale: "Ohm's law requires a straight line.", xLabel: "Current (A)", yLabel: "Voltage (V)" } ],
+        curve: [ { text: "<strong>Thermodynamics:</strong> Coffee cooling.", rationale: "Cooling rates drop rapidly and then flatten.", xLabel: "Time (min)", yLabel: "Temp (°C)", cType: "decay" }, { text: "<strong>Physics:</strong> Radioactive activity.", rationale: "Decay follows an exponential curve.", xLabel: "Time (Days)", yLabel: "Activity (Bq)", cType: "decay" } ],
+        dots: [ { text: "<strong>Economics:</strong> Stock price.", rationale: "Unpredictable sequence. Join dots.", xLabel: "Day", yLabel: "Price ($)" }, { text: "<strong>Meteorology:</strong> Rainfall.", rationale: "Sporadic changes. Join dots.", xLabel: "Day", yLabel: "Rainfall (mm)" } ]
     };
 
     function init() {
-        points = []; userOutlier = -1; drawingNodes = [];
-        document.getElementById('outlier-mode').checked = false;
-        document.getElementById('eval-btn').style.display = "block";
-        document.getElementById('next-btn').style.display = "none";
-        document.getElementById('feedback').style.display = "none";
-        generateData();
-        drawGraph();
-        setTool('line'); 
+        points = []; userOutlier = -1; drawingNodes = []; document.getElementById('outlier-mode').checked = false; document.getElementById('eval-btn').style.display = "block"; document.getElementById('next-btn').style.display = "none"; document.getElementById('feedback').style.display = "none";
+        generateData(); drawGraph(); setTool('line'); updateDashUI();
     }
 
     function generateData() {
-        const r = Math.random();
-        const type = (r < 0.4) ? 'linear' : ((r < 0.8) ? 'curve' : 'dots'); 
-        
-        const scenarios = scenarioBank[type];
-        activeScenario = scenarios[Math.floor(Math.random() * scenarios.length)];
-        activeScenario.type = type;
-        
-        document.getElementById('scenario-text').innerHTML = activeScenario.text;
-
-        const hasOutlier = (type !== 'dots') && (Math.random() < 0.20);
-        outlierIdx = hasOutlier ? Math.floor(Math.random() * 4) + 1 : -1;
-
+        const type = (Math.random() < 0.4) ? 'linear' : ((Math.random() < 0.8) ? 'curve' : 'dots'); 
+        activeScenario = scenarioBank[type][Math.floor(Math.random() * scenarioBank[type].length)]; activeScenario.type = type; document.getElementById('scenario-text').innerHTML = activeScenario.text;
+        outlierIdx = (type !== 'dots' && Math.random() < 0.20) ? Math.floor(Math.random() * 4) + 1 : -1;
         for (let i = 0; i < 7; i++) {
-            let x = 80 + (i * 70);
-            let y;
-            
-            if (type === 'linear') {
-                const startY = 500 - (Math.random() * 40); 
-                const slope = -(Math.random() * 25 + 20); 
-                y = startY + (i * slope) + (Math.random() * 16 - 8); 
-            } else if (type === 'curve') {
-                if (activeScenario.cType === 'decay') {
-                    let val = 380 * Math.exp(-0.65 * i);
-                    y = 520 - val + (Math.random() * 12 - 6);
-                } else if (activeScenario.cType === 'growth') {
-                    let val = 12 * Math.exp(0.55 * i);
-                    y = 520 - val + (Math.random() * 12 - 6);
-                } else if (activeScenario.cType === 'inv_sq') {
-                    let val = 400 / Math.pow((i * 0.7) + 1, 2);
-                    y = 520 - val + (Math.random() * 12 - 6);
-                }
-            } else { 
-                y = 150 + Math.random() * 300; 
-            }
-
+            let x = 80 + (i * 70), y;
+            if (type === 'linear') { y = (500 - Math.random()*40) + (i * -(Math.random()*25 + 20)) + (Math.random()*16 - 8); } 
+            else if (type === 'curve') { y = activeScenario.cType === 'decay' ? 520 - (380*Math.exp(-0.65*i)) + (Math.random()*12-6) : 520 - (12*Math.exp(0.55*i)) + (Math.random()*12-6); } 
+            else { y = 150 + Math.random() * 300; }
             if (i === outlierIdx) y += (y > 300 ? -150 : 150); 
-            y = Math.max(pad + 10, Math.min(y, pad + size - 10));
-            points.push({x, y});
+            points.push({x, y: Math.max(pad + 10, Math.min(y, pad + size - 10))});
         }
     }
 
     function drawGraph() {
-        ctxBg.clearRect(0,0,620,620);
-        ctxBg.strokeStyle = "#eee"; ctxBg.lineWidth = 1;
-        for(let i=0; i<=10; i++) {
-            let p = pad + (i * (size/10));
-            ctxBg.beginPath(); ctxBg.moveTo(p, pad); ctxBg.lineTo(p, pad+size); ctxBg.stroke();
-            ctxBg.beginPath(); ctxBg.moveTo(pad, p); ctxBg.lineTo(pad+size, p); ctxBg.stroke();
-        }
-        ctxBg.lineWidth = 2; ctxBg.strokeStyle = "#000";
-        ctxBg.strokeRect(pad, pad, size, size);
-
-        ctxBg.fillStyle = "#000"; ctxBg.font = "bold 14px Arial"; ctxBg.textAlign = "center";
-        ctxBg.fillText(activeScenario.xLabel, pad + (size/2), pad + size + 40);
-        ctxBg.save(); ctxBg.translate(20, pad + (size/2)); ctxBg.rotate(-Math.PI / 2); ctxBg.fillText(activeScenario.yLabel, 0, 0); ctxBg.restore();
-
+        ctxBg.clearRect(0,0,620,620); ctxBg.strokeStyle = "#eee"; ctxBg.lineWidth = 1;
+        for(let i=0; i<=10; i++) { let p = pad + (i * (size/10)); ctxBg.beginPath(); ctxBg.moveTo(p, pad); ctxBg.lineTo(p, pad+size); ctxBg.stroke(); ctxBg.beginPath(); ctxBg.moveTo(pad, p); ctxBg.lineTo(pad+size, p); ctxBg.stroke(); }
+        ctxBg.lineWidth = 2; ctxBg.strokeStyle = "#000"; ctxBg.strokeRect(pad, pad, size, size); ctxBg.fillStyle = "#000"; ctxBg.font = "bold 14px Arial"; ctxBg.textAlign = "center"; ctxBg.fillText(activeScenario.xLabel, pad + (size/2), pad + size + 40); ctxBg.save(); ctxBg.translate(20, pad + (size/2)); ctxBg.rotate(-Math.PI / 2); ctxBg.fillText(activeScenario.yLabel, 0, 0); ctxBg.restore();
         points.forEach((p, i) => {
-            ctxBg.strokeStyle = (i === userOutlier) ? "#ccc" : "#c0392b";
-            ctxBg.lineWidth = 2;
-            ctxBg.beginPath(); ctxBg.moveTo(p.x-5, p.y-5); ctxBg.lineTo(p.x+5, p.y+5); ctxBg.moveTo(p.x+5, p.y-5); ctxBg.lineTo(p.x-5, p.y+5); ctxBg.stroke();
-            if(i === userOutlier) {
-                ctxBg.strokeStyle = "#999"; ctxBg.setLineDash([2,2]);
-                ctxBg.beginPath(); ctxBg.arc(p.x, p.y, 12, 0, 7); ctxBg.stroke(); ctxBg.setLineDash([]);
-            }
+            ctxBg.strokeStyle = (i === userOutlier) ? "#ccc" : "#c0392b"; ctxBg.lineWidth = 2; ctxBg.beginPath(); ctxBg.moveTo(p.x-5, p.y-5); ctxBg.lineTo(p.x+5, p.y+5); ctxBg.moveTo(p.x+5, p.y-5); ctxBg.lineTo(p.x-5, p.y+5); ctxBg.stroke();
+            if(i === userOutlier) { ctxBg.strokeStyle = "#999"; ctxBg.setLineDash([2,2]); ctxBg.beginPath(); ctxBg.arc(p.x, p.y, 12, 0, 7); ctxBg.stroke(); ctxBg.setLineDash([]); }
         });
     }
 
     function setTool(t) {
-        currentTool = t;
-        document.getElementById('outlier-mode').checked = false; 
-        drawingNodes = [];
-        ctxDraw.clearRect(0,0,620,620);
-        document.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('active'));
-        document.getElementById('tool-'+t).classList.add('active');
-        
-        const instrs = {
-            'line': 'Click and drag to draw a straight line of best fit.',
-            'curve': 'Click along the path to map out a curve. Double-click to finish.',
-            'join': 'The dots have been joined automatically. Evaluate your choice.'
-        };
-        document.getElementById('instr').innerText = instrs[t];
-
-        if (t === 'join') {
-            drawingNodes = points.filter((p, i) => i !== userOutlier).map(p => ({x: p.x, y: p.y}));
-            renderDrawing(true);
-        }
+        currentTool = t; document.getElementById('outlier-mode').checked = false; drawingNodes = []; ctxDraw.clearRect(0,0,620,620);
+        document.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('active')); document.getElementById('tool-'+t).classList.add('active');
+        document.getElementById('instr').innerText = { 'line':'Drag to draw line.', 'curve':'Click along path for curve. Dbl-click to end.', 'join':'Dots joined. Evaluate choice.' }[t];
+        if (t === 'join') { drawingNodes = points.filter((p, i) => i !== userOutlier).map(p => ({x: p.x, y: p.y})); renderDrawing(true); }
     }
 
     drawCanvas.addEventListener('mousedown', e => {
-        const rect = drawCanvas.getBoundingClientRect();
-        const mx = e.clientX - rect.left, my = e.clientY - rect.top;
-
-        if (document.getElementById('outlier-mode').checked) {
-            points.forEach((p, i) => {
-                if (Math.hypot(p.x - mx, p.y - my) < 20) { userOutlier = (userOutlier === i) ? -1 : i; drawGraph(); }
-            });
-            return;
-        }
-
-        if (currentTool === 'line') {
-            isDrawing = true; drawingNodes = [{x: mx, y: my}];
-        } else if (currentTool === 'curve') {
-            drawingNodes.push({x: mx, y: my}); renderDrawing();
-        }
+        const rect = drawCanvas.getBoundingClientRect(), mx = e.clientX - rect.left, my = e.clientY - rect.top;
+        if (document.getElementById('outlier-mode').checked) { points.forEach((p, i) => { if (Math.hypot(p.x - mx, p.y - my) < 20) { userOutlier = (userOutlier === i) ? -1 : i; drawGraph(); }}); return; }
+        if (currentTool === 'line') { isDrawing = true; drawingNodes = [{x: mx, y: my}]; } else if (currentTool === 'curve') { drawingNodes.push({x: mx, y: my}); renderDrawing(); }
     });
-
-    drawCanvas.addEventListener('mousemove', e => {
-        if (!isDrawing || currentTool !== 'line') return;
-        const rect = drawCanvas.getBoundingClientRect();
-        drawingNodes[1] = {x: e.clientX - rect.left, y: e.clientY - rect.top};
-        renderDrawing();
-    });
-
-    drawCanvas.addEventListener('mouseup', () => { isDrawing = false; });
-    drawCanvas.addEventListener('dblclick', () => { if (currentTool === 'curve') renderDrawing(true); });
+    drawCanvas.addEventListener('mousemove', e => { if (isDrawing && currentTool === 'line') { drawingNodes[1] = {x: e.clientX - drawCanvas.getBoundingClientRect().left, y: e.clientY - drawCanvas.getBoundingClientRect().top}; renderDrawing(); } });
+    drawCanvas.addEventListener('mouseup', () => isDrawing = false); drawCanvas.addEventListener('dblclick', () => { if (currentTool === 'curve') renderDrawing(true); });
 
     function renderDrawing(closed = false) {
         ctxDraw.clearRect(0,0,620,620);
-        if (drawingNodes.length < 2) {
-            if (drawingNodes.length === 1 && currentTool !== 'line') {
-                ctxDraw.fillStyle = "#0056b3"; ctxDraw.beginPath(); ctxDraw.arc(drawingNodes[0].x, drawingNodes[0].y, 4, 0, 7); ctxDraw.fill();
-            }
-            return;
-        }
-        
-        ctxDraw.strokeStyle = "#0056b3"; ctxDraw.lineWidth = 3; ctxDraw.lineJoin = "round";
-        ctxDraw.beginPath(); ctxDraw.moveTo(drawingNodes[0].x, drawingNodes[0].y);
-
-        if (currentTool === 'line' || currentTool === 'join') {
-            for (let i = 1; i < drawingNodes.length; i++) ctxDraw.lineTo(drawingNodes[i].x, drawingNodes[i].y);
-        } else if (currentTool === 'curve') {
-            let t = 1; 
+        if (drawingNodes.length < 2) { if (drawingNodes.length===1 && currentTool!=='line') { ctxDraw.fillStyle="#0056b3"; ctxDraw.beginPath(); ctxDraw.arc(drawingNodes[0].x, drawingNodes[0].y, 4, 0, 7); ctxDraw.fill(); } return; }
+        ctxDraw.strokeStyle = "#0056b3"; ctxDraw.lineWidth = 3; ctxDraw.lineJoin = "round"; ctxDraw.beginPath(); ctxDraw.moveTo(drawingNodes[0].x, drawingNodes[0].y);
+        if (currentTool === 'line' || currentTool === 'join') { for (let i = 1; i < drawingNodes.length; i++) ctxDraw.lineTo(drawingNodes[i].x, drawingNodes[i].y); } 
+        else if (currentTool === 'curve') {
             for (let i = 0; i < drawingNodes.length - 1; i++) {
-                let p0 = (i > 0) ? drawingNodes[i - 1] : drawingNodes[0];
-                let p1 = drawingNodes[i]; let p2 = drawingNodes[i + 1]; let p3 = (i != drawingNodes.length - 2) ? drawingNodes[i + 2] : p2;
-                let cp1x = p1.x + (p2.x - p0.x) / 6 * t, cp1y = p1.y + (p2.y - p0.y) / 6 * t;
-                let cp2x = p2.x - (p3.x - p1.x) / 6 * t, cp2y = p2.y - (p3.y - p1.y) / 6 * t;
-                ctxDraw.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, p2.x, p2.y);
+                let p0 = (i > 0) ? drawingNodes[i - 1] : drawingNodes[0], p1 = drawingNodes[i], p2 = drawingNodes[i + 1], p3 = (i != drawingNodes.length - 2) ? drawingNodes[i + 2] : p2;
+                ctxDraw.bezierCurveTo(p1.x + (p2.x - p0.x)/6, p1.y + (p2.y - p0.y)/6, p2.x - (p3.x - p1.x)/6, p2.y - (p3.y - p1.y)/6, p2.x, p2.y);
             }
         }
-        ctxDraw.stroke();
-
-        if (currentTool === 'curve' && !closed) {
-            ctxDraw.fillStyle = "#0056b3";
-            drawingNodes.forEach(n => { ctxDraw.beginPath(); ctxDraw.arc(n.x, n.y, 4, 0, 7); ctxDraw.fill(); });
-        }
+        ctxDraw.stroke(); if (currentTool === 'curve' && !closed) { ctxDraw.fillStyle = "#0056b3"; drawingNodes.forEach(n => { ctxDraw.beginPath(); ctxDraw.arc(n.x, n.y, 4, 0, 7); ctxDraw.fill(); }); }
     }
 
     function toggleOutlierMode() {
-        const active = document.getElementById('outlier-mode').checked;
-        document.getElementById('instr').innerText = active ? "Click a point to label it an outlier." : "Switch back to a tool to draw your trend.";
-        if(active) { document.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('active')); ctxDraw.clearRect(0,0,620,620); drawingNodes = []; } 
-        else { setTool(currentTool); }
+        const a = document.getElementById('outlier-mode').checked; document.getElementById('instr').innerText = a ? "Click point to label outlier." : "Switch back to tool.";
+        if(a) { document.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('active')); ctxDraw.clearRect(0,0,620,620); drawingNodes = []; } else setTool(currentTool);
     }
 
     function evaluateTrend() {
-        const fb = document.getElementById('feedback');
-        fb.style.display = "block";
-        document.getElementById('eval-btn').style.display = "none";
-        
-        let fbOutlier = "", fbTool = "", fbDrawing = "";
-        let status = "pass"; 
+        const fb = document.getElementById('feedback'); fb.style.display = "block"; document.getElementById('eval-btn').style.display = "none";
+        let fbOutlier = "", fbTool = "", fbDrawing = "", status = "pass"; 
 
-        // 1. Outlier Evaluation
         if (outlierIdx !== -1) {
-            if (userOutlier === outlierIdx) {
-                stats.outlier.has.cor++;
-                fbOutlier = "<strong>Outlier Correct:</strong> You correctly identified and excluded the anomaly. ";
-            } else if (userOutlier !== -1) {
-                stats.outlier.has.wrg++;
-                fbOutlier = "<strong>Outlier Error:</strong> You picked the wrong point as an outlier. ";
-                status = "fail";
-            } else {
-                stats.outlier.has.ign++;
-                fbOutlier = "<strong>Outlier Error:</strong> You missed a significant anomaly in the data. ";
-                status = "fail";
-            }
+            if (userOutlier === outlierIdx) { stats.outlier.has.cor++; fbOutlier = "<strong>Outlier Correct:</strong> You identified the anomaly. "; } 
+            else if (userOutlier !== -1) { stats.outlier.has.wrg++; fbOutlier = "<strong>Outlier Error:</strong> Picked wrong point. "; status = "fail"; } 
+            else { stats.outlier.has.ign++; fbOutlier = "<strong>Outlier Error:</strong> Missed anomaly. "; status = "fail"; }
         } else {
             if (userOutlier !== -1) {
-                if (activeScenario.type === 'dots') {
-                    stats.outlier.non.wrg++;
-                    fbOutlier = "<strong>Outlier Error:</strong> In sequential data, extreme values are real events, not errors to ignore. ";
-                    status = "fail";
-                } else {
-                    stats.outlier.non.deb++;
-                    fbOutlier = "<strong>Debatable (Outlier):</strong> There is no major anomaly here. However, it's good you are looking closely at deviations. ";
-                    if (status !== "fail") status = "meh";
-                }
-            } else {
-                stats.outlier.non.cor++;
-            }
+                if (activeScenario.type === 'dots') { stats.outlier.non.wrg++; fbOutlier = "<strong>Outlier Error:</strong> No outliers in sequential data. "; status = "fail"; } 
+                else { stats.outlier.non.deb++; fbOutlier = "<strong>Debatable:</strong> No major anomaly, but good you looked. "; if (status !== "fail") status = "meh"; }
+            } else { stats.outlier.non.cor++; }
         }
 
-        // 2. Tool Evaluation
-        const expectedTool = { 'linear': 'line', 'curve': 'curve', 'dots': 'join' }[activeScenario.type];
-        stats.trend[activeScenario.type][currentTool]++;
-        
-        if (currentTool !== expectedTool) {
-            if ((activeScenario.type === 'linear' && currentTool === 'curve') || (activeScenario.type === 'curve' && currentTool === 'line')) {
-                fbTool = `<br><br><strong>Debatable (Trend):</strong> Your visual interpretation is understandable, but incorrect. ${activeScenario.rationale}`;
-                if (status !== "fail") status = "meh";
-            } else {
-                fbTool = `<br><br><strong>Trend Error:</strong> You used the completely wrong tool. ${activeScenario.rationale}`;
-                status = "fail";
-            }
-        } else {
-            fbTool = `<br><br><strong>Trend Correct:</strong> Excellent choice. ${activeScenario.rationale}`;
-        }
+        const expTool = { 'linear': 'line', 'curve': 'curve', 'dots': 'join' }[activeScenario.type]; stats.trend[activeScenario.type][currentTool]++;
+        if (currentTool !== expTool) {
+            if ((activeScenario.type === 'linear' && currentTool === 'curve') || (activeScenario.type === 'curve' && currentTool === 'line')) { fbTool = `<br><br><strong>Debatable Trend:</strong> Understandable, but incorrect. ${activeScenario.rationale}`; if (status !== "fail") status = "meh"; } 
+            else { fbTool = `<br><br><strong>Trend Error:</strong> Wrong tool. ${activeScenario.rationale}`; status = "fail"; }
+        } else { fbTool = `<br><br><strong>Trend Correct:</strong> Excellent choice. ${activeScenario.rationale}`; }
 
-        // 3. Drawing Execution Grader
-        if (drawingNodes.length < 2) {
-            fbTool = "<br><br><strong>Missing Line:</strong> You selected the tool, but didn't draw the trend!";
-            status = "fail";
-        } else if (status !== "fail" && currentTool !== 'join') {
-            
-            let spanPts = points.filter((p, i) => i !== outlierIdx && i !== userOutlier);
-            let minDataX = Math.min(...spanPts.map(p => p.x));
-            let maxDataX = Math.max(...spanPts.map(p => p.x));
-            let drawMinX = Math.min(...drawingNodes.map(n => n.x));
-            let drawMaxX = Math.max(...drawingNodes.map(n => n.x));
-
-            if (drawMinX > minDataX + 25 || drawMaxX < maxDataX - 25) {
-                stats.exec[currentTool].far++;
-                fbDrawing = "<br><br><strong>Execution Error:</strong> Your trend line is too short! It must extend across the full horizontal range of the valid data points.";
-                status = "fail";
-            } else {
+        if (drawingNodes.length < 2) { fbTool = "<br><br><strong>Missing Line:</strong> Please draw."; status = "fail"; } 
+        else if (status !== "fail" && currentTool !== 'join') {
+            let spanPts = points.filter((p, i) => i !== outlierIdx && i !== userOutlier), minDataX = Math.min(...spanPts.map(p => p.x)), maxDataX = Math.max(...spanPts.map(p => p.x)), drawMinX = Math.min(...drawingNodes.map(n => n.x)), drawMaxX = Math.max(...drawingNodes.map(n => n.x));
+            if (drawMinX > minDataX + 25 || drawMaxX < maxDataX - 25) { stats.exec[currentTool].far++; fbDrawing = "<br><br><strong>Execution Error:</strong> Line too short!"; status = "fail"; } 
+            else {
                 if (currentTool === 'line') {
-                    let m = (drawingNodes[1].y - drawingNodes[0].y) / (drawingNodes[1].x - drawingNodes[0].x);
-                    let c = drawingNodes[0].y - m * drawingNodes[0].x;
-                    let above = 0, below = 0, totalError = 0;
-                    
-                    spanPts.forEach(p => {
-                        let expectedY = m * p.x + c;
-                        if (p.y < expectedY - 10) above++; 
-                        if (p.y > expectedY + 10) below++;
-                        totalError += Math.abs(p.y - expectedY);
-                    });
-                    
-                    let avgError = totalError / spanPts.length;
-                    
-                    if (avgError > tolLineErr) {
-                        stats.exec.line.far++;
-                        fbDrawing = "<br><br><strong>Execution Error:</strong> Your line doesn't follow the trend. It is too far away from the points.";
-                        status = "fail";
-                    } else if (Math.abs(above - below) >= tolLineBal || (above > 0 && below === 0) || (below > 0 && above === 0)) {
-                        stats.exec.line.unb++;
-                        fbDrawing = `<br><br><strong>Execution Error:</strong> Your line is poorly balanced. You left too many points exclusively on one side of the line.`;
-                        status = "fail";
-                    } else {
-                        stats.exec.line.perf++;
-                        fbDrawing = "<br><br><strong>Execution Correct:</strong> Your line is beautifully balanced!";
+                    let m = (drawingNodes[1].y - drawingNodes[0].y) / (drawingNodes[1].x - drawingNodes[0].x), c = drawingNodes[0].y - m * drawingNodes[0].x, above = 0, below = 0, totalError = 0;
+                    spanPts.forEach(p => { let expY = m * p.x + c; if (p.y < expY - 10) above++; if (p.y > expY + 10) below++; totalError += Math.abs(p.y - expY); });
+                    if (totalError / spanPts.length > tolLineErr) { stats.exec.line.far++; fbDrawing = "<br><br><strong>Execution Error:</strong> Line too far from points."; status = "fail"; } 
+                    else if (Math.abs(above - below) >= tolLineBal || (above > 0 && below === 0) || (below > 0 && above === 0)) { stats.exec.line.unb++; fbDrawing = `<br><br><strong>Execution Error:</strong> Line poorly balanced.`; status = "fail"; } 
+                    else { stats.exec.line.perf++; fbDrawing = "<br><br><strong>Execution Correct:</strong> Beautifully balanced!"; }
+                } else if (currentTool === 'curve') {
+                    let flowsRight = true, concavityChanges = 0, lastDeltaM = 0;
+                    for(let i=1; i<drawingNodes.length; i++) if (drawingNodes[i].x <= drawingNodes[i-1].x) flowsRight = false;
+                    for(let i=0; i<drawingNodes.length-2; i++) {
+                        let m1 = (drawingNodes[i+1].y - drawingNodes[i].y)/(drawingNodes[i+1].x - drawingNodes[i].x || 0.001), m2 = (drawingNodes[i+2].y - drawingNodes[i+1].y)/(drawingNodes[i+2].x - drawingNodes[i+1].x || 0.001), deltaM = m2 - m1;
+                        if (Math.abs(deltaM) > tolCurveWob) { if (lastDeltaM !== 0 && (deltaM * lastDeltaM < 0)) concavityChanges++; lastDeltaM = deltaM; }
                     }
-                } 
-                else if (currentTool === 'curve') {
-                    let flowsRight = true;
-                    for(let i=1; i<drawingNodes.length; i++) {
-                        if (drawingNodes[i].x <= drawingNodes[i-1].x) flowsRight = false;
-                    }
-                    
-                    let gradients = [];
-                    for(let i=0; i<drawingNodes.length-1; i++) {
-                        let dx = drawingNodes[i+1].x - drawingNodes[i].x;
-                        let dy = drawingNodes[i+1].y - drawingNodes[i].y;
-                        if(dx === 0) dx = 0.001; 
-                        gradients.push(dy / dx);
-                    }
-
-                    let concavityChanges = 0, lastDeltaM = 0;
-                    for(let i=0; i<gradients.length-1; i++) {
-                        let deltaM = gradients[i+1] - gradients[i];
-                        if (Math.abs(deltaM) > tolCurveWob) {
-                            if (lastDeltaM !== 0 && (deltaM * lastDeltaM < 0)) concavityChanges++;
-                            lastDeltaM = deltaM;
-                        }
-                    }
-                    
-                    if (!flowsRight || concavityChanges > 0) {
-                        stats.exec.curve.shp++;
-                        fbDrawing = "<br><br><strong>Execution Error:</strong> Your curve loops backwards or has impossible inflection points (wobbles). It must be smooth!";
-                        status = "fail";
-                    } else {
-                        let totalError = 0, unmapped = 0, above = 0, below = 0;
-                        spanPts.forEach(p => {
-                            let n1 = null, n2 = null;
-                            for(let i=0; i<drawingNodes.length-1; i++) {
-                                if (p.x >= drawingNodes[i].x && p.x <= drawingNodes[i+1].x) { n1 = drawingNodes[i]; n2 = drawingNodes[i+1]; break; }
-                            }
-                            if (n1 && n2) {
-                                let pct = (p.x - n1.x) / (n2.x - n1.x);
-                                let expectedY = n1.y + pct * (n2.y - n1.y);
-                                totalError += Math.abs(p.y - expectedY);
-                                if (p.y < expectedY - 15) above++;
-                                if (p.y > expectedY + 15) below++;
-                            } else { unmapped++; }
-                        });
-                        
-                        let avgError = totalError / (spanPts.length - unmapped || 1);
-                        
-                        if (avgError > tolCurveErr) {
-                            stats.exec.curve.far++;
-                            fbDrawing = "<br><br><strong>Execution Error:</strong> Your curve strayed too far from the actual data points.";
-                            status = "fail";
-                        } else if ((above > 0 && below === 0 && above >= tolLineBal) || (below > 0 && above === 0 && below >= tolLineBal)) {
-                            stats.exec.curve.unb++;
-                            fbDrawing = `<br><br><strong>Execution Error:</strong> Your curve isn't balanced. Almost all the data points are stuck on one side of it!`;
-                            status = "fail";
-                        } else {
-                            stats.exec.curve.perf++;
-                            fbDrawing = "<br><br><strong>Execution Correct:</strong> A beautifully smooth and accurate curve!";
-                        }
-                    }
+                    if (!flowsRight || concavityChanges > 0) { stats.exec.curve.shp++; fbDrawing = "<br><br><strong>Execution Error:</strong> Curve wobbles or goes backwards!"; status = "fail"; } else { stats.exec.curve.perf++; fbDrawing = "<br><br><strong>Execution Correct:</strong> Smooth curve!"; }
                 }
             }
         }
 
         updateDashUI();
-
         fb.innerHTML = fbOutlier + fbTool + fbDrawing;
         if (status === "pass") { fb.style.backgroundColor = "#e6ffed"; fb.style.border = "1px solid #28a745"; fb.style.color = "#155724"; }
         else if (status === "meh") { fb.style.backgroundColor = "#fff3cd"; fb.style.border = "1px solid #ffeeba"; fb.style.color = "#856404"; }
         else { fb.style.backgroundColor = "#ffeef0"; fb.style.border = "1px solid #d9534f"; fb.style.color = "#721c24"; }
 
-        // --- SAVE TO WRAPPER DASHBOARD ---
-        const moduleId = "6"; 
-        let modData = JSON.parse(localStorage.getItem(`gs_mod_${moduleId}`)) || { correct: 0, total: 0, details: {} };
-        modData.total += 1;
-        if (status === "pass" || status === "meh") modData.correct += 1;
-        modData.details = stats; 
-        localStorage.setItem(`gs_mod_${moduleId}`, JSON.stringify(modData));
-        // ---------------------------------
+        // --- SAVE TO HYDRATED MEMORY ---
+        let isPass = (status === "pass" || status === "meh");
+        totalAttempts += 1;
+        if (isPass) totalPasses += 1;
+        let modData = { correct: totalPasses, total: totalAttempts, details: stats }; 
+        localStorage.setItem(`gs_mod_${MODULE_ID}`, JSON.stringify(modData));
+        // -------------------------------
 
-        document.getElementById('next-btn').style.display = "block";
-        if (currentTool === 'curve') renderDrawing(true);
+        document.getElementById('next-btn').style.display = "block"; if (currentTool === 'curve') renderDrawing(true);
     }
 
-    function getPctStr(val, total) {
-        if (total === 0) return "0 (-)";
-        return `${val} (${Math.round((val/total)*100)}%)`;
-    }
-
+    function getPctStr(val, total) { return total === 0 ? "0 (-)" : `${val} (${Math.round((val/total)*100)}%)`; }
     function updateDashUI() {
-        // Outlier Matrix Updates
-        let oHasTot = stats.outlier.has.cor + stats.outlier.has.wrg + stats.outlier.has.ign;
-        document.getElementById('o-has-cor').innerText = getPctStr(stats.outlier.has.cor, oHasTot);
-        document.getElementById('o-has-cor').className = stats.outlier.has.cor > 0 ? "mat-match" : "";
-        document.getElementById('o-has-wrg').innerText = stats.outlier.has.wrg;
-        document.getElementById('o-has-wrg').className = stats.outlier.has.wrg > 0 ? "mat-err" : "";
-        document.getElementById('o-has-ign').innerText = stats.outlier.has.ign;
-        document.getElementById('o-has-ign').className = stats.outlier.has.ign > 0 ? "mat-err" : "";
-        
-        let oNonTot = stats.outlier.non.cor + stats.outlier.non.deb + stats.outlier.non.wrg;
-        document.getElementById('o-non-cor').innerText = getPctStr(stats.outlier.non.cor, oNonTot);
-        document.getElementById('o-non-cor').className = stats.outlier.non.cor > 0 ? "mat-match" : "";
-        document.getElementById('o-non-deb').innerText = stats.outlier.non.deb;
-        document.getElementById('o-non-deb').className = stats.outlier.non.deb > 0 ? "mat-meh" : "";
-        document.getElementById('o-non-wrg').innerText = stats.outlier.non.wrg;
-        document.getElementById('o-non-wrg').className = stats.outlier.non.wrg > 0 ? "mat-err" : "";
-
-        // Trend Matrix
-        const types = ['linear', 'curve', 'dots'];
-        const tools = ['line', 'curve', 'join'];
-        const prefixes = ['lin', 'cur', 'dot'];
-        for (let i=0; i<3; i++) {
-            let rowTot = stats.trend[types[i]].line + stats.trend[types[i]].curve + stats.trend[types[i]].join;
-            for (let j=0; j<3; j++) {
-                let cell = document.getElementById(`t-${prefixes[i]}-${prefixes[j]}`);
-                let val = stats.trend[types[i]][tools[j]];
-                
-                if (i === j) {
-                    cell.innerText = getPctStr(val, rowTot);
-                    cell.className = val > 0 ? "mat-match" : "";
-                } else {
-                    cell.innerText = val;
-                    cell.className = "";
-                    if (val > 0) {
-                        if ((i===0 && j===1) || (i===1 && j===0)) cell.classList.add("mat-meh");
-                        else cell.classList.add("mat-err");
-                    }
-                }
-            }
-        }
-
-        // Execution Matrix
-        let eLinTot = stats.exec.line.perf + stats.exec.line.unb + stats.exec.line.far;
-        document.getElementById('e-lin-perf').innerText = getPctStr(stats.exec.line.perf, eLinTot);
-        document.getElementById('e-lin-perf').className = stats.exec.line.perf > 0 ? "mat-match" : "";
-        document.getElementById('e-lin-unb').innerText = stats.exec.line.unb;
-        document.getElementById('e-lin-unb').className = stats.exec.line.unb > 0 ? "mat-err" : "";
-        document.getElementById('e-lin-far').innerText = stats.exec.line.far;
-        document.getElementById('e-lin-far').className = stats.exec.line.far > 0 ? "mat-err" : "";
-
-        let eCurTot = stats.exec.curve.perf + stats.exec.curve.unb + stats.exec.curve.far + stats.exec.curve.shp;
-        document.getElementById('e-cur-perf').innerText = getPctStr(stats.exec.curve.perf, eCurTot);
-        document.getElementById('e-cur-perf').className = stats.exec.curve.perf > 0 ? "mat-match" : "";
-        document.getElementById('e-cur-unb').innerText = stats.exec.curve.unb;
-        document.getElementById('e-cur-unb').className = stats.exec.curve.unb > 0 ? "mat-err" : "";
-        document.getElementById('e-cur-far').innerText = stats.exec.curve.far;
-        document.getElementById('e-cur-far').className = stats.exec.curve.far > 0 ? "mat-err" : "";
-        document.getElementById('e-cur-shp').innerText = stats.exec.curve.shp;
-        document.getElementById('e-cur-shp').className = stats.exec.curve.shp > 0 ? "mat-err" : "";
+        const upd = (id, val, tot, cls) => { let el = document.getElementById(id); el.innerText = tot?getPctStr(val,tot):val; el.className = val>0?cls:""; };
+        let oH = stats.outlier.has, oN = stats.outlier.non;
+        upd('o-has-cor', oH.cor, oH.cor+oH.wrg+oH.ign, 'mat-match'); upd('o-has-wrg', oH.wrg, null, 'mat-err'); upd('o-has-ign', oH.ign, null, 'mat-err');
+        upd('o-non-cor', oN.cor, oN.cor+oN.deb+oN.wrg, 'mat-match'); upd('o-non-deb', oN.deb, null, 'mat-meh'); upd('o-non-wrg', oN.wrg, null, 'mat-err');
+        ['linear','curve','dots'].forEach((t, i) => {
+            let row = stats.trend[t], tot = row.line+row.curve+row.join, pfx = ['lin','cur','dot'];
+            ['line','curve','join'].forEach((tl, j) => {
+                let cell = document.getElementById(`t-${pfx[i]}-${pfx[j]}`); cell.innerText = i===j ? getPctStr(row[tl], tot) : row[tl];
+                cell.className = row[tl]>0 ? (i===j ? "mat-match" : ((i===0&&j===1)||(i===1&&j===0)?"mat-meh":"mat-err")) : "";
+            });
+        });
+        let eL = stats.exec.line, eC = stats.exec.curve;
+        upd('e-lin-perf', eL.perf, eL.perf+eL.unb+eL.far, 'mat-match'); upd('e-lin-unb', eL.unb, null, 'mat-err'); upd('e-lin-far', eL.far, null, 'mat-err');
+        upd('e-cur-perf', eC.perf, eC.perf+eC.unb+eC.far+eC.shp, 'mat-match'); upd('e-cur-unb', eC.unb, null, 'mat-err'); upd('e-cur-far', eC.far, null, 'mat-err'); upd('e-cur-shp', eC.shp, null, 'mat-err');
     }
-
-    window.onload = init;
 </script>
-
 </body>
 </html>
