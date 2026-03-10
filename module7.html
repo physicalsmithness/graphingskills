@@ -8,23 +8,42 @@
         .module-container { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         .app-layout { display: grid; grid-template-columns: 620px auto; gap: 30px; margin-top: 15px; }
         .graph-wrapper { position: relative; width: 620px; height: 620px; background: #fff; border: 1px solid #ccc; cursor: crosshair;}
-        canvas { display: block; position: absolute; top: 0; left: 0; } #bgCanvas { z-index: 1; } #drawCanvas { z-index: 2; } #trackerCanvas { z-index: 3; pointer-events: none; }
+        canvas { display: block; position: absolute; top: 0; left: 0; }
+        #bgCanvas { z-index: 1; } #drawCanvas { z-index: 2; } #trackerCanvas { z-index: 3; pointer-events: none; }
         .info-panel { background: #f8f9fa; padding: 20px; border-radius: 8px; border: 1px solid #ddd; }
         .scenario-box { padding: 15px; background: #eef2f5; border-radius: 6px; border: 1px solid #0056b3; margin-bottom: 20px; font-size: 1.05em; line-height: 1.4;}
-        .step-box { padding: 15px; background: #fff; border-radius: 6px; border-left: 5px solid #6c757d; margin-bottom: 15px; transition: 0.3s;} .step-box.active { border-left-color: #0056b3; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .step-box { padding: 15px; background: #fff; border-radius: 6px; border-left: 5px solid #6c757d; margin-bottom: 15px; transition: 0.3s;} 
+        .step-box.active { border-left-color: #0056b3; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        
         .btn-main { display: block; padding: 12px; font-size: 1.1em; cursor: pointer; border: none; border-radius: 4px; background-color: #0056b3; color: white; width: 100%; margin-top: 10px;}
         .btn-main:hover { background-color: #004494; } .btn-success { background-color: #28a745; } .btn-success:hover { background-color: #218838; }
-        .tool-btn { padding: 10px; border: 1px solid #ccc; background: #fff; cursor: pointer; border-radius: 4px; flex: 1; font-size: 0.9em; text-align: center; } .tool-btn.active { background: #0056b3; color: white; border-color: #0056b3; }
-        .prediction-input { width: 100px; padding: 8px; font-size: 1.1em; border: 2px solid #ccc; border-radius: 4px; margin-right: 10px; text-align: center;}
+        .btn-secondary { background-color: #6c757d; } .btn-secondary:hover { background-color: #5a6268; }
+        
+        .tool-btn { padding: 10px; border: 1px solid #ccc; background: #fff; cursor: pointer; border-radius: 4px; flex: 1; font-size: 0.9em; text-align: center; } 
+        .tool-btn.active { background: #0056b3; color: white; border-color: #0056b3; }
+        
+        .prediction-input { width: 100px; padding: 8px; font-size: 1.1em; border: 2px solid #ccc; border-radius: 4px; text-align: center;}
         .pred-label { font-weight: bold; font-size: 1.1em; margin-bottom: 10px; display: block; color: #0056b3;}
-        .vocab-tag { display: inline-block; padding: 3px 8px; border-radius: 12px; font-size: 0.8em; font-weight: bold; margin-bottom: 10px;} .tag-inter { background: #d4edda; color: #155724; border: 1px solid #c3e6cb;} .tag-extra { background: #fff3cd; color: #856404; border: 1px solid #ffeeba;}
-        .feedback { margin-top: 15px; padding: 12px; border-radius: 4px; display: none; line-height: 1.4; }
-        .settings-panel { background: #f1f3f5; border: 1px solid #ced4da; border-radius: 6px; padding: 10px 15px; margin-top: 20px; } .settings-panel summary { font-weight: bold; cursor: pointer; color: #495057; outline: none;}
-        .settings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; font-size: 0.9em;} .setting-item { display: flex; flex-direction: column; gap: 5px; } .setting-item input[type=range] { width: 100%; }
+        .vocab-tag { display: inline-block; padding: 3px 8px; border-radius: 12px; font-size: 0.8em; font-weight: bold; margin-bottom: 10px;} 
+        .tag-inter { background: #d4edda; color: #155724; border: 1px solid #c3e6cb;} .tag-extra { background: #fff3cd; color: #856404; border: 1px solid #ffeeba;}
+        
+        .extrap-warning { display: none; margin-top: 15px; padding: 12px; background: #fff3cd; border-left: 4px solid #ffc107; font-size: 0.9em; color: #856404; line-height: 1.4;}
+        
+        .feedback-container { margin-top: 15px; display: none; }
+        .split-fb { padding: 12px; border-radius: 4px; margin-bottom: 8px; font-size: 0.95em; line-height: 1.4; border-left: 5px solid; background: #fff; }
+        .pass-box { background-color: #f8fff9; border-color: #28a745; color: #155724; }
+        .err-box { background-color: #fffafa; border-color: #d9534f; color: #721c24; }
+        .meh-box { background-color: #fff8e6; border-color: #ffc107; color: #856404; }
+
+        .settings-panel { background: #f1f3f5; border: 1px solid #ced4da; border-radius: 6px; padding: 10px 15px; margin-top: 20px; } 
+        .settings-panel summary { font-weight: bold; cursor: pointer; color: #495057; outline: none;}
+        .settings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; font-size: 0.9em;} 
+        .setting-item { display: flex; flex-direction: column; gap: 5px; } .setting-item input[type=range] { width: 100%; }
+        
         .dash-container { margin-top: 30px; border-top: 2px solid #ccc; padding-top: 15px; } .matrix-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-top: 10px;}
         .conf-matrix { width: 100%; border-collapse: collapse; font-size: 0.85em; background: #fff; text-align: center;} .conf-matrix th, .conf-matrix td { border: 1px solid #aaa; padding: 6px; } .conf-matrix th { background: #e9ecef; font-weight: bold;}
         .mat-actual { font-weight: bold; text-align: left; background: #f8f9fa;} .mat-match { background-color: #d4edda; font-weight: bold; color: #155724;} .mat-meh { background-color: #fff3cd; color: #856404;} .mat-err { background-color: #f8d7da; color: #721c24; font-weight: bold;}
-        .footer { text-align: center; margin-top: 30px; border-top: 1px solid #eee; padding-top: 15px; font-size: 0.9em; } .footer a { color: #6c757d; text-decoration: none; }
+        .footer { text-align: center; margin-top: 30px; border-top: 1px solid #eee; padding-top: 15px; font-size: 0.9em; } .footer a { color: #6c757d; text-decoration: none; } .footer a:hover { color: #333; text-decoration: underline; }
     </style>
 </head>
 <body>
@@ -37,6 +56,7 @@
             <div class="scenario-box" id="scenario-text">Loading scenario...</div>
             <div id="step-1" class="step-box active">
                 <strong>Step 1: Draw the Model</strong>
+                <p style="font-size: 0.9em; color: #555;">Draw a trend that extends completely across the grid where possible.</p>
                 <div style="display:flex; gap:5px; margin-top:10px;"><button id="tool-line" class="tool-btn active" onclick="setTool('line')">Straight Line</button><button id="tool-curve" class="tool-btn" onclick="setTool('curve')">Smooth Curve</button></div>
                 <button class="btn-main" id="lock-btn" onclick="lockAndPredict()">Lock Trend Line</button><button class="tool-btn" id="clear-btn" style="width:100%; margin-top:5px;" onclick="setTool(currentTool)">Clear / Redraw</button>
             </div>
@@ -45,18 +65,25 @@
                 <div id="pred-container" style="margin-top:15px; display:none;">
                     <span id="vocab-tag" class="vocab-tag"></span><label class="pred-label" id="pred-question">What is the value of Y?</label>
                     <p style="font-size: 0.85em; color: #666;">Hover over the graph. Find target X, follow to your line, count minor Y gridlines.</p>
-                    <div style="display:flex; align-items: center; margin-top: 10px;"><input type="number" step="0.1" id="user-prediction" class="prediction-input" placeholder="Value"><button class="btn-main btn-success" id="chk-btn" style="margin:0;" onclick="evaluatePrediction()">Check Answer</button></div>
+                    <div style="display:flex; align-items: center; margin-top: 10px;">
+                        <input type="number" step="0.1" id="user-prediction" class="prediction-input" placeholder="Value">
+                        <span id="pred-unit" style="font-weight: bold; margin: 0 15px 0 5px; color: #555;"></span>
+                        <button class="btn-main btn-success" id="chk-btn" style="margin:0; flex:1;" onclick="evaluatePrediction()">Check Answer</button>
+                    </div>
+                    <div id="extrap-warn" class="extrap-warning">
+                        <strong>⚠️ Danger of Extrapolation:</strong> You are predicting a value outside the measured data range. This assumes the trend continues perfectly indefinitely, which in the real world can be physically impossible!
+                    </div>
                 </div>
             </div>
-            <div id="feedback" class="feedback"></div>
-            <button id="next-btn" class="btn-main" style="display:none; background:#28a745; margin-top:15px;" onclick="init()">Next Question</button>
+            <div id="feedback" class="feedback-container"></div>
+            <button id="next-btn" class="btn-main" style="display:none; margin-top:15px;" onclick="init()">Next Question</button>
         </div>
     </div>
     <details class="settings-panel">
         <summary>⚙️ Adjust Grading Strictness</summary>
         <div class="settings-grid">
-            <div class="setting-item"><label>Spot On: Error &le; <span id="val-tolSpotOn">1.0</span> units</label><input type="range" id="inp-tolSpotOn" min="0.1" max="5.0" step="0.1" value="1.0" oninput="updateTols()"></div>
-            <div class="setting-item"><label>Minor Error: Error &le; <span id="val-tolMinor">3.0</span> units</label><input type="range" id="inp-tolMinor" min="1.0" max="10.0" step="0.5" value="3.0" oninput="updateTols()"></div>
+            <div class="setting-item"><label>Spot On: Error &le; <span id="val-tolSpotOn">0.5</span> units</label><input type="range" id="inp-tolSpotOn" min="0.1" max="5.0" step="0.1" value="0.5" oninput="updateTols()"></div>
+            <div class="setting-item"><label>Minor Error: Error &le; <span id="val-tolMinor">1.0</span> units</label><input type="range" id="inp-tolMinor" min="0.5" max="10.0" step="0.5" value="1.0" oninput="updateTols()"></div>
         </div>
     </details>
     <div class="dash-container"><h3 style="margin:0 0 5px 0;">Prediction Analytics</h3>
@@ -77,7 +104,7 @@
 <script>
     const bgCanvas = document.getElementById('bgCanvas'), ctxBg = bgCanvas.getContext('2d'), drawCanvas = document.getElementById('drawCanvas'), ctxDraw = drawCanvas.getContext('2d'), trackerCanvas = document.getElementById('trackerCanvas'), ctxTrack = trackerCanvas.getContext('2d'), graphWrapper = document.getElementById('graph-wrapper'), padL = 70, padB = 60, size = 500;
     let points = [], isDrawing = false, currentTool = 'line', drawingNodes = [], activeScenario = null, phase = 1, isInterp = true, hasLogged = false, targetX_value = 0, targetY_userLine = 0, lineLookup = []; 
-    let tolSpotOn = 1.0, tolMinor = 3.0;
+    let tolSpotOn = 0.5, tolMinor = 1.0;
 
     // DATA HYDRATION
     const MODULE_ID = "7";
@@ -92,24 +119,55 @@
     }
 
     const scenarioBank = {
-        linear: [ { text: "<strong>Physics:</strong> Hooke's Law experiment.", xLabel: "Force (N)", yLabel: "Extension (cm)" }, { text: "<strong>Electronics:</strong> Ohm's law experiment.", xLabel: "Current (A)", yLabel: "Voltage (V)" } ],
-        curve: [ { text: "<strong>Thermodynamics:</strong> Coffee cooling.", xLabel: "Time (min)", yLabel: "Temp (°C)", cType: "decay" }, { text: "<strong>Biology:</strong> Bacterial population.", xLabel: "Time (hrs)", yLabel: "Population (k)", cType: "growth" } ]
+        linear: [ 
+            { text: "<strong>Physics:</strong> Hooke's Law experiment mapping force to spring extension.", xLabel: "Force (N)", yLabel: "Extension (cm)", xName: "Force", yName: "Extension", xUnit: "N", yUnit: "cm", xMax: 50, yMax: 20 }, 
+            { text: "<strong>Electronics:</strong> Ohm's law experiment mapping current to voltage.", xLabel: "Current (A)", yLabel: "Voltage (V)", xName: "Current", yName: "Voltage", xUnit: "A", yUnit: "V", xMax: 10, yMax: 50 } 
+        ],
+        curve: [ 
+            { text: "<strong>Thermodynamics:</strong> A cup of coffee cooling over time.", xLabel: "Time (min)", yLabel: "Temp (°C)", xName: "Time", yName: "Temperature", xUnit: "min", yUnit: "°C", xMax: 60, yMax: 100, cType: "decay" }, 
+            { text: "<strong>Biology:</strong> Bacterial population growth in a petri dish.", xLabel: "Time (hrs)", yLabel: "Population (k)", xName: "Time", yName: "Population", xUnit: "hrs", yUnit: "k", xMax: 20, yMax: 200, cType: "growth" } 
+        ]
     };
 
     function init() {
         phase = 1; points = []; drawingNodes = []; lineLookup = []; hasLogged = false;
-        document.getElementById('step-1').style.opacity = "1"; document.getElementById('step-1').style.pointerEvents = "all"; document.getElementById('step-2').style.opacity = "0.4"; document.getElementById('step-2').style.pointerEvents = "none";
-        document.getElementById('pred-container').style.display = "none"; document.getElementById('feedback').style.display = "none"; document.getElementById('next-btn').style.display = "none"; document.getElementById('chk-btn').style.display = "block"; document.getElementById('user-prediction').value = "";
+        document.getElementById('step-1').style.opacity = "1"; document.getElementById('step-1').style.pointerEvents = "all";
+        document.getElementById('step-2').style.opacity = "0.4"; document.getElementById('step-2').style.pointerEvents = "none";
+        document.getElementById('pred-container').style.display = "none"; document.getElementById('extrap-warn').style.display = "none";
+        document.getElementById('feedback').style.display = "none"; document.getElementById('next-btn').style.display = "none"; 
+        document.getElementById('chk-btn').style.display = "block"; document.getElementById('user-prediction').value = "";
         ctxDraw.clearRect(0,0,620,620); ctxTrack.clearRect(0,0,620,620); generateData(); drawGraph(); setTool('line'); updateDashUI();
     }
 
     function generateData() {
-        const type = Math.random() < 0.5 ? 'linear' : 'curve'; activeScenario = scenarioBank[type][Math.floor(Math.random() * scenarioBank[type].length)]; activeScenario.type = type; document.getElementById('scenario-text').innerHTML = activeScenario.text;
+        const type = Math.random() < 0.5 ? 'linear' : 'curve'; 
+        activeScenario = scenarioBank[type][Math.floor(Math.random() * scenarioBank[type].length)]; 
+        activeScenario.type = type; 
+        document.getElementById('scenario-text').innerHTML = activeScenario.text;
+        
+        let xM = activeScenario.xMax;
+        let yM = activeScenario.yMax;
+
         for (let i = 0; i < 5; i++) {
-            let xVal = 10 + (i * 12), xPx = padL + (xVal / 100) * size, yVal;
-            if (type === 'linear') { yVal = (10 + Math.random()*10) + (xVal * (Math.random()*0.8 + 0.5)) + (Math.random()*6 - 3); } 
-            else { yVal = activeScenario.cType === 'decay' ? 80 * Math.exp(-0.04 * xVal) + 20 + (Math.random()*4-2) : 5 * Math.exp(0.04 * xVal) + (Math.random()*4-2); }
-            points.push({x: xPx, y: (padB + size) - (yVal / 100) * size, xVal: xVal, yVal: yVal});
+            let xVal = xM * (0.1 + i*0.18 + (Math.random()*0.04 - 0.02)); 
+            let yVal;
+            
+            if (type === 'linear') { 
+                let slope = (yM/xM) * (0.5 + Math.random()*0.4);
+                yVal = (yM * 0.1) + (xVal * slope) + (Math.random() * (yM*0.06) - (yM*0.03)); 
+            } else { 
+                if (activeScenario.cType === 'decay') {
+                    yVal = (yM * 0.8) * Math.exp(-3 * (xVal/xM)) + (yM * 0.1) + (Math.random() * (yM*0.05));
+                } else {
+                    yVal = (yM * 0.05) * Math.exp(3 * (xVal/xM)) + (Math.random() * (yM*0.05));
+                }
+            }
+            
+            yVal = Math.max(0, Math.min(yVal, yM));
+            let xPx = padL + (xVal / xM) * size;
+            let yPx = (padB + size) - (yVal / yM) * size;
+
+            points.push({x: xPx, y: yPx, xVal: xVal, yVal: yVal});
         }
     }
 
@@ -120,7 +178,12 @@
             ctxBg.beginPath(); ctxBg.moveTo(px, padB); ctxBg.lineTo(px, padB+size); ctxBg.stroke(); ctxBg.beginPath(); ctxBg.moveTo(padL, py); ctxBg.lineTo(padL+size, py); ctxBg.stroke();
         }
         ctxBg.textAlign = "center"; ctxBg.textBaseline = "middle"; ctxBg.font = "12px Arial"; ctxBg.fillStyle = "#555";
-        for(let i=0; i<=10; i++) { let px = padL + (i * (size/10)), py = (padB + size) - (i * (size/10)); ctxBg.fillText(i * 10, px, padB + size + 15); ctxBg.textAlign = "right"; ctxBg.fillText(i * 10, padL - 10, py); ctxBg.textAlign = "center"; }
+        for(let i=0; i<=10; i++) { 
+            let px = padL + (i * (size/10)), py = (padB + size) - (i * (size/10)); 
+            let xTick = Math.round(i * (activeScenario.xMax / 10) * 100) / 100;
+            let yTick = Math.round(i * (activeScenario.yMax / 10) * 100) / 100;
+            ctxBg.fillText(xTick, px, padB + size + 15); ctxBg.textAlign = "right"; ctxBg.fillText(yTick, padL - 10, py); ctxBg.textAlign = "center"; 
+        }
         ctxBg.lineWidth = 2; ctxBg.strokeStyle = "#000"; ctxBg.strokeRect(padL, padB, size, size); ctxBg.fillStyle = "#000"; ctxBg.font = "bold 14px Arial"; ctxBg.fillText(activeScenario.xLabel, padL + (size/2), padB + size + 40); ctxBg.save(); ctxBg.translate(20, padB + (size/2)); ctxBg.rotate(-Math.PI / 2); ctxBg.fillText(activeScenario.yLabel, 0, 0); ctxBg.restore();
         points.forEach(p => { ctxBg.strokeStyle = "#c0392b"; ctxBg.lineWidth = 2; ctxBg.beginPath(); ctxBg.moveTo(p.x-5, p.y-5); ctxBg.lineTo(p.x+5, p.y+5); ctxBg.moveTo(p.x+5, p.y-5); ctxBg.lineTo(p.x-5, p.y+5); ctxBg.stroke(); });
     }
@@ -144,16 +207,35 @@
         if (currentTool === 'curve') renderDrawing(true);
         let imgData = ctxDraw.getImageData(padL, padB, size, size).data; lineLookup = new Array(size).fill(null);
         for (let x = 0; x < size; x++) { let ySum = 0, yCount = 0; for (let y = 0; y < size; y++) { if (imgData[(y * size + x) * 4 + 3] > 100) { ySum += y; yCount++; } } if (yCount > 0) lineLookup[x] = ySum / yCount; }
+        
+        let xM = activeScenario.xMax;
         let validTargets = [];
-        for (let x = 20; x <= 100; x += 10) { if (x === 60) continue; let px = Math.min(Math.round((x / 100) * size), size - 1); if (lineLookup[px] !== null && lineLookup[px] !== undefined) validTargets.push(x); }
-        let interpCands = validTargets.filter(x => x >= 20 && x <= 50), extrapCands = validTargets.filter(x => x >= 70);
+        for (let i = 1; i <= 9; i++) { 
+            let xVal = i * (xM / 10);
+            let px = Math.min(Math.round((xVal / xM) * size), size - 1);
+            if (lineLookup[px] !== null && lineLookup[px] !== undefined) validTargets.push(xVal); 
+        }
+        
+        let pXs = points.map(p => p.xVal);
+        let minX = Math.min(...pXs); let maxX = Math.max(...pXs);
+        let interpCands = validTargets.filter(x => x >= minX && x <= maxX);
+        let extrapCands = validTargets.filter(x => x > maxX);
+
         isInterp = Math.random() < 0.4; if (isInterp && interpCands.length === 0) isInterp = false; if (!isInterp && extrapCands.length === 0) isInterp = true;
         let finalCands = isInterp ? interpCands : extrapCands;
         if (finalCands.length === 0) return alert("Your line is too short! Please draw a trend across the visible data.");
-        targetX_value = finalCands[Math.floor(Math.random() * finalCands.length)]; targetY_userLine = 100 - ((lineLookup[Math.min(Math.round((targetX_value / 100) * size), size - 1)] / size) * 100);
+        
+        targetX_value = Math.round(finalCands[Math.floor(Math.random() * finalCands.length)] * 100) / 100; 
+        let pxIndex = Math.min(Math.round((targetX_value / xM) * size), size - 1);
+        let pixelY = lineLookup[pxIndex];
+        targetY_userLine = (1 - (pixelY / size)) * activeScenario.yMax;
+        
         phase = 2; document.getElementById('step-1').style.opacity = "0.4"; document.getElementById('step-1').style.pointerEvents = "none"; document.getElementById('step-2').style.opacity = "1"; document.getElementById('step-2').style.pointerEvents = "all"; document.getElementById('pred-container').style.display = "block";
+        
         let tag = document.getElementById('vocab-tag'); tag.innerText = isInterp ? "Interpolation" : "Extrapolation"; tag.className = "vocab-tag " + (isInterp ? "tag-inter" : "tag-extra");
-        document.getElementById('pred-question').innerHTML = `What is the expected <strong>${activeScenario.yLabel.split(' ')[0]}</strong> when ${activeScenario.xLabel.split(' ')[0]} is <strong>${targetX_value}</strong>?`;
+        document.getElementById('pred-unit').innerText = activeScenario.yUnit;
+        document.getElementById('extrap-warn').style.display = isInterp ? 'none' : 'block';
+        document.getElementById('pred-question').innerHTML = `What is the expected <strong>${activeScenario.yName}</strong> when ${activeScenario.xName} is <strong>${targetX_value} ${activeScenario.xUnit}</strong>?`;
     }
 
     graphWrapper.addEventListener('mousemove', e => {
@@ -169,39 +251,56 @@
 
     function evaluatePrediction() {
         const userVal = parseFloat(document.getElementById('user-prediction').value), fb = document.getElementById('feedback'); fb.style.display = "block";
-        if (isNaN(userVal)) { fb.innerHTML = "<strong>Error:</strong> Enter a number."; fb.style.backgroundColor = "#ffeef0"; fb.style.border = "1px solid #d9534f"; fb.style.color = "#721c24"; return; }
+        if (isNaN(userVal)) { fb.innerHTML = `<div class="split-fb err-box">❌ <strong>Error:</strong> Please enter a number.</div>`; return; }
 
-        let error = Math.abs(userVal - targetY_userLine), modelNote = "";
-
+        let error = Math.abs(userVal - targetY_userLine);
+        
+        let expectedTool = activeScenario.type === 'linear' ? 'line' : 'curve';
+        let modelCorrect = (currentTool === expectedTool);
+        
         if (!hasLogged) {
             hasLogged = true; stats.model[activeScenario.type][currentTool]++; let pType = isInterp ? 'inter' : 'extra';
             if (error <= tolSpotOn) stats.pred[pType].exa++; else if (error <= tolMinor) stats.pred[pType].clo++; else stats.pred[pType].wrg++; updateDashUI();
 
             // --- SAVE TO HYDRATED MEMORY ---
-            let isPass = (error <= tolSpotOn && activeScenario.type === currentTool);
+            let isPass = (error <= tolSpotOn && modelCorrect);
             totalAttempts += 1;
             if (isPass) totalPasses += 1;
             let modData = { correct: totalPasses, total: totalAttempts, details: stats }; 
             localStorage.setItem(`gs_mod_${MODULE_ID}`, JSON.stringify(modData));
-            // -------------------------------
         }
 
-        if (activeScenario.type !== currentTool) modelNote = `<hr style='border:0; border-top:1px solid #ccc; margin:10px 0;'><em><strong>Teacher Note:</strong> Good reading, but wrong tool! This physics scenario actually required a ${activeScenario.type === 'linear' ? 'Straight Line' : 'Smooth Curve'}.</em>`;
+        let modelNote = modelCorrect ? `You correctly modeled the data with a ${currentTool === 'line' ? 'Straight Line' : 'Smooth Curve'}.` : `You used the wrong tool! This physics scenario actually required a <strong>${expectedTool === 'line' ? 'Straight Line' : 'Smooth Curve'}</strong>.`;
+        let fbModel = { pass: modelCorrect, msg: `<strong>Model Selection:</strong> ${modelNote}` };
 
-        if (error <= tolSpotOn) {
-            fb.innerHTML = `<strong>Spot On!</strong> You correctly read the value off <em>your</em> model. (Exact Y: ${targetY_userLine.toFixed(1)})` + modelNote; fb.style.backgroundColor = "#e6ffed"; fb.style.border = "1px solid #28a745"; fb.style.color = "#155724"; document.getElementById('chk-btn').style.display = "none"; document.getElementById('next-btn').style.display = "block";
-        } else if (error <= tolMinor) {
-            fb.innerHTML = `<strong>Minor Error:</strong> Slightly off. Look closely at the minor gridlines (1 small square = 1 unit). (Exact Y: ${targetY_userLine.toFixed(1)})` + modelNote; fb.style.backgroundColor = "#fff3cd"; fb.style.border = "1px solid #ffeeba"; fb.style.color = "#856404"; document.getElementById('chk-btn').style.display = "none"; document.getElementById('next-btn').style.display = "block";
+        let readStatus = "err", readMsg = "";
+        if (error <= tolSpotOn) { readStatus = "pass"; readMsg = `<strong>Reading Accuracy:</strong> Spot On! You flawlessly extracted the value from your line. (Exact Y on your line: ${targetY_userLine.toFixed(1)})`; } 
+        else if (error <= tolMinor) { readStatus = "meh"; readMsg = `<strong>Reading Accuracy:</strong> Minor Error. You are very close, but slightly off. Look closely at the minor gridlines. (Exact Y on your line: ${targetY_userLine.toFixed(1)})`; } 
+        else { readStatus = "err"; readMsg = `<strong>Reading Accuracy:</strong> Way Off. You predicted ${userVal}, but at X=${targetX_value}, your line is actually at Y=${targetY_userLine.toFixed(1)}. Hover over the graph and count the minor gridlines.`; }
+
+        let fbHTML = `<div class="split-fb ${fbModel.pass ? 'pass-box' : 'err-box'}">${fbModel.pass ? '✅' : '❌'} ${fbModel.msg}</div>`;
+        if (readStatus === "pass") { fbHTML += `<div class="split-fb pass-box">✅ ${readMsg}</div>`; } 
+        else if (readStatus === "meh") { fbHTML += `<div class="split-fb meh-box">⚠️ ${readMsg}</div>`; } 
+        else { fbHTML += `<div class="split-fb err-box">❌ ${readMsg}</div>`; }
+        fb.innerHTML = fbHTML;
+
+        if (modelCorrect && readStatus === "pass") {
+            document.getElementById('chk-btn').style.display = "none"; document.getElementById('next-btn').style.display = "block"; document.getElementById('next-btn').className = "btn-main btn-success"; document.getElementById('next-btn').innerText = "Next Question";
         } else {
-            fb.innerHTML = `<strong>Way Off:</strong> You predicted ${userVal}, but your line is at Y=${targetY_userLine.toFixed(1)}. Hover over the graph and count the minor gridlines.`; fb.style.backgroundColor = "#ffeef0"; fb.style.border = "1px solid #d9534f"; fb.style.color = "#721c24";
+            document.getElementById('chk-btn').style.display = "block"; document.getElementById('next-btn').style.display = "block"; document.getElementById('next-btn').className = "btn-main btn-secondary"; document.getElementById('next-btn').innerText = "Skip to Next Question";
         }
     }
 
     function getPctStr(val, total) { return total === 0 ? "0 (-)" : `${val} (${Math.round((val/total)*100)}%)`; }
     function updateDashUI() {
         const upd = (id, val, tot, cls) => { let el = document.getElementById(id); el.innerText = tot?getPctStr(val,tot):val; el.className = val>0?cls:""; };
-        let mL = stats.model.linear, mC = stats.model.curve; upd('m-lin-lin', mL.line, mL.line+mL.curve, 'mat-match'); upd('m-lin-cur', mL.curve, null, 'mat-err'); upd('m-cur-cur', mC.curve, mC.line+mC.curve, 'mat-match'); upd('m-cur-lin', mC.line, null, 'mat-err');
-        let pI = stats.pred.inter, pE = stats.pred.extra; upd('p-int-exa', pI.exa, pI.exa+pI.clo+pI.wrg, 'mat-match'); upd('p-int-clo', pI.clo, null, 'mat-meh'); upd('p-int-wrg', pI.wrg, null, 'mat-err'); upd('p-ext-exa', pE.exa, pE.exa+pE.clo+pE.wrg, 'mat-match'); upd('p-ext-clo', pE.clo, null, 'mat-meh'); upd('p-ext-wrg', pE.wrg, null, 'mat-err');
+        let mL = stats.model.linear, mC = stats.model.curve;
+        upd('m-lin-lin', mL.line, mL.line+mL.curve, 'mat-match'); upd('m-lin-cur', mL.curve, null, 'mat-err');
+        upd('m-cur-cur', mC.curve, mC.line+mC.curve, 'mat-match'); upd('m-cur-lin', mC.line, null, 'mat-err');
+        
+        let pI = stats.pred.inter, pE = stats.pred.extra;
+        upd('p-int-exa', pI.exa, pI.exa+pI.clo+pI.wrg, 'mat-match'); upd('p-int-clo', pI.clo, null, 'mat-meh'); upd('p-int-wrg', pI.wrg, null, 'mat-err');
+        upd('p-ext-exa', pE.exa, pE.exa+pE.clo+pE.wrg, 'mat-match'); upd('p-ext-clo', pE.clo, null, 'mat-meh'); upd('p-ext-wrg', pE.wrg, null, 'mat-err');
     }
     window.onload = init;
 </script>
