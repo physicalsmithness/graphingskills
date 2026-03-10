@@ -6,11 +6,12 @@
     <style>
         body { font-family: Arial, sans-serif; max-width: 800px; margin: 20px auto; padding: 20px; background-color: #f9f9f9; color: #333; }
         .module-container { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        .question-box { margin-bottom: 20px; font-size: 1.2em; font-weight: bold; }
+        .question-box { margin-bottom: 20px; font-size: 1.2em; font-weight: bold; line-height: 1.4; }
         .options { display: flex; gap: 10px; margin-bottom: 20px; }
         button { padding: 10px 20px; font-size: 1em; cursor: pointer; border: 1px solid #ccc; border-radius: 4px; background-color: #e0e0e0; transition: background 0.2s; }
         button:hover { background-color: #d0d0d0; } button:disabled { cursor: not-allowed; opacity: 0.6; }
-        #next-btn { background-color: #0056b3; color: white; border: none; display: none; } #next-btn:hover { background-color: #004494; }
+        #next-btn { background-color: #0056b3; color: white; border: none; display: none; margin-top: 15px;} 
+        #next-btn:hover { background-color: #004494; }
         .feedback { margin-bottom: 20px; min-height: 24px;}
         .dashboard { margin-top: 40px; border-top: 2px solid #eee; padding-top: 20px; }
         .stats { display: flex; gap: 40px; margin-bottom: 20px; font-size: 1.1em; }
@@ -28,8 +29,10 @@
     <p>Read the scenario and select the most appropriate graph type.</p>
     <div class="question-box" id="question-text">Loading question...</div>
     <div class="options" id="options-container">
-        <button onclick="submitAnswer('scatter')">Scatter</button><button onclick="submitAnswer('bar')">Bar</button>
-        <button onclick="submitAnswer('line')">Line</button><button onclick="submitAnswer('pie')">Pie</button>
+        <button onclick="submitAnswer('scatter')">Scatter</button>
+        <button onclick="submitAnswer('bar')">Bar</button>
+        <button onclick="submitAnswer('line')">Line</button>
+        <button onclick="submitAnswer('pie')">Pie</button>
     </div>
     <div class="feedback" id="feedback-text"></div>
     <button id="next-btn" onclick="nextQuestion()">Next Question</button>
@@ -52,6 +55,7 @@
 
 <script>
     const questionBank = [
+        // Original Set (Mixed)
         { id: 1, scenario: "Comparing the resting heart rates of five different mammal species.", correct: "bar", explanation: "Bar charts are best for comparing distinct, categorical groups." },
         { id: 2, scenario: "Investigating if there is a relationship between hours spent studying and final exam scores for 50 students.", correct: "scatter", explanation: "Scatter plots are used to look for correlation between two continuous variables." },
         { id: 3, scenario: "Showing the percentage breakdown of gases that make up the Earth's atmosphere.", correct: "pie", explanation: "Pie charts are ideal for showing parts of a whole (percentages that add up to 100%)." },
@@ -81,7 +85,24 @@
         { id: 27, scenario: "Looking for a relationship between the amount of fertilizer used and the yield of a crop.", correct: "scatter", explanation: "Plotting two numerical variables to find a trend." },
         { id: 28, scenario: "Showing how a person spends their 24-hour day (sleep, work, leisure, eating).", correct: "pie", explanation: "Showing parts of a whole (24 hours)." },
         { id: 29, scenario: "Monitoring the population of an endangered species year by year since 1990.", correct: "line", explanation: "Tracking continuous change in a population over time." },
-        { id: 30, scenario: "Comparing the average daily attendance of four different theme parks.", correct: "bar", explanation: "Comparing distinct categories (theme parks) against a single numerical value." }    
+        { id: 30, scenario: "Comparing the average daily attendance of four different theme parks.", correct: "bar", explanation: "Comparing distinct categories (theme parks) against a single numerical value." },
+        
+        // New Set (Experimental Physics/Science Flooding)
+        { id: 31, scenario: "A physics student hangs different weights from a metal spring and measures its extension.", correct: "scatter", explanation: "In experimental physics, when you manipulate a continuous independent variable (Force) to measure a continuous dependent variable (Extension) to find a trend, you plot raw data as a scatter graph." },
+        { id: 32, scenario: "An engineer changes the voltage across a resistor and measures the resulting electrical current.", correct: "scatter", explanation: "You are plotting individual experimental data points comparing two continuous variables (Voltage and Current) to eventually find a line of best fit. This requires a scatter plot." },
+        { id: 33, scenario: "A chemist measures the pressure of a gas trapped in a syringe as they compress it to smaller volumes.", correct: "scatter", explanation: "Plotting a continuous manipulated variable (Volume) against a continuous measured variable (Pressure) requires a scatter plot so you can look for the curve of best fit." },
+        { id: 34, scenario: "A student drops a bouncy ball from various heights and measures how high it rebounds on the first bounce.", correct: "scatter", explanation: "In an experiment with a continuous independent variable (Drop Height) and dependent variable (Rebound Height), raw data points are plotted on a scatter graph." },
+        { id: 35, scenario: "Measuring the lift force generated by a model airplane wing at various wind speeds in a wind tunnel.", correct: "scatter", explanation: "You are looking for a mathematical trend between two continuous numerical variables (Wind Speed and Lift Force). Plot the points as a scatter graph first." },
+        { id: 36, scenario: "Investigating how the distance from a light source affects the light intensity measured by a sensor.", correct: "scatter", explanation: "Experimental data mapping a continuous independent variable (Distance) to a continuous dependent variable (Intensity) is always plotted as a scatter graph." },
+        { id: 37, scenario: "Testing how the angle of a wooden ramp affects the final speed of a toy car rolling down it.", correct: "scatter", explanation: "You are plotting individual experimental data points comparing two continuous variables (Angle and Speed) to eventually draw a trend line. This requires a scatter plot." },
+        { id: 38, scenario: "Measuring the stopping distance of a bicycle traveling at increasing speeds.", correct: "scatter", explanation: "In experimental science, plotting a continuous independent variable against a continuous dependent variable to find a mathematical trend requires a scatter plot." },
+        { id: 39, scenario: "A biologist tests how the concentration of an enzyme affects the rate of a chemical reaction.", correct: "scatter", explanation: "Plotting a continuous manipulated variable (Concentration) against a continuous measured variable (Reaction Rate) requires a scatter plot." },
+        { id: 40, scenario: "Recording the magnetic field strength of an electromagnet as the electrical current is steadily increased.", correct: "scatter", explanation: "In an experiment with a continuous independent variable (Current) and dependent variable (Magnetic Strength), raw data points are plotted on a scatter graph." },
+        { id: 41, scenario: "Testing how the mass of a paper helicopter affects the time it takes to fall to the ground.", correct: "scatter", explanation: "You are looking for a mathematical trend between two continuous numerical variables (Mass and Time). Plot the points as a scatter graph first." },
+        { id: 42, scenario: "Comparing the ultimate tensile strength of aluminum, steel, titanium, and copper.", correct: "bar", explanation: "You are comparing independent, non-numerical categories (types of metal) against a single numerical value. This requires a bar chart." },
+        { id: 43, scenario: "Showing the percentage composition of elements in the Earth's crust (Oxygen, Silicon, Aluminum, Iron, etc.).", correct: "pie", explanation: "Pie charts are perfect for showing how a complete whole (the crust) is divided into percentages." },
+        { id: 44, scenario: "Monitoring the temperature of a specific engine component every minute during a 2-hour stress test.", correct: "line", explanation: "A line graph is ideal for tracking continuous change over a specific, ongoing period of time." },
+        { id: 45, scenario: "A student shines a laser into a glass block at different angles of incidence and measures the angle of refraction.", correct: "scatter", explanation: "Experimental optics data mapping a continuous independent variable to a continuous dependent variable is plotted as a scatter graph." }
     ];
 
     const graphIcons = {
@@ -94,17 +115,22 @@
     const graphTypes = ['scatter', 'bar', 'line', 'pie'];
     let currentQuestionIndex = 0;
 
-    // DATA HYDRATION: Read from memory immediately so stats aren't zeroed out!
+    // BULLETPROOF HYDRATION
     const MODULE_ID = "1";
     let matrix = { scatter: { scatter: 0, bar: 0, line: 0, pie: 0 }, bar: { scatter: 0, bar: 0, line: 0, pie: 0 }, line: { scatter: 0, bar: 0, line: 0, pie: 0 }, pie: { scatter: 0, bar: 0, line: 0, pie: 0 } };
     let allTimeCorrect = 0; let allTimeTotal = 0; let historyLast10 = []; 
     
-    let savedMem = JSON.parse(localStorage.getItem(`gs_mod_${MODULE_ID}`));
-    if (savedMem) {
-        allTimeCorrect = savedMem.correct || 0;
-        allTimeTotal = savedMem.total || 0;
-        if (savedMem.details) matrix = savedMem.details;
-        if (savedMem.history) historyLast10 = savedMem.history;
+    try {
+        let savedMem = JSON.parse(localStorage.getItem(`gs_mod_${MODULE_ID}`));
+        if (savedMem) {
+            allTimeCorrect = savedMem.correct || 0;
+            allTimeTotal = savedMem.total || 0;
+            if (savedMem.details && savedMem.details.scatter) matrix = savedMem.details;
+            if (savedMem.history) historyLast10 = savedMem.history;
+        }
+    } catch(e) {
+        console.warn("Corrupted memory cleared.");
+        localStorage.removeItem(`gs_mod_${MODULE_ID}`);
     }
 
     function shuffleArray(array) {
@@ -117,7 +143,7 @@
 
     function loadQuestion() {
         const q = questionBank[currentQuestionIndex];
-        document.getElementById('question-text').innerText = q.scenario;
+        document.getElementById('question-text').innerHTML = `<strong>Question ${currentQuestionIndex + 1} of ${questionBank.length}</strong><br><br>${q.scenario}`;
         document.getElementById('feedback-text').innerHTML = "";
         document.getElementById('next-btn').style.display = "none";
         document.querySelectorAll('.options button').forEach(btn => btn.disabled = false);
@@ -150,7 +176,6 @@
         // --- SAVE TO HYDRATED MEMORY ---
         let modData = { correct: allTimeCorrect, total: allTimeTotal, details: matrix, history: historyLast10 };
         localStorage.setItem(`gs_mod_${MODULE_ID}`, JSON.stringify(modData));
-        // -------------------------------
 
         updateDashboard();
         document.getElementById('next-btn').style.display = "inline-block";

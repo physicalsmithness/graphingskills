@@ -8,46 +8,74 @@
         body { font-family: Arial, sans-serif; max-width: 1200px; margin: 20px auto; padding: 20px; background-color: #f4f7f6; color: #333; }
         .module-container { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         .app-layout { display: grid; grid-template-columns: auto 400px; gap: 30px; margin-top: 20px; }
+        
         .legend-box { display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 20px; padding: 15px; background: #eef2f5; border-radius: 6px; border-left: 5px solid #0056b3; font-size: 0.95em; }
         .legend-item { display: flex; align-items: center; gap: 10px; }
         .demo-box { width: 30px; height: 20px; border-radius: 3px; } .demo-tick { border: 2px solid #0056b3; background: #fff; } .demo-space { border: 2px dashed #e67e22; background: rgba(253, 245, 230, 0.7); }
+        
         .graph-wrapper { position: relative; width: 620px; height: 620px; background: #fff; border: 1px solid #ccc; border-radius: 4px; box-shadow: inset 0 0 5px rgba(0,0,0,0.05); }
         canvas { display: block; position: absolute; top: 0; left: 0; z-index: 1;} #plotCanvas { z-index: 2; pointer-events: none; } 
+
         .axis-input { position: absolute; text-align: center; font-size: 0.9em; border-radius: 3px; transition: 0.2s; box-sizing: border-box; z-index: 5; font-family: Arial, sans-serif;}
         .axis-input:focus { outline: none; z-index: 10; transform: scale(1.1); box-shadow: 0 0 8px rgba(0,0,0,0.2); }
+        
         .tick-input { width: 40px; height: 24px; border: 2px solid #0056b3; background: rgba(255,255,255,0.95); }
         .space-input { border: 2px dashed #e67e22; background: rgba(253, 245, 230, 0.7); color: #333; resize: none; overflow: hidden; line-height: 1.2; padding: 4px 2px;}
+        
         .info-panel { background: #f8f9fa; padding: 20px; border-radius: 8px; border: 1px solid #ddd; align-self: start; }
         .question-box { font-size: 1.1em; line-height: 1.4; margin-bottom: 15px;}
+        
         .data-table { border-collapse: collapse; width: 100%; margin-bottom: 20px; background: #fff; font-size: 0.9em;}
-        .data-table th, .data-table td { border: 1px solid #ccc; padding: 6px; text-align: center; } .data-table th { background-color: #e9ecef; } .row-header { text-align: left !important; font-weight: bold; background-color: #dee2e6; width: 40%;}
+        .data-table th, .data-table td { border: 1px solid #ccc; padding: 6px; text-align: center; } .data-table th { background-color: #e9ecef; }
+        .row-header { text-align: left !important; font-weight: bold; background-color: #dee2e6; width: 40%;}
+
         button { display: block; padding: 10px 20px; font-size: 1.1em; cursor: pointer; border: none; border-radius: 4px; background-color: #0056b3; color: white; transition: 0.2s; width: 100%; margin-bottom: 10px;}
-        button:hover { background-color: #004494; } button:disabled { cursor: not-allowed; opacity: 0.6; } #next-btn { background-color: #28a745; display: none; } #next-btn:hover { background-color: #218838; }
-        .feedback { margin-top: 20px; font-size: 1em; line-height: 1.4; } .fb-axis { margin-bottom: 10px; padding: 10px; border-radius: 4px; background: #fff; border: 1px solid #eee; border-left: 4px solid #ccc;}
-        .dashboard { margin-top: 30px; border-top: 2px solid #eee; padding-top: 15px; } table.stats-table { border-collapse: collapse; width: 100%; font-size: 0.9em; }
+        button:hover { background-color: #004494; } button:disabled { cursor: not-allowed; opacity: 0.6; }
+        #next-btn { background-color: #28a745; display: none; } #next-btn:hover { background-color: #218838; }
+
+        .feedback-container { margin-top: 20px; display: none; flex-direction: column; gap: 8px;}
+        .split-fb { padding: 12px; border-radius: 4px; font-size: 0.95em; line-height: 1.4; border-left: 5px solid; background: #fff; }
+        .pass-box { border-color: #28a745; color: #155724; background-color: #f8fff9; }
+        .err-box { border-color: #d9534f; color: #721c24; background-color: #fffafa; }
+        .meh-box { border-color: #ffc107; color: #856404; background-color: #fff8e6; }
+
+        .dashboard { margin-top: 30px; border-top: 2px solid #eee; padding-top: 15px; }
+        table.stats-table { border-collapse: collapse; width: 100%; font-size: 0.9em; }
         .stats-table th, .stats-table td { border: 1px solid #aaa; padding: 8px; text-align: left;} .stats-table th { background-color: #e9ecef; }
         .err-val { color: #d9534f; font-weight: bold; text-align: center;} .corr-val { color: #28a745; font-weight: bold; text-align: center;}
+        
         .footer { text-align: center; margin-top: 30px; border-top: 1px solid #eee; padding-top: 15px; font-size: 0.9em; } .footer a { color: #6c757d; text-decoration: none; }
     </style>
 </head>
 <body>
+
 <div class="module-container">
     <h2>Module 4b: Numbering the Axes & Plotting</h2>
+    
     <div class="legend-box">
         <div style="width: 100%; font-weight: bold; margin-bottom: 5px;">Rule: Choose EITHER the lines OR the spaces for each axis.</div>
-        <div class="legend-item"><div class="demo-box demo-tick"></div><span><strong>Lines (Blue):</strong> Continuous numbers.</span></div>
-        <div class="legend-item"><div class="demo-box demo-space"></div><span><strong>Spaces (Orange):</strong> Categories/names.</span></div>
+        <div class="legend-item"><div class="demo-box demo-tick"></div><span><strong>Lines (Blue):</strong> For continuous numbers (Scatter/Line).</span></div>
+        <div class="legend-item"><div class="demo-box demo-space"></div><span><strong>Spaces (Orange):</strong> For categories/names (Bar charts).</span></div>
     </div>
+    
     <div class="app-layout">
         <div class="graph-wrapper" id="graph-wrapper"><canvas id="graphCanvas" width="620" height="620"></canvas><canvas id="plotCanvas" width="620" height="620"></canvas></div>
+
         <div class="info-panel">
             <div class="question-box" id="question-text">Loading scenario...</div>
             <div id="table-container"></div>
+            
             <button id="submit-btn" onclick="submitAnswer()">Evaluate & Plot Data</button>
             <button id="next-btn" onclick="nextQuestion()">Next Question</button>
-            <div class="feedback" id="feedback-text"></div>
-            <div class="dashboard"><h3 style="margin-top:0; font-size:1.1em;">Error Tracking</h3>
-                <table class="stats-table"><thead><tr><th>Outcome</th><th>Count</th></tr></thead><tbody id="stats-body"></tbody></table>
+
+            <div class="feedback-container" id="feedback-text"></div>
+
+            <div class="dashboard">
+                <h3 style="margin:0; font-size:1.1em; margin-bottom:10px;">Error Tracking</h3>
+                <table class="stats-table">
+                    <thead><tr><th>Outcome</th><th>Count</th></tr></thead>
+                    <tbody id="stats-body"></tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -55,26 +83,48 @@
 </div>
 
 <script>
-    function rand(min, max, limit) { const dec = (limit < 20) ? 1 : 0; return parseFloat((Math.random() * (max - min) + min).toFixed(dec)); }
+    function rand(min, max, limit) { const dec = (limit <= 15) ? 1 : 0; return parseFloat((Math.random() * (max - min) + min).toFixed(dec)); }
     function shuffle(array) { for (let i = array.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [array[i], array[j]] = [array[j], array[i]]; } return array; }
-    function generateRandomData(limit, mode) {
-        if (mode === "asc") return [rand(0.05*limit, 0.2*limit, limit), rand(0.25*limit, 0.4*limit, limit), rand(0.45*limit, 0.6*limit, limit), rand(0.65*limit, 0.8*limit, limit), rand(0.85*limit, 0.98*limit, limit)];
-        if (mode === "desc") return [rand(0.85*limit, 0.98*limit, limit), rand(0.65*limit, 0.8*limit, limit), rand(0.45*limit, 0.6*limit, limit), rand(0.25*limit, 0.4*limit, limit), rand(0.05*limit, 0.2*limit, limit)];
-        let arr = []; for(let i=0; i<4; i++) arr.push(rand(0.1*limit, 0.8*limit, limit)); arr.push(rand(0.85*limit, 0.98*limit, limit)); return shuffle(arr);
-    }
-
+    
     const templates = [
-        { scenario: "Label the axes to plot a car journey.", xLabel: "Time (s)", xType: "continuous", xLim: 10, xMode: "asc", yLabel: "Distance (m)", yType: "continuous", yLim: 50, yMode: "asc" },
-        { scenario: "Label axes for a bar chart comparing speeds.", xLabel: "Vehicle", xType: "categorical", xCats: ["Kart", "Sedan", "Truck", "Bike", "Van"], yLabel: "Speed (km/h)", yType: "continuous", yLim: 100, yMode: "random" },
-        { scenario: "Label axes for a chemical reaction's temperature.", xLabel: "Time (min)", xType: "continuous", xLim: 50, xMode: "asc", yLabel: "Temperature (°C)", yType: "continuous", yLim: 250, yMode: "asc" },
-        { scenario: "Label axes for favourite colors.", xLabel: "Color", xType: "categorical", xCats: ["Red", "Blue", "Green", "Pink", "Yellow"], yLabel: "Students", yType: "continuous", yLim: 25, yMode: "random" }
+        { scenario: "Label the axes to plot a car journey.", xLabel: "Time (s)", xType: "continuous", xLim: 10, yLabel: "Distance (m)", yType: "continuous", yLim: 50 },
+        { scenario: "Label axes for a bar chart comparing speeds.", xLabel: "Vehicle", xType: "categorical", xCats: ["Kart", "Sedan", "Truck", "Bike", "Van"], yLabel: "Speed (km/h)", yType: "continuous", yLim: 100 },
+        { scenario: "Label axes for a chemical reaction's temperature.", xLabel: "Time (min)", xType: "continuous", xLim: 50, yLabel: "Temperature (°C)", yType: "continuous", yLim: 250 },
+        { scenario: "Label axes for favourite colors.", xLabel: "Color", xType: "categorical", xCats: ["Red", "Blue", "Green", "Pink", "Yellow"], yLabel: "Students", yType: "continuous", yLim: 25 },
+        { scenario: "Label axes to plot a spring's extension under increasing force.", xLabel: "Force (N)", xType: "continuous", xLim: 5, yLabel: "Extension (cm)", yType: "continuous", yLim: 50 },
+        { scenario: "Label axes to plot a bar chart of monthly rainfall.", xLabel: "Month", xType: "categorical", xCats: ["Jan", "Feb", "Mar", "Apr", "May"], yLabel: "Rainfall (mm)", yType: "continuous", yLim: 100 }
     ];
 
     let questionBank = [];
+    
     function initializeBank() {
         let rawBank = templates.map((t, index) => {
-            let dX = t.xType === "categorical" ? t.xCats : generateRandomData(t.xLim, t.xMode), dY = generateRandomData(t.yLim, t.yMode);
-            return { id: index, scenario: t.scenario, dataX: dX, dataY: dY, x: { label: t.xLabel, type: t.xType, maxData: t.xType === "categorical" ? null : Math.max(...dX) }, y: { label: t.yLabel, type: t.yType, maxData: Math.max(...dY) } };
+            let dx = [], dy = [];
+            
+            let xSpan = t.xLim, actualMinX = (Math.random() * 0.15 * xSpan), actualMaxX = t.xLim - (Math.random() * 0.15 * xSpan);
+            let ySpan = t.yLim, actualMinY = (Math.random() * 0.15 * ySpan), actualMaxY = t.yLim - (Math.random() * 0.15 * ySpan);
+            
+            if (t.xType === "categorical") {
+                dx = t.xCats;
+                for(let i=0; i<5; i++) dy.push(rand(actualMinY, actualMaxY, t.yLim));
+            } else {
+                for(let i=0; i<5; i++) {
+                    let pct = i / 4; 
+                    let xVal = actualMinX + (pct) * (actualMaxX - actualMinX);
+                    let yVal = actualMinY + (pct + (Math.random()*0.2-0.1)) * (actualMaxY - actualMinY);
+                    dx.push(parseFloat(xVal.toFixed((xSpan <= 10) ? 1 : 0))); 
+                    dy.push(parseFloat(yVal.toFixed((ySpan <= 15) ? 1 : 0)));
+                }
+            }
+            
+            let absX = t.xType === "categorical" ? true : !(t.xLabel.includes("Year") || (t.xLabel.includes("°C") && !t.xLabel.includes("Change")));
+            let absY = !(t.yLabel.includes("Year") || (t.yLabel.includes("°C") && !t.yLabel.includes("Change")));
+
+            return {
+                id: index, scenario: t.scenario, dataX: dx, dataY: dy,
+                x: { label: t.xLabel, type: t.xType, maxData: t.xType === "categorical" ? null : Math.max(...dx), minData: t.xType === "categorical" ? null : Math.min(...dx), absZero: absX },
+                y: { label: t.yLabel, type: t.yType, maxData: Math.max(...dy), minData: Math.min(...dy), absZero: absY }
+            };
         });
         questionBank = shuffle(rawBank);
     }
@@ -83,12 +133,24 @@
     const canvas = document.getElementById('graphCanvas'), ctx = canvas.getContext('2d'), plotCanvas = document.getElementById('plotCanvas'), pctx = plotCanvas.getContext('2d'), wrapper = document.getElementById('graph-wrapper');
     const padL = 90, padB = 80, padT = 40, padR = 30, boxSize = 100, numBoxes = 5; 
 
-    // DATA HYDRATION
+    // CRASH-PROOF HYDRATION WITH FIXED INIT
     const MODULE_ID = "4b";
-    let stats = { perfect: 0, barChartError: 0, lineLabelError: 0, typoError: 0, unevenScale: 0, nonZeroStart: 0, awkwardScale: 0, offChart: 0, squashed: 0, incomplete: 0 };
+    let stats = { perfect: 0, barChartError: 0, barOriginError: 0, lineLabelError: 0, typoError: 0, unevenScale: 0, nonZeroStart: 0, awkwardScale: 0, offChart: 0, squashed: 0, incomplete: 0 };
     let totalPasses = 0, totalAttempts = 0;
-    let savedMem = JSON.parse(localStorage.getItem(`gs_mod_${MODULE_ID}`));
-    if (savedMem) { totalPasses = savedMem.correct || 0; totalAttempts = savedMem.total || 0; if (savedMem.details) stats = savedMem.details; }
+    
+    try { 
+        let savedMem = JSON.parse(localStorage.getItem(`gs_mod_${MODULE_ID}`)); 
+        if (savedMem) { 
+            totalPasses = savedMem.correct || 0; 
+            totalAttempts = savedMem.total || 0; 
+            if (savedMem.details && savedMem.details.perfect !== undefined) {
+                // Safely merge so new keys (like nonZeroStart) are kept at 0 if missing in old saves
+                stats = Object.assign(stats, savedMem.details);
+            } 
+        } 
+    } catch(e) { 
+        localStorage.removeItem(`gs_mod_${MODULE_ID}`); 
+    }
 
     function generateTableHTML(q) {
         let html = `<table class="data-table"><tr><th class="row-header">${q.x.label}</th>`;
@@ -99,16 +161,14 @@
     }
 
     function drawGrid(q) {
-        ctx.clearRect(0, 0, canvas.width, canvas.height); let originX = padL, originY = canvas.height - padB, w = numBoxes * boxSize, h = numBoxes * boxSize;
-        ctx.lineWidth = 1;
+        ctx.clearRect(0, 0, canvas.width, canvas.height); let originX = padL, originY = canvas.height - padB, w = numBoxes * boxSize, h = numBoxes * boxSize; ctx.lineWidth = 1;
         for (let i = 0; i <= numBoxes; i++) {
             ctx.strokeStyle = "#888"; let xPos = originX + (i * boxSize); ctx.beginPath(); ctx.moveTo(xPos, padT); ctx.lineTo(xPos, originY); ctx.stroke();
             let yPos = originY - (i * boxSize); ctx.beginPath(); ctx.moveTo(originX, yPos); ctx.lineTo(originX + w, yPos); ctx.stroke();
             if (i < numBoxes) { ctx.strokeStyle = "#eee"; for(let j=1; j<5; j++) { let minorX = xPos + (j * (boxSize/5)); ctx.beginPath(); ctx.moveTo(minorX, padT); ctx.lineTo(minorX, originY); ctx.stroke(); let minorY = yPos - (j * (boxSize/5)); ctx.beginPath(); ctx.moveTo(originX, minorY); ctx.lineTo(originX + w, minorY); ctx.stroke(); } }
         }
         ctx.lineWidth = 2; ctx.strokeStyle = "#000"; ctx.beginPath(); ctx.moveTo(originX, padT); ctx.lineTo(originX, originY); ctx.stroke(); ctx.beginPath(); ctx.moveTo(originX, originY); ctx.lineTo(originX + w, originY); ctx.stroke(); 
-        ctx.fillStyle = "#000"; ctx.font = "bold 14px Arial"; ctx.textAlign = "center"; ctx.textBaseline = "bottom"; ctx.fillText(q.x.label, originX + (w/2), canvas.height - 10);
-        ctx.save(); ctx.translate(20, originY - (h/2)); ctx.rotate(-Math.PI / 2); ctx.fillText(q.y.label, 0, 0); ctx.restore();
+        ctx.fillStyle = "#000"; ctx.font = "bold 14px Arial"; ctx.textAlign = "center"; ctx.textBaseline = "bottom"; ctx.fillText(q.x.label, originX + (w/2), canvas.height - 10); ctx.save(); ctx.translate(20, originY - (h/2)); ctx.rotate(-Math.PI / 2); ctx.fillText(q.y.label, 0, 0); ctx.restore();
     }
 
     function generateInputs() {
@@ -126,53 +186,67 @@
     function loadQuestion() {
         if(questionBank.length === 0) initializeBank();
         const q = questionBank[currentQ]; document.getElementById('question-text').innerHTML = `<strong>Question ${currentQ + 1} of ${questionBank.length}</strong><br><br><strong>Scenario:</strong> ${q.scenario}`;
-        document.getElementById('table-container').innerHTML = generateTableHTML(q); document.getElementById('feedback-text').innerHTML = ""; document.getElementById('next-btn').style.display = "none";
+        document.getElementById('table-container').innerHTML = generateTableHTML(q); document.getElementById('feedback-text').style.display = "none"; document.getElementById('feedback-text').innerHTML = ""; document.getElementById('next-btn').style.display = "none";
         let submitBtn = document.getElementById('submit-btn'); submitBtn.style.display = "block"; submitBtn.innerText = "Evaluate & Plot Data"; submitBtn.disabled = false;
         pctx.clearRect(0, 0, plotCanvas.width, plotCanvas.height); drawGrid(q); generateInputs(); updateDashboard();
     }
 
     function getMantissa(val) { if (val === 0) return 0; let v = Math.abs(val); while (v < 1) v *= 10; while (v >= 10) v /= 10; return Math.round(v * 1000) / 1000; }
 
-    function evaluateAxis(axisPrefix, config, dataArray) {
+    function evaluateAxis(axisPrefix, config, dataArray, isBarChart) {
         let ticksFilled = [], spacesFilled = [];
         document.querySelectorAll(`.${axisPrefix}-tick`).forEach(i => { if (i.value.trim() !== "") ticksFilled.push({ index: parseInt(i.dataset.index), value: i.value.trim() }); });
         document.querySelectorAll(`.${axisPrefix}-space`).forEach(i => { if (i.value.trim() !== "") spacesFilled.push({ index: parseInt(i.dataset.index), value: i.value.trim() }); });
 
         if (config.type === "categorical") {
-            if (ticksFilled.length > 0) return { canPlot: false, outcome: "lineLabelError", border: "left: 4px solid #d9534f", msg: "<span style='color:#d9534f; font-weight:bold;'>Line Error!</span> Categorical labels belong IN THE SPACES (orange dashed boxes)." };
-            if (spacesFilled.length === 0) return { canPlot: false, outcome: "incomplete", border: "left: 4px solid #d9534f", msg: "Please write the categories in the spaces." };
+            if (ticksFilled.length > 0) return { canPlot: false, outcome: "lineLabelError", cls: "err-box", msg: "❌ <strong>Line Error!</strong> Categorical labels belong IN THE SPACES (orange dashed boxes)." };
+            if (spacesFilled.length === 0) return { canPlot: false, outcome: "incomplete", cls: "err-box", msg: "Please write the categories in the spaces." };
             let expectedCats = dataArray.map(v => String(v).toLowerCase().trim()), userCats = spacesFilled.map(v => String(v.value).toLowerCase().trim());
-            for (let uc of userCats) { if (!expectedCats.includes(uc)) return { canPlot: false, outcome: "typoError", border: "left: 4px solid #d9534f", msg: "<span style='color:#d9534f; font-weight:bold;'>Category Typo!</span> A label doesn't match the table." }; }
+            for (let uc of userCats) { if (!expectedCats.includes(uc)) return { canPlot: false, outcome: "typoError", cls: "err-box", msg: "❌ <strong>Category Typo!</strong> A label doesn't match the table." }; }
             let missingCount = 0; for (let ec of expectedCats) { if (!userCats.includes(ec)) missingCount++; }
-            if (missingCount > 0) return { canPlot: false, outcome: "incomplete", border: "left: 4px solid #d9534f", msg: `You missed ${missingCount} category/categories from the table.` };
-            return { canPlot: true, isCategorical: true, userCategories: spacesFilled, outcome: "perfect", border: "left: 4px solid #28a745", msg: "Correct! Categorical labels belong in the spaces." };
+            if (missingCount > 0) return { canPlot: false, outcome: "incomplete", cls: "err-box", msg: `You missed ${missingCount} category/categories from the table.` };
+            return { canPlot: true, isCategorical: true, userCategories: spacesFilled, outcome: "perfect", cls: "pass-box", msg: "✅ Correct! Categorical labels belong in the spaces." };
         }
 
-        if (spacesFilled.length > 0) return { canPlot: false, outcome: "barChartError", border: "left: 4px solid #d9534f", msg: "<span style='color:#d9534f; font-weight:bold;'>Bar Chart Error!</span> Continuous numbers must go exactly ON the lines (blue boxes)." };
-        if (ticksFilled.length < 2) return { canPlot: false, outcome: "incomplete", border: "left: 4px solid #d9534f", msg: "Fill in at least two blue boxes to establish a numerical scale." };
+        if (spacesFilled.length > 0) return { canPlot: false, outcome: "barChartError", cls: "err-box", msg: "❌ <strong>Bar Chart Error!</strong> Continuous numbers must go exactly ON the lines (blue boxes)." };
+        if (ticksFilled.length < 2) return { canPlot: false, outcome: "incomplete", cls: "err-box", msg: "Fill in at least two blue boxes to establish a numerical scale." };
 
         let expectedDelta = null, prevTick = null;
         for (let i = 0; i < ticksFilled.length; i++) {
             let current = { index: ticksFilled[i].index, value: parseFloat(ticksFilled[i].value) };
-            if (isNaN(current.value)) return { canPlot: false, outcome: "incomplete", border: "left: 4px solid #d9534f", msg: "Please enter valid numbers only." };
+            if (isNaN(current.value)) return { canPlot: false, outcome: "incomplete", cls: "err-box", msg: "Please enter valid numbers only." };
             if (prevTick !== null) {
                 let delta = Math.round(((current.value - prevTick.value) / (current.index - prevTick.index)) * 1000) / 1000; 
                 if (expectedDelta === null) expectedDelta = delta; 
-                else if (delta !== expectedDelta) return { canPlot: false, outcome: "unevenScale", border: "left: 4px solid #d9534f", msg: `<span style='color:#d9534f; font-weight:bold;'>Uneven scale!</span> The jump is inconsistent.` };
+                else if (delta !== expectedDelta) return { canPlot: false, outcome: "unevenScale", cls: "err-box", msg: `❌ <strong>Uneven scale!</strong> The jump between lines is inconsistent.` };
             }
             prevTick = current;
         }
-        if (expectedDelta <= 0) return { canPlot: false, outcome: "unevenScale", border: "left: 4px solid #d9534f", msg: `Scale must be increasing.` };
+        if (expectedDelta <= 0) return { canPlot: false, outcome: "unevenScale", cls: "err-box", msg: `Scale must be increasing.` };
 
         let trueStart = Math.round((parseFloat(ticksFilled[0].value) - (ticksFilled[0].index * expectedDelta)) * 1000) / 1000;
-        if (trueStart !== 0) return { canPlot: false, outcome: "nonZeroStart", border: "left: 4px solid #d9534f", msg: `<span style='color:#d9534f; font-weight:bold;'>Origin Error!</span> Always start your scale at 0 for these graphs.` };
         
-        let m = getMantissa(expectedDelta);
-        if (![1, 2, 2.5, 5].includes(m)) return { canPlot: true, start: trueStart, scale: expectedDelta, outcome: "awkwardScale", border: "left: 4px solid #d9534f", msg: `<span style="color:#d9534f; font-weight:bold;">Awkward scale!</span> Plotting will be difficult, but here is what it looks like:` };
-        if (config.maxData > trueStart + (numBoxes * expectedDelta)) return { canPlot: true, start: trueStart, scale: expectedDelta, outcome: "offChart", border: "left: 4px solid #d9534f", msg: `<span style='color:#d9534f; font-weight:bold;'>Data falls off graph!</span> Watch the points fly away.` };
-        if (config.maxData <= trueStart + ((numBoxes * expectedDelta) / 2)) return { canPlot: true, start: trueStart, scale: expectedDelta, outcome: "squashed", border: "left: 4px solid #d9534f", msg: `<span style='color:#d9534f; font-weight:bold;'>Data is squashed!</span> Look how low it sits.` };
+        // Bar Chart Origin Rule!
+        if (isBarChart && trueStart > 0) {
+            return { canPlot: false, outcome: "barOriginError", cls: "err-box", msg: `❌ <strong>Bar Chart Origin Error!</strong> Bar charts compare physical height proportional to value. Starting the axis at ${trueStart} cuts off the bottom of the bars, destroying the visual proportions. Bar charts MUST start at 0.` };
+        }
 
-        return { canPlot: true, start: trueStart, scale: expectedDelta, outcome: "perfect", border: "left: 4px solid #28a745", msg: "Perfect scale! Math is correct and it fits the data beautifully." };
+        let graphMax = trueStart + (numBoxes * expectedDelta);
+        if (config.maxData > graphMax || config.minData < trueStart) return { canPlot: true, start: trueStart, scale: expectedDelta, outcome: "offChart", cls: "err-box", msg: `❌ <strong>Data falls off graph!</strong> Watch the points fly away.` };
+        if (config.maxData <= trueStart + ((numBoxes * expectedDelta) / 2)) return { canPlot: true, start: trueStart, scale: expectedDelta, outcome: "squashed", cls: "err-box", msg: `❌ <strong>Data is squashed!</strong> Look how low it sits.` };
+
+        let m = getMantissa(expectedDelta);
+        if (![1, 2, 2.5, 5].includes(m)) return { canPlot: true, start: trueStart, scale: expectedDelta, outcome: "awkwardScale", cls: "meh-box", msg: `⚠️ <strong>Awkward scale!</strong> Plotting will be difficult, but here is what it looks like:` };
+
+        if (!config.absZero && trueStart === 0 && config.minData > (expectedDelta * numBoxes) * 0.2) {
+             return { canPlot: false, outcome: "nonZeroStart", cls: "err-box", msg: `❌ <strong>Inappropriate Zero!</strong> The value 0 for ${config.label} is arbitrary. You must break the axis to prevent squashing the data.` };
+        }
+
+        if (config.absZero && trueStart > 0) {
+            return { canPlot: true, start: trueStart, scale: expectedDelta, outcome: "perfect", cls: "pass-box", msg: "✅ Perfect scale! <em>(Note: Breaking the axis is permissible here to zoom in, but can easily be misleading by exaggerating trends unless you draw attention to it!)</em>" };
+        }
+
+        return { canPlot: true, start: trueStart, scale: expectedDelta, outcome: "perfect", cls: "pass-box", msg: "✅ Perfect scale! Math is correct and it fits the data beautifully." };
     }
 
     function plotData(resX, resY, q) {
@@ -215,19 +289,21 @@
             else { e.style.display = "none"; }
         });
 
-        const resX = evaluateAxis('x', q.x, q.dataX), resY = evaluateAxis('y', q.y, q.dataY);
-        stats[resX.outcome]++; stats[resY.outcome]++;
+        const isBarChart = q.x.type === "categorical";
+        const resX = evaluateAxis('x', q.x, q.dataX, false); 
+        const resY = evaluateAxis('y', q.y, q.dataY, isBarChart);
+        
+        if (stats[resX.outcome] !== undefined) stats[resX.outcome]++; 
+        if (stats[resY.outcome] !== undefined) stats[resY.outcome]++;
+        
         plotData(resX, resY, q);
 
-        document.getElementById('feedback-text').innerHTML = `<div class="fb-axis" style="${resX.border}"><strong>Horizontal (${q.x.label}):</strong> ${resX.msg}</div><div class="fb-axis" style="${resY.border}"><strong>Vertical (${q.y.label}):</strong> ${resY.msg}</div>`;
+        document.getElementById('feedback-text').style.display = "flex";
+        document.getElementById('feedback-text').innerHTML = `<div class="split-fb ${resX.cls}"><strong>Horizontal (${q.x.label}):</strong> ${resX.msg}</div><div class="split-fb ${resY.cls}"><strong>Vertical (${q.y.label}):</strong> ${resY.msg}</div>`;
 
-        // --- SAVE TO HYDRATED MEMORY ---
         let isPerfect = (resX.outcome === "perfect" && resY.outcome === "perfect");
-        totalAttempts += 1;
-        if (isPerfect) totalPasses += 1;
-        let modData = { correct: totalPasses, total: totalAttempts, details: stats }; 
-        localStorage.setItem(`gs_mod_${MODULE_ID}`, JSON.stringify(modData));
-        // -------------------------------
+        totalAttempts += 1; if (isPerfect) totalPasses += 1;
+        localStorage.setItem(`gs_mod_${MODULE_ID}`, JSON.stringify({ correct: totalPasses, total: totalAttempts, details: stats }));
 
         updateDashboard();
         if (isPerfect) { document.getElementById('submit-btn').style.display = "none"; document.getElementById('next-btn').style.display = "block"; } 
@@ -245,10 +321,11 @@
     function nextQuestion() { currentQ = (currentQ + 1) % questionBank.length; loadQuestion(); }
     function updateDashboard() {
         document.getElementById('stats-body').innerHTML = `
-            <tr><td>Perfect Numbering</td><td class="corr-val">${stats.perfect}</td></tr><tr><td>Bar Chart Error (Nums in spaces)</td><td class="err-val">${stats.barChartError}</td></tr>
-            <tr><td>Line Label Error (Categories on lines)</td><td class="err-val">${stats.lineLabelError}</td></tr><tr><td>Category Typo / Mismatch</td><td class="err-val">${stats.typoError}</td></tr>
-            <tr><td>Non-Zero Origin</td><td class="err-val">${stats.nonZeroStart}</td></tr><tr><td>Uneven Scale / Bad Math</td><td class="err-val">${stats.unevenScale}</td></tr>
-            <tr><td>Off Chart (Scale too small)</td><td class="err-val">${stats.offChart}</td></tr><tr><td>Squashed (< 50% Used)</td><td class="err-val">${stats.squashed}</td></tr><tr><td>Awkward Divisions</td><td class="err-val">${stats.awkwardScale}</td></tr>`;
+            <tr><td>Perfect Numbering</td><td class="corr-val">${stats.perfect}</td></tr><tr><td>Bar Chart Lines Error</td><td class="err-val">${stats.barChartError}</td></tr>
+            <tr><td>Bar Chart Origin Error</td><td class="err-val">${stats.barOriginError}</td></tr><tr><td>Line Label Error (Categories on lines)</td><td class="err-val">${stats.lineLabelError}</td></tr>
+            <tr><td>Category Typo / Mismatch</td><td class="err-val">${stats.typoError}</td></tr><tr><td>Inappropriate Zero (Squashes Data)</td><td class="err-val">${stats.nonZeroStart}</td></tr>
+            <tr><td>Uneven Scale / Bad Math</td><td class="err-val">${stats.unevenScale}</td></tr><tr><td>Off Chart (Scale too small)</td><td class="err-val">${stats.offChart}</td></tr>
+            <tr><td>Squashed (< 50% Used)</td><td class="err-val">${stats.squashed}</td></tr><tr><td>Awkward Divisions</td><td class="err-val">${stats.awkwardScale}</td></tr>`;
     }
     initializeBank(); loadQuestion();
 </script>
