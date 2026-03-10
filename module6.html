@@ -23,7 +23,7 @@
         .dash-container { margin-top: 20px; padding-top: 15px; } .matrix-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 10px;}
         .conf-matrix { width: 100%; border-collapse: collapse; font-size: 0.8em; background: #fff; text-align: center;} .conf-matrix th, .conf-matrix td { border: 1px solid #aaa; padding: 4px; } .conf-matrix th { background: #e9ecef; font-weight: bold;}
         .mat-actual { font-weight: bold; text-align: left; background: #f8f9fa;} .mat-match { background-color: #d4edda; font-weight: bold; color: #155724;} .mat-meh { background-color: #fff3cd; color: #856404;} .mat-err { background-color: #f8d7da; color: #721c24; font-weight: bold;} .mat-na { background-color: #e9ecef; color: #aaa; }
-        .footer { text-align: center; margin-top: 30px; border-top: 1px solid #eee; padding-top: 15px; font-size: 0.9em; } .footer a { color: #6c757d; text-decoration: none; }
+        .footer { text-align: center; margin-top: 30px; border-top: 1px solid #eee; padding-top: 15px; font-size: 0.9em; } .footer a { color: #6c757d; text-decoration: none; } .footer a:hover { color: #333; text-decoration: underline; }
     </style>
 </head>
 <body>
@@ -74,12 +74,25 @@
     let points = [], outlierIdx = -1, userOutlier = -1, isDrawing = false, currentTool = 'line', drawingNodes = [], activeScenario = null;
     let tolLineErr = 45, tolLineBal = 3, tolCurveErr = 50, tolCurveWob = 0.15;
 
-    // DATA HYDRATION
+    // --- CRASH-PROOF HYDRATION ---
     const MODULE_ID = "6";
     let stats = { outlier: { has: { cor: 0, wrg: 0, ign: 0 }, non: { cor: 0, deb: 0, wrg: 0 } }, trend: { linear: { line: 0, curve: 0, join: 0 }, curve: { line: 0, curve: 0, join: 0 }, dots: { line: 0, curve: 0, join: 0 } }, exec: { line: { perf: 0, unb: 0, far: 0 }, curve: { perf: 0, unb: 0, far: 0, shp: 0 } } };
     let totalPasses = 0, totalAttempts = 0;
-    let savedMem = JSON.parse(localStorage.getItem(`gs_mod_${MODULE_ID}`));
-    if (savedMem) { totalPasses = savedMem.correct || 0; totalAttempts = savedMem.total || 0; if (savedMem.details) stats = savedMem.details; }
+    
+    try {
+        let savedMem = JSON.parse(localStorage.getItem(`gs_mod_${MODULE_ID}`));
+        if (savedMem) { 
+            totalPasses = savedMem.correct || 0; 
+            totalAttempts = savedMem.total || 0; 
+            if (savedMem.details && savedMem.details.outlier && savedMem.details.outlier.has) {
+                stats = savedMem.details; 
+            }
+        }
+    } catch(e) {
+        console.warn("Corrupted memory cleared.");
+        localStorage.removeItem(`gs_mod_${MODULE_ID}`);
+    }
+    // ------------------------------
 
     function updateTols() {
         tolLineErr = parseFloat(document.getElementById('inp-tolLineErr').value); tolLineBal = parseFloat(document.getElementById('inp-tolLineBal').value);
@@ -212,21 +225,21 @@
         if (isPass) totalPasses += 1;
         let modData = { correct: totalPasses, total: totalAttempts, details: stats }; 
         localStorage.setItem(`gs_mod_${MODULE_ID}`, JSON.stringify(modData));
-        // -------------------------------
 
         document.getElementById('next-btn').style.display = "block"; if (currentTool === 'curve') renderDrawing(true);
     }
 
     function getPctStr(val, total) { return total === 0 ? "0 (-)" : `${val} (${Math.round((val/total)*100)}%)`; }
     function updateDashUI() {
-        const upd = (id, val, tot, cls) => { let el = document.getElementById(id); el.innerText = tot?getPctStr(val,tot):val; el.className = val>0?cls:""; };
+        const upd = (id, val, tot, cls) => { let el = document.getElementById(id); if(!el) return; el.innerText = tot?getPctStr(val,tot):val; el.className = val>0?cls:""; };
         let oH = stats.outlier.has, oN = stats.outlier.non;
         upd('o-has-cor', oH.cor, oH.cor+oH.wrg+oH.ign, 'mat-match'); upd('o-has-wrg', oH.wrg, null, 'mat-err'); upd('o-has-ign', oH.ign, null, 'mat-err');
         upd('o-non-cor', oN.cor, oN.cor+oN.deb+oN.wrg, 'mat-match'); upd('o-non-deb', oN.deb, null, 'mat-meh'); upd('o-non-wrg', oN.wrg, null, 'mat-err');
         ['linear','curve','dots'].forEach((t, i) => {
             let row = stats.trend[t], tot = row.line+row.curve+row.join, pfx = ['lin','cur','dot'];
             ['line','curve','join'].forEach((tl, j) => {
-                let cell = document.getElementById(`t-${pfx[i]}-${pfx[j]}`); cell.innerText = i===j ? getPctStr(row[tl], tot) : row[tl];
+                let cell = document.getElementById(`t-${pfx[i]}-${pfx[j]}`); if(!cell) return;
+                cell.innerText = i===j ? getPctStr(row[tl], tot) : row[tl];
                 cell.className = row[tl]>0 ? (i===j ? "mat-match" : ((i===0&&j===1)||(i===1&&j===0)?"mat-meh":"mat-err")) : "";
             });
         });
@@ -234,6 +247,7 @@
         upd('e-lin-perf', eL.perf, eL.perf+eL.unb+eL.far, 'mat-match'); upd('e-lin-unb', eL.unb, null, 'mat-err'); upd('e-lin-far', eL.far, null, 'mat-err');
         upd('e-cur-perf', eC.perf, eC.perf+eC.unb+eC.far+eC.shp, 'mat-match'); upd('e-cur-unb', eC.unb, null, 'mat-err'); upd('e-cur-far', eC.far, null, 'mat-err'); upd('e-cur-shp', eC.shp, null, 'mat-err');
     }
+    window.onload = init;
 </script>
 </body>
 </html>

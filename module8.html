@@ -27,7 +27,7 @@
         .dash-container { margin-top: 30px; border-top: 2px solid #ccc; padding-top: 15px; } .matrix-grid { display: flex; flex-wrap: wrap; gap: 15px; margin-top: 10px;}
         .conf-matrix { border-collapse: collapse; font-size: 0.8em; background: #fff; text-align: center;} .conf-matrix th, .conf-matrix td { border: 1px solid #aaa; padding: 6px; } .conf-matrix th { background: #e9ecef; font-weight: bold;}
         .mat-actual { font-weight: bold; text-align: left; background: #f8f9fa;} .mat-match { background-color: #d4edda; font-weight: bold; color: #155724;} .mat-meh { background-color: #fff3cd; color: #856404;} .mat-fail { background-color: #f8d7da; color: #721c24; font-weight: bold;}
-        .footer { text-align: center; margin-top: 30px; border-top: 1px solid #eee; padding-top: 15px; font-size: 0.9em; } .footer a { color: #6c757d; text-decoration: none; }
+        .footer { text-align: center; margin-top: 30px; border-top: 1px solid #eee; padding-top: 15px; font-size: 0.9em; } .footer a { color: #6c757d; text-decoration: none; } .footer a:hover { color: #333; text-decoration: underline; }
     </style>
 </head>
 <body>
@@ -88,12 +88,25 @@
     let points = [], activeScenario = null, lineModel = { m: 0, c: 0, startX: 0, endX: 0 }, hasLogged = false, anchors = []; 
     let tolClick = 0.5, tolRead = 0.5, tolSize = 50;
 
-    // DATA HYDRATION
+    // --- CRASH-PROOF HYDRATION ---
     const MODULE_ID = "8";
     let stats = { sel: { line: 0, raw: 0, flt: 0 }, rd: { perf: 0, min: 0, sxy: 0, sp12: 0, off: 0 }, tri: { ok: 0, sml: 0 }, math: { perf: 0, rnd: 0, inv: 0, p10: 0, oth: 0 }, unit: { cor: 0, err: 0 } };
     let totalPasses = 0, totalAttempts = 0;
-    let savedMem = JSON.parse(localStorage.getItem(`gs_mod_${MODULE_ID}`));
-    if (savedMem) { totalPasses = savedMem.correct || 0; totalAttempts = savedMem.total || 0; if (savedMem.details) stats = savedMem.details; }
+    
+    try {
+        let savedMem = JSON.parse(localStorage.getItem(`gs_mod_${MODULE_ID}`));
+        if (savedMem) { 
+            totalPasses = savedMem.correct || 0; 
+            totalAttempts = savedMem.total || 0; 
+            if (savedMem.details && savedMem.details.sel) {
+                stats = savedMem.details; 
+            }
+        }
+    } catch(e) {
+        console.warn("Corrupted memory cleared.");
+        localStorage.removeItem(`gs_mod_${MODULE_ID}`);
+    }
+    // ------------------------------
 
     function updateTols() {
         tolClick = parseFloat(document.getElementById('inp-tolClick').value); tolRead = parseFloat(document.getElementById('inp-tolRead').value); tolSize = parseInt(document.getElementById('inp-tolSize').value);
@@ -252,13 +265,14 @@
 
     function getPctStr(v, t) { return t === 0 ? "0 (-)" : `${v} (${Math.round((v/t)*100)}%)`; }
     function updateDashUI() {
-        const upd = (id, v, t, cls) => { let e = document.getElementById(id); e.innerText = t?getPctStr(v,t):v; e.className = v>0?cls:""; };
+        const upd = (id, v, t, cls) => { let e = document.getElementById(id); if(!e) return; e.innerText = t?getPctStr(v,t):v; e.className = v>0?cls:""; };
         upd('s-sel-line', stats.sel.line, stats.sel.line+stats.sel.raw+stats.sel.flt, 'mat-match'); upd('s-sel-raw', stats.sel.raw, null, 'mat-fail'); upd('s-sel-flt', stats.sel.flt, null, 'mat-fail');
         upd('s-rd-perf', stats.rd.perf, stats.rd.perf+stats.rd.min+stats.rd.sxy+stats.rd.sp12+stats.rd.off, 'mat-match'); upd('s-rd-min', stats.rd.min, null, 'mat-meh'); upd('s-rd-sxy', stats.rd.sxy, null, 'mat-fail'); upd('s-rd-sp12', stats.rd.sp12, null, 'mat-fail'); upd('s-rd-off', stats.rd.off, null, 'mat-fail');
         upd('s-tri-ok', stats.tri.ok, stats.tri.ok+stats.tri.sml, 'mat-match'); upd('s-tri-sml', stats.tri.sml, null, 'mat-fail');
         upd('s-m-perf', stats.math.perf, null, 'mat-match'); upd('s-m-rnd', stats.math.rnd, null, 'mat-fail'); upd('s-m-inv', stats.math.inv, null, 'mat-fail'); upd('s-m-p10', stats.math.p10, null, 'mat-fail'); upd('s-m-oth', stats.math.oth, null, 'mat-fail');
         upd('s-u-cor', stats.unit.cor, stats.unit.cor+stats.unit.err, 'mat-match'); upd('s-u-err', stats.unit.err, null, 'mat-fail');
     }
+    window.onload = init;
 </script>
 </body>
 </html>
