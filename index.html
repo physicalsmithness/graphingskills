@@ -7,7 +7,7 @@
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; display: flex; height: 100vh; background-color: #f4f7f6; color: #333; overflow: hidden; }
         
         /* Sidebar Styles */
-        .sidebar { width: 320px; background-color: #2c3e50; color: white; display: flex; flex-direction: column; box-shadow: 2px 0 5px rgba(0,0,0,0.1); z-index: 10; }
+        .sidebar { width: 320px; background-color: #2c3e50; color: white; display: flex; flex-direction: column; box-shadow: 2px 0 5px rgba(0,0,0,0.1); z-index: 10; flex-shrink: 0;}
         .sidebar-header { padding: 20px; background-color: #1a252f; text-align: center; border-bottom: 1px solid #34495e; cursor: pointer; transition: 0.2s;}
         .sidebar-header:hover { background-color: #121a21; }
         .sidebar-header h2 { margin: 0; font-size: 1.4em; letter-spacing: 1px; color: #ecf0f1;}
@@ -24,8 +24,8 @@
         .dash-btn.active { background-color: #ba4a00; }
 
         /* Main Content Area */
-        .main-content { flex: 1; display: flex; flex-direction: column; position: relative; }
-        .top-bar { height: 60px; background: white; border-bottom: 1px solid #dee2e6; display: flex; align-items: center; padding: 0 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); z-index: 5;}
+        .main-content { flex: 1; display: flex; flex-direction: column; position: relative; overflow: hidden;}
+        .top-bar { height: 60px; background: white; border-bottom: 1px solid #dee2e6; display: flex; align-items: center; padding: 0 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); z-index: 5; flex-shrink: 0;}
         .top-bar h3 { margin: 0; color: #2c3e50; }
         
         .content-area { flex: 1; position: relative; overflow: hidden; }
@@ -41,25 +41,27 @@
         .notice-banner strong { color: #2980b9; }
 
         /* Home Screen Cards */
-        .home-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; }
+        .home-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 20px; padding-bottom: 40px;}
         .home-card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border: 1px solid #e9ecef; display: flex; flex-direction: column; transition: transform 0.2s;}
         .home-card:hover { transform: translateY(-3px); box-shadow: 0 6px 12px rgba(0,0,0,0.08); }
         .home-card h3 { margin: 0 0 5px 0; color: #2c3e50; font-size: 1.15em;}
         .home-card p { color: #6c757d; font-size: 0.9em; line-height: 1.4; flex-grow: 1; margin: 0 0 15px 0;}
-        .stat-box { background: #f8f9fa; padding: 10px; border-radius: 6px; border: 1px solid #e2e6ea; margin-bottom: 15px;}
-        .stat-row { display: flex; justify-content: space-between; font-size: 0.9em; margin-bottom: 5px; color: #495057;}
-        .stat-row:last-child { margin-bottom: 0; }
+        
+        .stat-box { background: #f8f9fa; padding: 12px; border-radius: 6px; border: 1px solid #e2e6ea; margin-bottom: 15px;}
+        .stat-row { display: flex; justify-content: space-between; font-size: 0.9em; margin-bottom: 6px; color: #495057; border-bottom: 1px solid #f1f3f5; padding-bottom: 4px;}
+        .stat-row:last-child { margin-bottom: 0; border-bottom: none; padding-bottom: 0;}
         .stat-val { font-weight: bold; color: #28a745;}
+        
         .home-card button { background: #f8f9fa; border: 1px solid #ced4da; color: #2c3e50; padding: 10px; border-radius: 4px; cursor: pointer; font-weight: bold; transition: 0.2s; width: 100%;}
         .home-card button:hover { background: #3498db; color: white; border-color: #3498db;}
 
         /* Diagnostics Specifics */
         .diag-section { margin-bottom: 30px; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.05); border-top: 4px solid #e67e22;}
-        .diag-header { margin: 0 0 15px 0; color: #2c3e50; font-size: 1.2em;}
+        .diag-header { margin: 0 0 10px 0; color: #2c3e50; font-size: 1.2em;}
         .diag-desc { font-size: 0.9em; color: #6c757d; margin-bottom: 15px;}
         
-        .diag-table { width: 100%; border-collapse: collapse; font-size: 0.9em; margin-bottom: 15px; }
-        .diag-table th, .diag-table td { border: 1px solid #dee2e6; padding: 10px; text-align: left;}
+        .diag-table { width: 100%; border-collapse: collapse; font-size: 0.9em; margin-bottom: 5px; }
+        .diag-table th, .diag-table td { border: 1px solid #dee2e6; padding: 8px 12px; text-align: left;}
         .diag-table th { background-color: #f8f9fa; color: #495057;}
         .err-val { color: #d9534f; font-weight: bold; text-align: center; width: 80px;}
         .zero-val { color: #ccc; text-align: center; width: 80px;}
@@ -95,8 +97,7 @@
                 </div>
                 
                 <div class="notice-banner">
-                    <strong>🎓 Skill-Building Focus:</strong> This curriculum is about developing robust habits, not passing a test. 
-                    Practice a module until you feel confident in the targeted skill, and then move on. Your accuracy is tracked below, and specific errors are logged in your Diagnostic Breakdown.
+                    <strong>🎓 Skill-Building Focus:</strong> Practice a module until you feel confident in the specific targeted skills. Your positive accuracy is tracked below. Your specific errors are logged in the Diagnostic Breakdown.
                 </div>
 
                 <div class="home-grid" id="home-grid"></div>
@@ -108,7 +109,7 @@
                 </div>
                 
                 <div class="notice-banner" style="border-left-color: #e67e22;">
-                    <strong>🩺 Identify Your Habits:</strong> This page aggregates specific errors you've made across multiple different modules to help you identify bad habits (like consistently squashing the scale, or misreading gridlines).
+                    <strong>🩺 Identify Your Habits:</strong> This page aggregates specific errors you've made across the entire curriculum to help you identify negative habits (like consistently squashing the scale, or misreading gridlines).
                 </div>
 
                 <div id="dashboard-content"></div>
@@ -139,7 +140,7 @@
     const navDashBtn = document.getElementById('nav-dash');
     const homeGrid = document.getElementById('home-grid');
 
-    // Build Navigation Sidebar
+    // Build Sidebar
     curriculum.forEach(mod => {
         let li = document.createElement('li');
         li.className = 'nav-item';
@@ -165,7 +166,18 @@
         iframe.src = mod.file; 
     }
 
-    // --- HOME SCREEN RENDERER (Positive Stats Only) ---
+    // Helper Math
+    const pct = (val, tot) => tot > 0 ? Math.round((val/tot)*100) + "%" : "0%";
+    const getD = (id) => {
+        try { return (JSON.parse(localStorage.getItem(`gs_mod_${id}`)) || {}).details || {}; } 
+        catch(e) { return {}; }
+    };
+    const getT = (id) => {
+        try { return (JSON.parse(localStorage.getItem(`gs_mod_${id}`)) || {}).total || 0; } 
+        catch(e) { return 0; }
+    };
+
+    // --- HOME SCREEN RENDERER (Granular Positive Stats) ---
     function showHome() {
         hideAllViews();
         iframe.src = ""; 
@@ -175,39 +187,71 @@
         homeGrid.innerHTML = "";
         
         curriculum.forEach(mod => {
-            let data = JSON.parse(localStorage.getItem(`gs_mod_${mod.id}`)) || { total: 0, details: {} };
-            let total = data.total;
-            let d = data.details;
+            let total = getT(mod.id);
+            let d = getD(mod.id);
             
             let statsHTML = "";
             
             if (total === 0) {
                 statsHTML = `<div class="stat-row"><span>Status:</span> <span style="color:#6c757d;">Not Started</span></div>`;
             } else {
-                // Custom positive stat extraction per module
-                const pct = (val, tot) => tot > 0 ? Math.round((val/tot)*100) + "%" : "0%";
-                
                 if (mod.id === "1" || mod.id === "2") {
-                    statsHTML = `<div class="stat-row"><span>Attempts:</span> <span>${total}</span></div>
-                                 <div class="stat-row"><span>Overall Accuracy:</span> <span class="stat-val">${pct(data.correct, total)}</span></div>`;
-                } else if (mod.id === "3") {
-                    statsHTML = `<div class="stat-row"><span>Quantity Accuracy:</span> <span class="stat-val">${pct(d.qtyEarned, d.qtyTotal)}</span></div>
-                                 <div class="stat-row"><span>Unit Accuracy:</span> <span class="stat-val">${pct(d.unitEarned, d.unitTotal)}</span></div>
-                                 <div class="stat-row"><span>Precision Accuracy:</span> <span class="stat-val">${pct(d.precEarned, d.precTotal)}</span></div>`;
-                } else if (mod.id === "4a" || mod.id === "4b" || mod.id === "5") {
-                    statsHTML = `<div class="stat-row"><span>Total Plots:</span> <span>${total}</span></div>
-                                 <div class="stat-row"><span>Flawless Plots:</span> <span class="stat-val">${data.correct}</span></div>`;
-                } else if (mod.id === "6") {
-                    let pLine = (d.exec?.line?.perf || 0); let pCurve = (d.exec?.curve?.perf || 0);
-                    statsHTML = `<div class="stat-row"><span>Total Models Drawn:</span> <span>${total}</span></div>
-                                 <div class="stat-row"><span>Perfect Models:</span> <span class="stat-val">${pLine + pCurve}</span></div>`;
-                } else if (mod.id === "7") {
-                    let ex = (d.pred?.inter?.exa || 0) + (d.pred?.extra?.exa || 0);
-                    statsHTML = `<div class="stat-row"><span>Predictions Made:</span> <span>${total}</span></div>
-                                 <div class="stat-row"><span>Spot-On Readings:</span> <span class="stat-val">${ex}</span></div>`;
-                } else if (mod.id === "8") {
-                    statsHTML = `<div class="stat-row"><span>Calculations Made:</span> <span>${total}</span></div>
-                                 <div class="stat-row"><span>Flawless Math:</span> <span class="stat-val">${data.correct}</span></div>`;
+                    let cor = JSON.parse(localStorage.getItem(`gs_mod_${mod.id}`)).correct || 0;
+                    statsHTML = `<div class="stat-row"><span>Accuracy:</span> <span class="stat-val">${pct(cor, total)}</span></div>`;
+                } 
+                else if (mod.id === "3") {
+                    statsHTML = `<div class="stat-row"><span>Quantity Found:</span> <span class="stat-val">${pct(d.qtyEarned, d.qtyTotal)}</span></div>
+                                 <div class="stat-row"><span>Unit Found:</span> <span class="stat-val">${pct(d.unitEarned, d.unitTotal)}</span></div>
+                                 <div class="stat-row"><span>Precision Found:</span> <span class="stat-val">${pct(d.precEarned, d.precTotal)}</span></div>`;
+                } 
+                else if (mod.id === "4a") {
+                    statsHTML = `<div class="stat-row"><span>Perfect Axes Chosen:</span> <span class="stat-val">${pct(d.correct, total)}</span></div>`;
+                } 
+                else if (mod.id === "4b") {
+                    statsHTML = `<div class="stat-row"><span>Perfect Grid Numbering:</span> <span class="stat-val">${pct(d.perfect, total)}</span></div>`;
+                } 
+                else if (mod.id === "5") {
+                    let p=0, h=0, b=0;
+                    [1,2,3,4].forEach(l => { p+=d[l]?.p||0; h+=d[l]?.h||0; b+=d[l]?.b||0; });
+                    let t = p+h+b;
+                    statsHTML = `<div class="stat-row"><span>Perfect Placements:</span> <span class="stat-val">${pct(p, t)}</span></div>
+                                 <div class="stat-row"><span>Perfect or &le; ½ Box Off:</span> <span class="stat-val">${pct(p+h, t)}</span></div>`;
+                } 
+                else if (mod.id === "6") {
+                    let outCor = (d.outlier?.has?.cor||0) + (d.outlier?.non?.cor||0) + (d.outlier?.non?.deb||0);
+                    let outTot = Object.values(d.outlier?.has||{}).reduce((a,b)=>a+b,0) + Object.values(d.outlier?.non||{}).reduce((a,b)=>a+b,0);
+                    
+                    let toolCor = (d.trend?.linear?.line||0) + (d.trend?.curve?.curve||0) + (d.trend?.dots?.join||0);
+                    let toolTot = Object.values(d.trend?.linear||{}).reduce((a,b)=>a+b,0) + Object.values(d.trend?.curve||{}).reduce((a,b)=>a+b,0) + Object.values(d.trend?.dots||{}).reduce((a,b)=>a+b,0);
+                    
+                    let execCor = (d.exec?.line?.perf||0) + (d.exec?.curve?.perf||0);
+                    let execTot = Object.values(d.exec?.line||{}).reduce((a,b)=>a+b,0) + Object.values(d.exec?.curve||{}).reduce((a,b)=>a+b,0);
+
+                    statsHTML = `<div class="stat-row"><span>Anomaly Detection:</span> <span class="stat-val">${pct(outCor, outTot)}</span></div>
+                                 <div class="stat-row"><span>Tool Selection:</span> <span class="stat-val">${pct(toolCor, toolTot)}</span></div>
+                                 <div class="stat-row"><span>Drawing Execution:</span> <span class="stat-val">${pct(execCor, execTot)}</span></div>`;
+                } 
+                else if (mod.id === "7") {
+                    let modCor = (d.model?.linear?.line||0) + (d.model?.curve?.curve||0);
+                    let modTot = Object.values(d.model?.linear||{}).reduce((a,b)=>a+b,0) + Object.values(d.model?.curve||{}).reduce((a,b)=>a+b,0);
+                    let readCor = (d.pred?.inter?.exa||0) + (d.pred?.extra?.exa||0);
+                    let readTot = Object.values(d.pred?.inter||{}).reduce((a,b)=>a+b,0) + Object.values(d.pred?.extra||{}).reduce((a,b)=>a+b,0);
+
+                    statsHTML = `<div class="stat-row"><span>Correct Model Used:</span> <span class="stat-val">${pct(modCor, modTot)}</span></div>
+                                 <div class="stat-row"><span>Spot-On Reading Accuracy:</span> <span class="stat-val">${pct(readCor, readTot)}</span></div>`;
+                } 
+                else if (mod.id === "8") {
+                    let selT = d.sel ? Object.values(d.sel).reduce((a,b)=>a+b,0) : 0;
+                    let rdT = d.rd ? Object.values(d.rd).reduce((a,b)=>a+b,0) : 0;
+                    let triT = d.tri ? Object.values(d.tri).reduce((a,b)=>a+b,0) : 0;
+                    let mathT = d.math ? Object.values(d.math).reduce((a,b)=>a+b,0) : 0;
+                    let unitT = d.unit ? Object.values(d.unit).reduce((a,b)=>a+b,0) : 0;
+
+                    statsHTML = `<div class="stat-row"><span>Safe Point Selection:</span> <span class="stat-val">${pct(d.sel?.line||0, selT)}</span></div>
+                                 <div class="stat-row"><span>Coord Reading Accuracy:</span> <span class="stat-val">${pct(d.rd?.perf||0, rdT)}</span></div>
+                                 <div class="stat-row"><span>Triangle Size Rule:</span> <span class="stat-val">${pct(d.tri?.ok||0, triT)}</span></div>
+                                 <div class="stat-row"><span>Math Execution:</span> <span class="stat-val">${pct(d.math?.perf||0, mathT)}</span></div>
+                                 <div class="stat-row"><span>Physics Units:</span> <span class="stat-val">${pct(d.unit?.cor||0, unitT)}</span></div>`;
                 }
             }
 
@@ -215,8 +259,9 @@
             card.className = "home-card";
             card.innerHTML = `
                 <div style="flex-grow: 1;">
-                    <h3 style="display:flex; justify-content:space-between;">Module ${mod.id}</h3>
-                    <div style="font-weight:bold; color:#3498db; margin-bottom:10px;">${mod.title}</div>
+                    <h3 style="display:flex; justify-content:space-between; align-items:center;">
+                        ${mod.title} <span style="font-size:0.7em; background:#eef2f5; color:#0056b3; padding:2px 6px; border-radius:4px;">Mod ${mod.id}</span>
+                    </h3>
                     <p>${mod.desc}</p>
                     <div class="stat-box">${statsHTML}</div>
                 </div>
@@ -240,68 +285,65 @@
         dashView.style.display = "block";
         
         const content = document.getElementById('dashboard-content');
-        content.innerHTML = "";
-
-        // Helper to safely get nested data
-        const getD = (id) => (JSON.parse(localStorage.getItem(`gs_mod_${id}`)) || {}).details || {};
-        
         const formatCell = (val) => val > 0 ? `<td class="err-val">${val}</td>` : `<td class="zero-val">-</td>`;
+        
+        // Grab all data
+        let m1 = getD('1'), m2 = getD('2'), m3 = getD('3'), m4a = getD('4a'), m4b = getD('4b'), m5 = getD('5'), m6 = getD('6'), m7 = getD('7'), m8 = getD('8');
 
         let html = "";
 
-        // 1. SCALING ERRORS (Aggregates 4a and 4b)
-        let m4a = getD('4a'), m4b = getD('4b');
-        let errScale = {
-            falseZero: (m4a.falseZero || 0) + (m4b.nonZeroStart || 0),
-            awkward: (m4a.awkward || 0) + (m4b.awkwardScale || 0),
-            squashed: (m4a.squashed || 0) + (m4b.squashed || 0),
-            offChart: (m4a.offChart || 0) + (m4b.offChart || 0),
-            barError: (m4b.barChartError || 0),
-            lineError: (m4b.lineLabelError || 0)
-        };
-        
+        // 1. GRAPH DESIGN & LOGIC
         html += `
         <div class="diag-section">
-            <h2 class="diag-header">Axis Scaling Profile (Modules 4a & 4b)</h2>
-            <p class="diag-desc">Tracks mechanical errors made when establishing the size, spacing, and logic of an axis.</p>
+            <h2 class="diag-header">Graph Design & Logic (Modules 1, 2 & 3)</h2>
+            <p class="diag-desc">Tracks conceptual errors when establishing the foundation of the graph.</p>
             <table class="diag-table">
                 <tr><th>Error Type</th><th>Description</th><th>Occurrences</th></tr>
-                <tr><td><strong>False Zero</strong></td><td>Failing to break the axis for clumped data.</td>${formatCell(errScale.falseZero)}</tr>
-                <tr><td><strong>Squashed Scale</strong></td><td>Using less than 50% of the available grid space.</td>${formatCell(errScale.squashed)}</tr>
-                <tr><td><strong>Awkward Divisions</strong></td><td>Using a scale that doesn't easily divide by the minor grid lines.</td>${formatCell(errScale.awkward)}</tr>
-                <tr><td><strong>Off Chart</strong></td><td>Scale is too small; data falls off the top/side.</td>${formatCell(errScale.offChart)}</tr>
-                <tr><td><strong>Continuous in Spaces</strong></td><td>Writing numbers in the gaps instead of on the lines.</td>${formatCell(errScale.barError)}</tr>
+                <tr><td><strong>Wrong Graph Type</strong></td><td>Selecting a line/bar chart instead of a scatter plot, etc.</td>${formatCell(getT('1') - ((JSON.parse(localStorage.getItem('gs_mod_1'))||{}).correct||0))}</tr>
+                <tr><td><strong>Swapped Axes</strong></td><td>Putting the independent variable on the Y-Axis.</td>${formatCell(m2.wrongWayRound||0)}</tr>
+                <tr><td><strong>Assumption Error</strong></td><td>Forcing a causal relationship where only a correlation exists.</td>${formatCell((m2.thoughtMattered||0) + (m2.thoughtDidntMatter||0))}</tr>
+                <tr><td><strong>Missing Quantity</strong></td><td>Failing to state what is being measured in the label.</td>${formatCell((m3.qtyTotal||0) - (m3.qtyEarned||0))}</tr>
+                <tr><td><strong>Missing/Bad Unit</strong></td><td>Leaving out units or using technically incorrect formatting.</td>${formatCell((m3.unitTotal||0) - (m3.unitEarned||0))}</tr>
+                <tr><td><strong>Lacks Precision</strong></td><td>Failing to add contextual detail to the label.</td>${formatCell((m3.precTotal||0) - (m3.precEarned||0))}</tr>
             </table>
         </div>`;
 
-        // 2. PLOTTING & READING ERRORS (Aggregates 5, 7, and 8)
-        let m5 = getD('5'), m7 = getD('7'), m8 = getD('8');
-        let plotMinor = (m5['1']?.h || 0) + (m5['2']?.h || 0) + (m5['3']?.h || 0) + (m5['4']?.h || 0);
-        let plotBad = (m5['1']?.b || 0) + (m5['2']?.b || 0) + (m5['3']?.b || 0) + (m5['4']?.b || 0);
-        
-        let readMinor = (m7.pred?.inter?.clo || 0) + (m7.pred?.extra?.clo || 0) + (m8.rd?.min || 0);
-        let readSwaps = (m8.rd?.sxy || 0) + (m8.rd?.sp12 || 0);
-        let readBad = (m7.pred?.inter?.wrg || 0) + (m7.pred?.extra?.wrg || 0) + (m8.rd?.off || 0);
+        // 2. AXIS SETUP & SCALING
+        html += `
+        <div class="diag-section">
+            <h2 class="diag-header">Axis Setup & Scaling (Modules 4a & 4b)</h2>
+            <p class="diag-desc">Tracks mechanical errors made when establishing the size, spacing, and numbering of an axis.</p>
+            <table class="diag-table">
+                <tr><th>Error Type</th><th>Description</th><th>Occurrences</th></tr>
+                <tr><td><strong>False/Inappropriate Zero</strong></td><td>Starting at 0 when it needlessly squashes data or is physically arbitrary.</td>${formatCell((m4a.falseZero||0) + (m4b.nonZeroStart||0))}</tr>
+                <tr><td><strong>Squashed Scale</strong></td><td>Using less than 50% of the available grid space.</td>${formatCell((m4a.squashed||0) + (m4b.squashed||0))}</tr>
+                <tr><td><strong>Awkward Divisions</strong></td><td>Using a scale that doesn't easily divide by the minor grid lines.</td>${formatCell((m4a.awkward||0) + (m4b.awkwardScale||0))}</tr>
+                <tr><td><strong>Off Chart</strong></td><td>Scale is too small; data falls off the top/side.</td>${formatCell((m4a.offChart||0) + (m4b.offChart||0))}</tr>
+                <tr><td><strong>Categorical vs Continuous Rule</strong></td><td>Putting numbers in spaces or words on lines.</td>${formatCell((m4b.barChartError||0) + (m4b.lineLabelError||0))}</tr>
+                <tr><td><strong>Bar Chart Origin Error</strong></td><td>Breaking the axis on a bar chart (destroys proportions).</td>${formatCell(m4b.barOriginError||0)}</tr>
+                <tr><td><strong>Missing Justification</strong></td><td>Breaking the axis without a valid reason.</td>${formatCell(m4a.badReason||0)}</tr>
+            </table>
+        </div>`;
 
+        // 3. PRECISION EXECUTION
+        let plotMin = (m5['1']?.h||0) + (m5['2']?.h||0) + (m5['3']?.h||0) + (m5['4']?.h||0);
+        let plotBad = (m5['1']?.b||0) + (m5['2']?.b||0) + (m5['3']?.b||0) + (m5['4']?.b||0);
+        
         html += `
         <div class="diag-section">
             <h2 class="diag-header">Grid Execution Profile (Modules 5, 7 & 8)</h2>
             <p class="diag-desc">Tracks your physical precision when dropping points or reading coordinates from the grid.</p>
             <table class="diag-table">
                 <tr><th>Error Type</th><th>Description</th><th>Occurrences</th></tr>
-                <tr><td><strong>Minor Misread</strong></td><td>Reading or plotting slightly off the exact gridline (by ~1 box).</td>${formatCell(readMinor + plotMinor)}</tr>
-                <tr><td><strong>Coordinate Swaps</strong></td><td>Mixing up (X, Y) coordinates or reading points backwards.</td>${formatCell(readSwaps)}</tr>
-                <tr><td><strong>Severe Inaccuracy</strong></td><td>Plotting/reading wildly far from the correct location.</td>${formatCell(readBad + plotBad)}</tr>
+                <tr><td><strong>Minor Misread</strong></td><td>Reading or plotting slightly off the exact gridline (by ~1 minor box).</td>${formatCell(plotMin + (m7.pred?.inter?.clo||0) + (m7.pred?.extra?.clo||0) + (m8.rd?.min||0))}</tr>
+                <tr><td><strong>Severe Inaccuracy</strong></td><td>Plotting/reading wildly far from the correct location.</td>${formatCell(plotBad + (m7.pred?.inter?.wrg||0) + (m7.pred?.extra?.wrg||0) + (m8.rd?.off||0))}</tr>
+                <tr><td><strong>Coordinate Swaps</strong></td><td>Mixing up (X, Y) coordinates or reading points backwards.</td>${formatCell((m8.rd?.sxy||0) + (m8.rd?.sp12||0))}</tr>
             </table>
         </div>`;
 
-        // 3. MODELING & TREND ERRORS (Aggregates 6, 7, 8)
-        let m6 = getD('6');
-        let modWrong = (m6.trend?.linear?.curve || 0) + (m6.trend?.curve?.line || 0) + (m7.model?.linear?.curve || 0) + (m7.model?.curve?.line || 0);
-        let execUnbalanced = (m6.exec?.line?.unb || 0) + (m6.exec?.curve?.unb || 0);
-        let execShort = (m6.exec?.line?.far || 0) + (m6.exec?.curve?.far || 0);
-        let floatPoints = (m8.sel?.raw || 0) + (m8.sel?.flt || 0);
-
+        // 4. MODELING & TRENDS
+        let modWrong = (m6.trend?.linear?.curve||0) + (m6.trend?.curve?.line||0) + (m7.model?.linear?.curve||0) + (m7.model?.curve?.line||0);
+        
         html += `
         <div class="diag-section">
             <h2 class="diag-header">Modeling Profile (Modules 6, 7 & 8)</h2>
@@ -309,9 +351,27 @@
             <table class="diag-table">
                 <tr><th>Error Type</th><th>Description</th><th>Occurrences</th></tr>
                 <tr><td><strong>Wrong Model Used</strong></td><td>Drawing a straight line when physics requires a curve (or vice versa).</td>${formatCell(modWrong)}</tr>
-                <tr><td><strong>Unbalanced Trend</strong></td><td>Leaving too many data points exclusively on one side of the line.</td>${formatCell(execUnbalanced)}</tr>
-                <tr><td><strong>Short/Far Trend</strong></td><td>Line doesn't cover the full data span, or strays too far from the points.</td>${formatCell(execShort)}</tr>
-                <tr><td><strong>Raw Data Reliance</strong></td><td>Using raw data dots for calculations instead of trusting the Model line.</td>${formatCell(floatPoints)}</tr>
+                <tr><td><strong>Missed Anomaly</strong></td><td>Failing to spot a clear outlier in the data.</td>${formatCell((m6.outlier?.has?.ign||0) + (m6.outlier?.has?.wrg||0))}</tr>
+                <tr><td><strong>Unbalanced Trend</strong></td><td>Leaving too many data points exclusively on one side of the line.</td>${formatCell((m6.exec?.line?.unb||0) + (m6.exec?.curve?.unb||0))}</tr>
+                <tr><td><strong>Short / Far Trend</strong></td><td>Line doesn't cover full data span, or is drawn too far from points.</td>${formatCell((m6.exec?.line?.far||0) + (m6.exec?.curve?.far||0))}</tr>
+                <tr><td><strong>Wobbly Curve</strong></td><td>Drawing a curve that loops backwards or changes concavity.</td>${formatCell(m6.exec?.curve?.shp||0)}</tr>
+                <tr><td><strong>Raw Data Reliance</strong></td><td>Using raw data dots for calculations instead of trusting the Model line.</td>${formatCell((m8.sel?.raw||0) + (m8.sel?.flt||0))}</tr>
+            </table>
+        </div>`;
+
+        // 5. GRADIENT MATH
+        html += `
+        <div class="diag-section">
+            <h2 class="diag-header">Gradient Mathematics (Module 8)</h2>
+            <p class="diag-desc">Tracks mathematical operations and physics units during rate-of-change calculations.</p>
+            <table class="diag-table">
+                <tr><th>Error Type</th><th>Description</th><th>Occurrences</th></tr>
+                <tr><td><strong>Triangle Too Small</strong></td><td>Using points too close together, multiplying grid reading errors.</td>${formatCell(m8.tri?.sml||0)}</tr>
+                <tr><td><strong>Rounding Error</strong></td><td>Making a mistake when rounding the final gradient value.</td>${formatCell(m8.math?.rnd||0)}</tr>
+                <tr><td><strong>Inverse Calc</strong></td><td>Calculating Run divided by Rise (ΔX / ΔY).</td>${formatCell(m8.math?.inv||0)}</tr>
+                <tr><td><strong>Power of 10 Error</strong></td><td>Missing a decimal place or unit multiplier.</td>${formatCell(m8.math?.p10||0)}</tr>
+                <tr><td><strong>Misc Math Error</strong></td><td>General calculation failure.</td>${formatCell(m8.math?.oth||0)}</tr>
+                <tr><td><strong>Physics Unit Error</strong></td><td>Applying the wrong final physics unit to the rate of change.</td>${formatCell(m8.unit?.err||0)}</tr>
             </table>
         </div>`;
 
