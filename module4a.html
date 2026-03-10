@@ -2,34 +2,56 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Graph Skills - Module 4a</title>
     <style>
         body { font-family: Arial, sans-serif; max-width: 1200px; margin: 20px auto; padding: 20px; background-color: #f4f7f6; color: #333; }
         .module-container { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         .app-layout { display: grid; grid-template-columns: 1fr 380px; gap: 30px; margin-top: 20px; }
         .workspace { display: grid; grid-template-columns: 200px auto; grid-template-rows: auto auto; align-items: center; justify-content: center;}
+        
         .y-panel { grid-column: 1; grid-row: 1; display: flex; flex-direction: column; justify-content: center; align-items: flex-end; padding-right: 15px; text-align: right; }
         .canvas-panel { grid-column: 2; grid-row: 1; background: #fff; border: 1px solid #ccc; border-radius: 4px; box-shadow: inset 0 0 5px rgba(0,0,0,0.05); position: relative; overflow: hidden; display: flex; justify-content: center; align-items: center;}
         .x-panel { grid-column: 2; grid-row: 2; display: flex; flex-direction: column; justify-content: flex-start; align-items: center; padding-top: 15px; }
+        
         .info-panel { background: #f8f9fa; padding: 20px; border-radius: 8px; border: 1px solid #ddd; align-self: start; }
         .question-box { font-size: 1.1em; line-height: 1.4; margin-bottom: 20px;}
+        
         .data-table { border-collapse: collapse; width: 100%; margin-bottom: 20px; background: #fff;}
-        .data-table th, .data-table td { border: 1px solid #ccc; padding: 8px; text-align: center; } .data-table th { background-color: #e9ecef; }
-        .input-group { margin-bottom: 12px; width: 100%; } .input-group label { display: block; font-size: 0.9em; font-weight: bold; margin-bottom: 4px; color: #0056b3; }
+        .data-table th, .data-table td { border: 1px solid #ccc; padding: 8px; text-align: center; } 
+        .data-table th { background-color: #e9ecef; }
+        
+        .input-group { margin-bottom: 12px; width: 100%; } 
+        .input-group label { display: block; font-size: 0.9em; font-weight: bold; margin-bottom: 4px; color: #0056b3; }
         input[type="number"], input[type="text"] { padding: 8px; font-size: 1em; border-radius: 4px; border: 1px solid #aaa; width: 120px; }
-        .x-panel .input-row { display: flex; gap: 20px; align-items: center;} .x-panel input[type="number"] { width: 100px; }
+        .x-panel .input-row { display: flex; gap: 20px; align-items: center;} 
+        .x-panel input[type="number"] { width: 100px; }
+        
         .reason-container { display: none; background: #fff3cd; padding: 10px; border-radius: 4px; border-left: 4px solid #ffc107; margin-top: 5px; text-align: left; }
         .reason-container input { width: 90%; }
+        
         button { padding: 10px 20px; font-size: 1.1em; cursor: pointer; border: none; border-radius: 4px; background-color: #0056b3; color: white; transition: 0.2s; width: 100%; margin-bottom: 10px;}
-        button:hover { background-color: #004494; } button:disabled { cursor: not-allowed; opacity: 0.6; }
-        #next-btn { background-color: #28a745; display: none; } #next-btn:hover { background-color: #218838; }
-        .feedback { margin-top: 20px; font-size: 1em; line-height: 1.4; }
-        .fb-axis { margin-bottom: 10px; padding: 10px; border-radius: 4px; background: #fff; border: 1px solid #eee; border-left: 4px solid #ccc;}
+        button:hover { background-color: #004494; } 
+        button:disabled { cursor: not-allowed; opacity: 0.6; }
+        #next-btn { background-color: #28a745; display: none; } 
+        #next-btn:hover { background-color: #218838; }
+        
+        /* New Colored Feedback Classes */
+        .feedback-container { margin-top: 20px; display: none; flex-direction: column; gap: 8px;}
+        .split-fb { padding: 12px; border-radius: 4px; font-size: 0.95em; line-height: 1.4; border-left: 5px solid; }
+        .pass-box { background-color: #f8fff9; border-color: #28a745; color: #155724; }
+        .err-box { background-color: #fffafa; border-color: #d9534f; color: #721c24; }
+        .meh-box { background-color: #fff8e6; border-color: #ffc107; color: #856404; }
+
         .dashboard { margin-top: 30px; border-top: 2px solid #eee; padding-top: 15px; }
         table.stats-table { border-collapse: collapse; width: 100%; font-size: 0.9em; }
-        .stats-table th, .stats-table td { border: 1px solid #aaa; padding: 8px; text-align: left;} .stats-table th { background-color: #e9ecef; }
-        .err-val { color: #d9534f; font-weight: bold; text-align: center;} .corr-val { color: #28a745; font-weight: bold; text-align: center;}
-        .footer { text-align: center; margin-top: 30px; border-top: 1px solid #eee; padding-top: 15px; font-size: 0.9em; } .footer a { color: #6c757d; text-decoration: none; }
+        .stats-table th, .stats-table td { border: 1px solid #aaa; padding: 8px; text-align: left;} 
+        .stats-table th { background-color: #e9ecef; }
+        .err-val { color: #d9534f; font-weight: bold; text-align: center;} 
+        .corr-val { color: #28a745; font-weight: bold; text-align: center;}
+        
+        .footer { text-align: center; margin-top: 30px; border-top: 1px solid #eee; padding-top: 15px; font-size: 0.9em; } 
+        .footer a { color: #6c757d; text-decoration: none; }
     </style>
 </head>
 <body>
@@ -60,7 +82,9 @@
             <div id="table-container"></div>
             <button id="submit-btn" onclick="submitAnswer()">Evaluate & Plot Points</button>
             <button id="next-btn" onclick="nextQuestion()">Next Question</button>
-            <div class="feedback" id="feedback-text"></div>
+            
+            <div class="feedback-container" id="feedback-text"></div>
+            
             <div class="dashboard">
                 <h3 style="margin-top:0; font-size:1.1em;">Error Tracking</h3>
                 <table class="stats-table">
@@ -74,23 +98,78 @@
 </div>
 
 <script>
-    const questionBank = [
-        {
-            id: 1, scenario: "A runner tracks their distance during a 60-second sprint.",
-            dataX: [0, 10, 20, 40, 60], dataY: [0, 45, 110, 280, 400], labelX: "Time (s)", labelY: "Distance (m)",
-            x: { minData: 0, maxData: 60, boxes: 10, minors: 10, mustBreakAxis: false, validReasons: ["zoom", "spread"] },
-            y: { minData: 0, maxData: 400, boxes: 10, minors: 10, mustBreakAxis: false, validReasons: ["zoom", "spread"] }
-        },
-        {
-            id: 2, scenario: "Graphing global temperature changes. Notice how small the temp change is relative to the numbers.",
-            dataX: [1990, 2000, 2010, 2020], dataY: [14.2, 14.4, 14.7, 14.9], labelX: "Year", labelY: "Temperature (°C)",
-            x: { minData: 1990, maxData: 2020, boxes: 8, minors: 5, mustBreakAxis: true, validReasons: ["year", "ad", "false zero", "zoom", "calendar", "date", "change"] },
-            y: { minData: 14.2, maxData: 14.9, boxes: 8, minors: 5, mustBreakAxis: true, validReasons: ["zoom", "fraction", "small change", "false zero", "spread out", "clearly see", "flat"] }
-        }
+    // --- 1. Dynamic Data Generation ---
+    const templates = [
+        { s: "A runner tracks their distance during a 60-second sprint.", xL: "Time (s)", yL: "Distance (m)", x: {m: 0, M: 60, b: 10, br: false}, y: {m: 0, M: 400, b: 10, br: false} },
+        { s: "Graphing global temperature changes over decades.", xL: "Year", yL: "Temperature (°C)", x: {m: 1990, M: 2020, b: 6, br: true}, y: {m: 14.2, M: 14.9, b: 7, br: true} },
+        { s: "Measuring the voltage of an electrical circuit as resistance increases.", xL: "Resistance (Ohms)", yL: "Voltage (V)", x: {m: 100, M: 800, b: 7, br: true}, y: {m: 2.5, M: 24.0, b: 10, br: false} },
+        { s: "Hooke's Law experiment stretching a metal spring.", xL: "Force (N)", yL: "Extension (cm)", x: {m: 0, M: 10, b: 5, br: false}, y: {m: 0, M: 25, b: 5, br: false} },
+        { s: "Boiling point of water at various high altitudes.", xL: "Altitude (m)", yL: "Boiling Point (°C)", x: {m: 0, M: 5000, b: 10, br: false}, y: {m: 80, M: 100, b: 8, br: true} },
+        { s: "Plant growth measured carefully over two weeks.", xL: "Time (days)", yL: "Height (cm)", x: {m: 0, M: 14, b: 7, br: false}, y: {m: 0, M: 35, b: 7, br: false} },
+        { s: "Cooling of a cup of hot coffee.", xL: "Time (min)", yL: "Temp (°C)", x: {m: 0, M: 30, b: 6, br: false}, y: {m: 20, M: 80, b: 8, br: true} },
+        { s: "Battery drain on a smartphone over a day.", xL: "Time (hrs)", yL: "Battery (%)", x: {m: 0, M: 24, b: 8, br: false}, y: {m: 0, M: 100, b: 10, br: false} },
+        { s: "Stopping distance of a car vs its speed.", xL: "Speed (m/s)", yL: "Distance (m)", x: {m: 0, M: 30, b: 6, br: false}, y: {m: 0, M: 75, b: 8, br: false} },
+        { s: "Global population growth projections.", xL: "Year", yL: "Population (Billion)", x: {m: 2000, M: 2050, b: 10, br: true}, y: {m: 6.0, M: 9.8, b: 8, br: true} },
+        { s: "Capacitor charge over a short duration.", xL: "Time (s)", yL: "Voltage (V)", x: {m: 0, M: 5, b: 10, br: false}, y: {m: 0, M: 12, b: 6, br: false} },
+        { s: "Ocean pressure vs depth.", xL: "Depth (m)", yL: "Pressure (atm)", x: {m: 0, M: 50, b: 10, br: false}, y: {m: 1, M: 6, b: 6, br: true} },
+        { s: "Light intensity vs distance from a bulb.", xL: "Distance (m)", yL: "Intensity (Lux)", x: {m: 1, M: 5, b: 8, br: true}, y: {m: 10, M: 1000, b: 10, br: false} },
+        { s: "Car depreciation value over a decade.", xL: "Age (years)", yL: "Value ($)", x: {m: 0, M: 10, b: 5, br: false}, y: {m: 5000, M: 25000, b: 8, br: true} },
+        { s: "Radioactive decay of an isotope.", xL: "Time (days)", yL: "Activity (Bq)", x: {m: 0, M: 20, b: 10, br: false}, y: {m: 0, M: 500, b: 10, br: false} },
+        { s: "Heart rate during an intense exercise session.", xL: "Time (min)", yL: "Heart Rate (bpm)", x: {m: 0, M: 60, b: 12, br: false}, y: {m: 60, M: 180, b: 6, br: true} },
+        { s: "Fuel economy vs driving speed on a highway.", xL: "Speed (mph)", yL: "Efficiency (mpg)", x: {m: 30, M: 80, b: 10, br: true}, y: {m: 15, M: 45, b: 6, br: true} },
+        { s: "Ice cream sales vs outdoor temperature.", xL: "Temp (°C)", yL: "Sales", x: {m: 10, M: 35, b: 5, br: true}, y: {m: 50, M: 300, b: 10, br: true} },
+        { s: "Friction force vs mass of an object.", xL: "Mass (kg)", yL: "Friction (N)", x: {m: 0, M: 10, b: 10, br: false}, y: {m: 0, M: 50, b: 10, br: false} },
+        { s: "Current vs Voltage in an ohmic resistor.", xL: "Voltage (V)", yL: "Current (A)", x: {m: 0, M: 12, b: 6, br: false}, y: {m: 0, M: 2.4, b: 6, br: false} },
+        { s: "Gravity vs Distance from Earth's core.", xL: "Distance (km)", yL: "Gravity (m/s²)", x: {m: 6000, M: 20000, b: 7, br: true}, y: {m: 1, M: 9.8, b: 10, br: true} },
+        { s: "National GDP growth over recent years.", xL: "Year", yL: "GDP (Trillion $)", x: {m: 2010, M: 2024, b: 7, br: true}, y: {m: 15, M: 25, b: 10, br: true} },
+        { s: "Sound volume vs distance from speakers.", xL: "Distance (m)", yL: "Volume (dB)", x: {m: 0, M: 100, b: 10, br: false}, y: {m: 40, M: 120, b: 8, br: true} },
+        { s: "Nuclear reactor temp vs control rods inserted.", xL: "Control Rods (%)", yL: "Temp (°C)", x: {m: 0, M: 100, b: 10, br: false}, y: {m: 300, M: 800, b: 10, br: true} },
+        { s: "Specific heat absorption of a liquid.", xL: "Temp Change (°C)", yL: "Energy (J)", x: {m: 0, M: 100, b: 10, br: false}, y: {m: 0, M: 4200, b: 7, br: false} },
+        { s: "Star brightness vs distance from earth.", xL: "Distance (ly)", yL: "Brightness (mag)", x: {m: 10, M: 100, b: 9, br: true}, y: {m: 0, M: 50, b: 10, br: false} },
+        { s: "Tire tread depth vs mileage driven.", xL: "Mileage (1000s)", yL: "Tread (mm)", x: {m: 0, M: 50, b: 10, br: false}, y: {m: 2, M: 10, b: 8, br: true} },
+        { s: "Amount of solute dissolved vs temp.", xL: "Temp (°C)", yL: "Solute (g)", x: {m: 20, M: 80, b: 6, br: true}, y: {m: 100, M: 250, b: 6, br: true} },
+        { s: "Ocean temperature vs depth.", xL: "Depth (m)", yL: "Temp (°C)", x: {m: 0, M: 2000, b: 10, br: false}, y: {m: 4, M: 20, b: 8, br: true} },
+        { s: "Enzyme activity vs pH level.", xL: "pH Level", yL: "Activity Rate", x: {m: 4, M: 9, b: 10, br: true}, y: {m: 0, M: 100, b: 10, br: false} }
     ];
 
+    let questionBank = [];
     let currentQ = 0; let canvas = document.getElementById('graphCanvas'); let ctx = canvas.getContext('2d');
     const padL = 75, padB = 60, padT = 20, padR = 25, boxPixelSize = 40; 
+
+    function initializeBank() {
+        questionBank = templates.map((t, idx) => {
+            let dx = [], dy = [];
+            let isNeg = ["cooling", "depreciation", "decay", "gravity", "sound volume", "tire tread", "ocean temperature"].some(k => t.s.toLowerCase().includes(k));
+            
+            for(let i=0; i<5; i++) {
+                let pct = i / 4; 
+                let xVal = t.x.m + pct * (t.x.M - t.x.m);
+                let yPct = isNeg ? (1 - pct) : pct;
+                let yVal = t.y.m + yPct * (t.y.M - t.y.m);
+                
+                if (i > 0 && i < 4) yVal += (Math.random() - 0.5) * ((t.y.M - t.y.m) * 0.15);
+                
+                let xDec = (t.x.M - t.x.m < 10) ? 1 : 0;
+                let yDec = (t.y.M - t.y.m < 15) ? 1 : 0;
+                if (t.xL.includes("Year")) xDec = 0; 
+                
+                dx.push(parseFloat(xVal.toFixed(xDec)));
+                dy.push(parseFloat(yVal.toFixed(yDec)));
+            }
+            
+            return {
+                id: idx + 1, scenario: t.s, dataX: dx, dataY: dy, labelX: t.xL, labelY: t.yL,
+                x: { minData: t.x.m, maxData: t.x.M, boxes: t.x.b, minors: 10, mustBreakAxis: t.x.br, validReasons: ["zoom", "spread", "false zero", "year", "date", "space"] },
+                y: { minData: t.y.m, maxData: t.y.M, boxes: t.y.b, minors: 10, mustBreakAxis: t.y.br, validReasons: ["zoom", "spread", "false zero", "space", "flat", "detail"] }
+            };
+        });
+        
+        // Shuffle the 30 generated questions
+        for (let i = questionBank.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [questionBank[i], questionBank[j]] = [questionBank[j], questionBank[i]];
+        }
+    }
 
     // DATA HYDRATION
     const MODULE_ID = "4a";
@@ -104,6 +183,7 @@
         if (savedMem.details) stats = savedMem.details;
     }
 
+    // --- 2. UI & Canvas Drawing ---
     function generateTableHTML(q) {
         let html = `<table class="data-table"><tr><th>${q.labelX}</th><th>${q.labelY}</th></tr>`;
         for(let i=0; i<q.dataX.length; i++) html += `<tr><td>${q.dataX[i]}</td><td>${q.dataY[i]}</td></tr>`;
@@ -135,9 +215,7 @@
             ctx.moveTo(padL, yPos); ctx.lineTo(padL + w, yPos); ctx.stroke();
         }
 
-        ctx.lineWidth = 2; ctx.strokeStyle = "#000";
-        ctx.beginPath(); ctx.moveTo(padL, padT); ctx.lineTo(padL, originY); ctx.stroke(); 
-        ctx.beginPath(); ctx.moveTo(padL, originY); ctx.lineTo(padL + w, originY); ctx.stroke(); 
+        ctx.lineWidth = 2; ctx.strokeStyle = "#000"; ctx.beginPath(); ctx.moveTo(padL, padT); ctx.lineTo(padL, originY); ctx.stroke(); ctx.beginPath(); ctx.moveTo(padL, originY); ctx.lineTo(padL + w, originY); ctx.stroke(); 
 
         ctx.fillStyle = "#333";
         if (startX !== null && scaleX !== null) {
@@ -176,14 +254,16 @@
 
     function loadQuestion() {
         const q = questionBank[currentQ];
-        document.getElementById('question-text').innerHTML = q.scenario;
+        document.getElementById('question-text').innerHTML = `<strong>Question ${currentQ + 1} of ${questionBank.length}</strong><br><br>${q.scenario}`;
         document.getElementById('table-container').innerHTML = generateTableHTML(q);
         ['x-start', 'x-scale', 'x-reason', 'y-start', 'y-scale', 'y-reason'].forEach(id => { document.getElementById(id).value = ""; document.getElementById(id).disabled = false; });
         document.getElementById('reason-container-x').style.display = 'none'; document.getElementById('reason-container-y').style.display = 'none';
-        document.getElementById('feedback-text').innerHTML = ""; document.getElementById('next-btn').style.display = "none"; document.getElementById('submit-btn').disabled = false;
+        document.getElementById('feedback-text').style.display = "none"; document.getElementById('feedback-text').innerHTML = ""; 
+        document.getElementById('next-btn').style.display = "none"; document.getElementById('submit-btn').disabled = false;
         resizeCanvas(q); drawGrid(q); updateDashboard();
     }
 
+    // --- 3. Grading Logic ---
     function getMantissa(val) {
         if (val === 0) return 0; let v = Math.abs(val); while (v < 1) v *= 10; while (v >= 10) v /= 10; return Math.round(v * 1000) / 1000;
     }
@@ -193,21 +273,21 @@
     }
 
     function gradeAxis(start, scale, reasonText, config) {
-        if (isNaN(start) || isNaN(scale) || scale <= 0) return { outcome: "error", border: "left: 4px solid #d9534f", msg: "Invalid numbers." };
-        if (config.mustBreakAxis && start === 0) return { outcome: "falseZero", border: "left: 4px solid #d9534f", msg: `False Zero Error! Starting at 0 squashes data. Start closer to ${config.minData}.` };
+        if (isNaN(start) || isNaN(scale) || scale <= 0) return { outcome: "error", cls: "err-box", msg: "❌ Invalid numbers." };
+        if (config.mustBreakAxis && start === 0) return { outcome: "falseZero", cls: "err-box", msg: `❌ False Zero Error! Starting at 0 squashes data. Start closer to ${config.minData}.` };
         
         let graphMax = start + (scale * config.boxes);
-        if (config.maxData > graphMax || config.minData < start) return { outcome: "offChart", border: "left: 4px solid #d9534f", msg: `Data falls off graph! Axis ends at ${Number(graphMax.toFixed(3))}.` };
-        if (config.maxData <= start + ((scale * config.boxes) / 2)) return { outcome: "squashed", border: "left: 4px solid #d9534f", msg: `Data is squashed! Highest point doesn't reach halfway.` };
+        if (config.maxData > graphMax || config.minData < start) return { outcome: "offChart", cls: "err-box", msg: `❌ Data falls off graph! Axis ends at ${Number(graphMax.toFixed(3))}.` };
+        if (config.maxData <= start + ((scale * config.boxes) / 2)) return { outcome: "squashed", cls: "err-box", msg: `❌ Data is squashed! Highest point doesn't reach halfway.` };
         
         let m = getMantissa(scale); let validMantissas = (config.minors === 10) ? [1, 2, 2.5, 4, 5] : [1, 2, 2.5, 5];
-        if (!validMantissas.includes(m)) return { outcome: "awkward", border: "left: 4px solid #f0ad4e", msg: `Awkward scale. Try multiples of 1, 2, or 5.` };
+        if (!validMantissas.includes(m)) return { outcome: "awkward", cls: "meh-box", msg: `⚠️ Awkward scale. Try multiples of 1, 2, or 5.` };
 
         if (start > 0) {
-            if (reasonText.trim() === "") return { outcome: "badReason", border: "left: 4px solid #d9534f", msg: "Started > 0 but gave no reason!" };
-            if (!checkReason(reasonText, config.validReasons)) return { outcome: "badReason", border: "left: 4px solid #f0ad4e", msg: `Reason not accepted.` };
+            if (reasonText.trim() === "") return { outcome: "badReason", cls: "err-box", msg: "❌ Started > 0 but gave no reason!" };
+            if (!checkReason(reasonText, config.validReasons)) return { outcome: "badReason", cls: "meh-box", msg: `⚠️ Reason not accepted.` };
         }
-        return { outcome: "correct", border: "left: 4px solid #28a745", msg: "Perfect starting point and scale!" };
+        return { outcome: "correct", cls: "pass-box", msg: "✅ Perfect starting point and scale!" };
     }
 
     function submitAnswer() {
@@ -224,7 +304,11 @@
 
         drawGrid(q, xStart, xScale, yStart, yScale); plotPoints(xStart, xScale, yStart, yScale, q);
 
-        document.getElementById('feedback-text').innerHTML = `<div class="fb-axis" style="${resX.border}"><strong>X-Axis:</strong> ${resX.msg}</div><div class="fb-axis" style="${resY.border}"><strong>Y-Axis:</strong> ${resY.msg}</div>`;
+        document.getElementById('feedback-text').style.display = "flex";
+        document.getElementById('feedback-text').innerHTML = `
+            <div class="split-fb ${resX.cls}"><strong>X-Axis:</strong> ${resX.msg}</div>
+            <div class="split-fb ${resY.cls}"><strong>Y-Axis:</strong> ${resY.msg}</div>
+        `;
 
         // --- SAVE TO HYDRATED MEMORY ---
         let isPass = (resX.outcome === "correct" && resY.outcome === "correct");
@@ -250,6 +334,8 @@
         `;
     }
 
+    // Init
+    initializeBank();
     loadQuestion();
 </script>
 </body>
