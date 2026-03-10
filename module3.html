@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Graph Skills - Module 3</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 20px auto; padding: 20px; background-color: #f9f9f9; color: #333; }
+        .module-container { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .question-box { margin-bottom: 20px; font-size: 1.1em; line-height: 1.4; }
+        .data-table { border-collapse: collapse; margin-top: 15px; margin-bottom: 15px; width: 100%; max-width: 400px; background-color: #fff;}
+        .data-table th, .data-table td { border: 1px solid #ccc; padding: 8px 12px; text-align: center; } .data-table th { background-color: #e9ecef; } .data-table td { color: #555; font-family: monospace; }
+        .input-group { background-color: #eef2f5; padding: 15px; border-radius: 8px; margin-bottom: 20px; }
+        .input-row { display: flex; align-items: center; margin-bottom: 15px; } .input-label { font-weight: bold; width: 180px; }
+        input[type="text"] { flex-grow: 1; padding: 10px; font-size: 1em; border-radius: 4px; border: 1px solid #ccc; }
+        button { padding: 10px 20px; font-size: 1em; cursor: pointer; border: 1px solid #ccc; border-radius: 4px; background-color: #0056b3; color: white; transition: background 0.2s; margin-right: 10px; }
+        button:hover { background-color: #004494; } button:disabled { cursor: not-allowed; opacity: 0.6; }
+        #next-btn { background-color: #28a745; display: none; } #next-btn:hover { background-color: #218838; }
+        .feedback { margin-bottom: 20px; font-size: 1em; line-height: 1.5; padding-top: 15px;}
+        .fb-axis { margin-bottom: 10px; padding: 10px; border-left: 4px solid #ccc; background: #fafafa;}
+        .pts-badge { font-weight: bold; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; margin-right: 10px;}
+        .pts-5 { background-color: #d4edda; color: #155724; } .pts-mid { background-color: #fff3cd; color: #856404; } .pts-low { background-color: #f8d7da; color: #721c24; }
+        .dashboard { margin-top: 40px; border-top: 2px solid #eee; padding-top: 20px; }
+        .stats { display: flex; gap: 30px; margin-bottom: 20px; font-size: 1.1em; }
+        .stat-box { background: #f8f9fa; padding: 15px; border-radius: 6px; border: 1px solid #dee2e6; text-align: center; flex: 1;}
+        .stat-num { font-size: 1.4em; font-weight: bold; color: #0056b3; display: block; margin-top: 5px;}
+        .footer { text-align: center; margin-top: 30px; border-top: 1px solid #eee; padding-top: 15px; font-size: 0.9em; } .footer a { color: #6c757d; text-decoration: none; }
+    </style>
+</head>
+<body>
+
+<div class="module-container">
+    <h2>Module 3: Axis Labeling</h2>
+    <p>Extract the <strong>quantity</strong> and the <strong>unit</strong> from the provided data tables, and add necessary <strong>precision</strong> (e.g., "Speed <em>of car on impact</em>").</p>
+    
+    <div class="question-box" id="question-text">Loading question...</div>
+    
+    <div class="input-group">
+        <div class="input-row"><div class="input-label">Horizontal (X-Axis):</div><input type="text" id="input-x" placeholder="e.g., Time (s)"></div>
+        <div class="input-row"><div class="input-label">Vertical (Y-Axis):</div><input type="text" id="input-y" placeholder="e.g., Speed of car (m/s)"></div>
+    </div>
+    
+    <button id="submit-btn" onclick="submitAnswer()">Grade Labels</button>
+    <button id="next-btn" onclick="nextQuestion()">Next Question</button>
+
+    <div class="feedback" id="feedback-text"></div>
+
+    <div class="dashboard">
+        <h3>Scoring Dashboard</h3>
+        <p style="font-size: 0.9em; color: #666;">Each axis is worth 5 points. Max 10 pts per question.</p>
+        <div class="stats">
+            <div class="stat-box">Total Score<span class="stat-num" id="stat-total">0 / 0</span></div>
+            <div class="stat-box">Quantity Accuracy<span class="stat-num" id="stat-qty">0%</span></div>
+            <div class="stat-box">Unit Accuracy<span class="stat-num" id="stat-unit">0%</span></div>
+            <div class="stat-box">Precision Accuracy<span class="stat-num" id="stat-prec">0%</span></div>
+        </div>
+    </div>
+    <div class="footer"><a href="feedback.html" target="_blank">🐛 Report an Issue / Leave Feedback</a></div>
+</div>
+
+<script>
+    function makeTable(col1, col2, unit1, unit2, val1, val2) {
+        return `<table class='data-table'><tr><th>${col1} (${unit1})</th><th>${col2} (${unit2})</th></tr><tr><td>${val1[0]}</td><td>${val2[0]}</td></tr><tr><td>${val1[1]}</td><td>${val2[1]}</td></tr><tr><td>...</td><td>...</td></tr></table>`;
+    }
+
+    const questionBank = [
+        { id: 1, scenario: "A crash test facility hurtles a car at a wall at 40 km/h. To see how quickly the crumple zone works, they record the speed of the car every millisecond during the impact." + makeTable("Time", "Speed", "s", "m/s", [0.01, 0.02], [11.1, 8.5]), x: { quantity: ["time", "duration"], unit: ["s", "sec", "seconds"], precision: ["none"], example: "Time (s)" }, y: { quantity: ["speed", "velocity"], unit: ["m/s", "ms-1", "meters per second"], precision: ["impact", "crash", "car", "collision"], example: "Speed of car (m/s)" } },
+        { id: 2, scenario: "A student heats a chemical reaction mixture and records its temperature every minute to see when it peaks." + makeTable("Time", "Temperature", "min", "°C", [1, 2], [22.5, 35.0]), x: { quantity: ["time"], unit: ["min", "minutes", "m"], precision: ["none"], example: "Time (min)" }, y: { quantity: ["temperature", "temp"], unit: ["°c", "deg c", "degrees c", "celsius", "c"], precision: ["reaction", "mixture", "chemical"], example: "Temperature of reaction mixture (°C)" } },
+        { id: 3, scenario: "A physics student hangs different weights from a metal spring and measures how much it stretches (its extension)." + makeTable("Weight Applied", "Extension", "N", "cm", [2.0, 4.0], [1.5, 3.1]), x: { quantity: ["weight", "force", "mass", "load"], unit: ["n", "newtons"], precision: ["applied", "added", "hung"], example: "Weight applied (N)" }, y: { quantity: ["extension", "stretch", "length"], unit: ["cm", "centimeters"], precision: ["spring", "metal"], example: "Extension of spring (cm)" } }
+    ]; // Truncated for space, uses identical logic
+
+    let currentQuestionIndex = 0;
+
+    // DATA HYDRATION
+    const MODULE_ID = "3";
+    let stats = { totalPts: 0, earnedPts: 0, qtyTotal: 0, qtyEarned: 0, unitTotal: 0, unitEarned: 0, precTotal: 0, precEarned: 0 };
+    let totalPasses = 0; let totalAttempts = 0;
+
+    let savedMem = JSON.parse(localStorage.getItem(`gs_mod_${MODULE_ID}`));
+    if (savedMem) {
+        totalPasses = savedMem.correct || 0;
+        totalAttempts = savedMem.total || 0;
+        if (savedMem.details) stats = savedMem.details;
+    }
+
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+    shuffleArray(questionBank);
+
+    function loadQuestion() {
+        const q = questionBank[currentQuestionIndex];
+        document.getElementById('question-text').innerHTML = q.scenario;
+        document.getElementById('input-x').value = ""; document.getElementById('input-y').value = "";
+        document.getElementById('feedback-text').innerHTML = ""; document.getElementById('next-btn').style.display = "none";
+        document.getElementById('submit-btn').disabled = false; document.getElementById('input-x').disabled = false; document.getElementById('input-y').disabled = false;
+    }
+
+    function escapeRegExp(string) { return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+    function checkMatch(input, validArray) {
+        if (validArray.includes("none")) return true; 
+        for (let val of validArray) {
+            let regex = new RegExp('(^|\\s|\\(|\\)|\\[|\\]|-)' + escapeRegExp(val) + '(\\s|\\(|\\)|\\[|\\]|-|$)', 'i');
+            if (regex.test(input)) return true;
+        }
+        return false;
+    }
+
+    function gradeAxis(input, requirements) {
+        let pts = 0, errors = [];
+        let gotQty = checkMatch(input, requirements.quantity); if (gotQty) pts += 2; else errors.push("Missing core quantity.");
+        let gotUnit = checkMatch(input, requirements.unit); if (gotUnit) pts += 2; else if (!requirements.unit.includes("none")) errors.push("Missing or incorrect unit.");
+        let gotPrec = checkMatch(input, requirements.precision); if (gotPrec) pts += 1; else errors.push("Lacks precision.");
+
+        stats.qtyTotal += 1;   if (gotQty) stats.qtyEarned += 1;
+        stats.unitTotal += 1;  if (gotUnit) stats.unitEarned += 1;
+        stats.precTotal += 1;  if (gotPrec) stats.precEarned += 1;
+
+        return { points: pts, errors: errors, example: requirements.example };
+    }
+
+    function submitAnswer() {
+        const q = questionBank[currentQuestionIndex];
+        const userX = document.getElementById('input-x').value.trim(); const userY = document.getElementById('input-y').value.trim();
+        if (userX === "" || userY === "") return alert("Please type a label for both axes.");
+
+        document.getElementById('submit-btn').disabled = true; document.getElementById('input-x').disabled = true; document.getElementById('input-y').disabled = true;
+
+        const resX = gradeAxis(userX, q.x), resY = gradeAxis(userY, q.y);
+        const totalRoundPts = resX.points + resY.points;
+        stats.totalPts += 10; stats.earnedPts += totalRoundPts;
+
+        // --- SAVE TO HYDRATED MEMORY ---
+        let isPass = (totalRoundPts >= 8); 
+        totalAttempts += 1;
+        if (isPass) totalPasses += 1;
+        let modData = { correct: totalPasses, total: totalAttempts, details: stats }; 
+        localStorage.setItem(`gs_mod_${MODULE_ID}`, JSON.stringify(modData));
+        // -------------------------------
+
+        let fbHTML = `<div class="fb-axis"><span class="pts-badge ${resX.points === 5 ? 'pts-5' : (resX.points >= 3 ? 'pts-mid' : 'pts-low')}">${resX.points}/5 Pts</span><strong>X-Axis:</strong> ${resX.errors.length === 0 ? '<span style="color:green;">Perfect!</span>' : '<span style="color:#d9534f;">' + resX.errors.join(" ") + '</span>'}<div style="font-size: 0.9em; color: #555; margin-top: 5px;"><em>Example: ${resX.example}</em></div></div>`;
+        fbHTML += `<div class="fb-axis"><span class="pts-badge ${resY.points === 5 ? 'pts-5' : (resY.points >= 3 ? 'pts-mid' : 'pts-low')}">${resY.points}/5 Pts</span><strong>Y-Axis:</strong> ${resY.errors.length === 0 ? '<span style="color:green;">Perfect!</span>' : '<span style="color:#d9534f;">' + resY.errors.join(" ") + '</span>'}<div style="font-size: 0.9em; color: #555; margin-top: 5px;"><em>Example: ${resY.example}</em></div></div>`;
+
+        document.getElementById('feedback-text').innerHTML = fbHTML;
+        updateDashboard();
+        document.getElementById('next-btn').style.display = "inline-block";
+    }
+
+    function nextQuestion() {
+        currentQuestionIndex = (currentQuestionIndex + 1) % questionBank.length;
+        loadQuestion();
+    }
+
+    function calcPct(earned, total) { return total === 0 ? 0 : Math.round((earned / total) * 100); }
+
+    function updateDashboard() {
+        document.getElementById('stat-total').innerText = `${stats.earnedPts} / ${stats.totalPts}`;
+        document.getElementById('stat-qty').innerText = `${calcPct(stats.qtyEarned, stats.qtyTotal)}%`;
+        document.getElementById('stat-unit').innerText = `${calcPct(stats.unitEarned, stats.unitTotal)}%`;
+        document.getElementById('stat-prec').innerText = `${calcPct(stats.precEarned, stats.precTotal)}%`;
+    }
+
+    updateDashboard(); loadQuestion();
+</script>
+</body>
+</html>

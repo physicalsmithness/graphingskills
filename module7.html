@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Graph Skills - Module 7</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 1100px; margin: 20px auto; padding: 20px; background-color: #f4f7f6; color: #333; }
+        .module-container { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .app-layout { display: grid; grid-template-columns: 620px auto; gap: 30px; margin-top: 15px; }
+        .graph-wrapper { position: relative; width: 620px; height: 620px; background: #fff; border: 1px solid #ccc; cursor: crosshair;}
+        canvas { display: block; position: absolute; top: 0; left: 0; }
+        #bgCanvas { z-index: 1; }
+        #drawCanvas { z-index: 2; }
+        #trackerCanvas { z-index: 3; pointer-events: none; }
+        .info-panel { background: #f8f9fa; padding: 20px; border-radius: 8px; border: 1px solid #ddd; }
+        
+        .scenario-box { padding: 15px; background: #eef2f5; border-radius: 6px; border: 1px solid #0056b3; margin-bottom: 20px; font-size: 1.05em; line-height: 1.4;}
+        
+        .step-box { padding: 15px; background: #fff; border-radius: 6px; border-left: 5px solid #6c757d; margin-bottom: 15px; transition: 0.3s;}
+        .step-box.active { border-left-color: #0056b3; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+
+        .btn-main { display: block; padding: 12px; font-size: 1.1em; cursor: pointer; border: none; border-radius: 4px; background-color: #0056b3; color: white; width: 100%; margin-top: 10px;}
+        .btn-main:hover { background-color: #004494; }
+        .btn-success { background-color: #28a745; }
+        .btn-success:hover { background-color: #218838; }
+        .tool-btn { padding: 10px; border: 1px solid #ccc; background: #fff; cursor: pointer; border-radius: 4px; flex: 1; font-size: 0.9em; text-align: center; }
+        .tool-btn.active { background: #0056b3; color: white; border-color: #0056b3; }
+        
+        .prediction-input { width: 100px; padding: 8px; font-size: 1.1em; border: 2px solid #ccc; border-radius: 4px; margin-right: 10px; text-align: center;}
+        .pred-label { font-weight: bold; font-size: 1.1em; margin-bottom: 10px; display: block; color: #0056b3;}
+        .vocab-tag { display: inline-block; padding: 3px 8px; border-radius: 12px; font-size: 0.8em; font-weight: bold; margin-bottom: 10px;}
+        .tag-inter { background: #d4edda; color: #155724; border: 1px solid #c3e6cb;}
+        .tag-extra { background: #fff3cd; color: #856404; border: 1px solid #ffeeba;}
+
+        .feedback { margin-top: 15px; padding: 12px; border-radius: 4px; display: none; line-height: 1.4; }
+
+        /* Settings and Dashboard Styles */
+        .settings-panel { background: #f1f3f5; border: 1px solid #ced4da; border-radius: 6px; padding: 10px 15px; margin-top: 20px; }
+        .settings-panel summary { font-weight: bold; cursor: pointer; color: #495057; outline: none;}
+        .settings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; font-size: 0.9em;}
+        .setting-item { display: flex; flex-direction: column; gap: 5px; }
+        .setting-item input[type=range] { width: 100%; }
+
+        .dash-container { margin-top: 30px; border-top: 2px solid #ccc; padding-top: 15px; }
+        .matrix-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-top: 10px;}
+        .conf-matrix { width: 100%; border-collapse: collapse; font-size: 0.85em; background: #fff; text-align: center;}
+        .conf-matrix th, .conf-matrix td { border: 1px solid #aaa; padding: 6px; }
+        .conf-matrix th { background: #e9ecef; font-weight: bold;}
+        .mat-actual { font-weight: bold; text-align: left; background: #f8f9fa;}
+        .mat-match { background-color: #d4edda; font-weight: bold; color: #155724;}
+        .mat-meh { background-color: #fff3cd; color: #856404;}
+        .mat-err { background-color: #f8d7da; color: #721c24; font-weight: bold;}
+
+        /* Footer Styles */
+        .footer { text-align: center; margin-top: 30px; border-top: 1px solid #eee; padding-top: 15px; font-size: 0.9em; }
+        .footer a { color: #6c757d; text-decoration: none; }
+        .footer a:hover { color: #333; text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+<div class="module-container">
+    <h2 style="margin-top:0;">Module 7: Interpolation & Extrapolation</h2>
+    <p>A graph is a predictive model. Draw your trend line completely across the <strong>entire</strong> data range, then use it to predict future values.</p>
+
+    <div class="app-layout">
+        <div class="graph-wrapper" id="graph-wrapper">
+            <canvas id="bgCanvas" width="620" height="620"></canvas>
+            <canvas id="drawCanvas" width="620" height="620"></canvas>
+            <canvas id="trackerCanvas" width="620" height="620"></canvas>
+        </div>
+
+        <div class="info-panel">
+            <div class="scenario-box" id="scenario-text">Loading scenario...</div>
+
+            <div id="step-1" class="step-box active">
+                <strong>Step 1: Draw the Model</strong>
+                <p style="font-size: 0.9em; color: #555;">Draw a trend that extends completely across the grid where possible.</p>
+                <div style="display:flex; gap:5px; margin-top:10px;">
+                    <button id="tool-line" class="tool-btn active" onclick="setTool('line')">Straight Line</button>
+                    <button id="tool-curve" class="tool-btn" onclick="setTool('curve')">Smooth Curve</button>
+                </div>
+                <button class="btn-main" id="lock-btn" onclick="lockAndPredict()">Lock Trend Line</button>
+                <button class="tool-btn" id="clear-btn" style="width:100%; margin-top:5px;" onclick="setTool(currentTool)">Clear / Redraw</button>
+            </div>
+
+            <div id="step-2" class="step-box" style="opacity: 0.4; pointer-events: none;">
+                <strong>Step 2: Make a Prediction</strong>
+                <div id="pred-container" style="margin-top:15px; display:none;">
+                    <span id="vocab-tag" class="vocab-tag"></span>
+                    <label class="pred-label" id="pred-question">What is the value of Y when X is ?</label>
+                    <p style="font-size: 0.85em; color: #666;">Hover over the graph to use the reading lines. Find the target X, follow it to your line, and strictly count the minor gridlines on the Y-axis.</p>
+                    <div style="display:flex; align-items: center; margin-top: 10px;">
+                        <input type="number" step="0.1" id="user-prediction" class="prediction-input" placeholder="Value">
+                        <button class="btn-main btn-success" id="chk-btn" style="margin:0;" onclick="evaluatePrediction()">Check Answer</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="feedback" class="feedback"></div>
+            <button id="next-btn" class="btn-main" style="display:none; background:#28a745; margin-top:15px;" onclick="init()">Next Question</button>
+        </div>
+    </div>
+
+    <details class="settings-panel">
+        <summary>⚙️ Adjust Grading Strictness (Teacher Tools)</summary>
+        <div class="settings-grid">
+            <div class="setting-item">
+                <label>Spot On: Error &le; <span id="val-tolSpotOn">1.0</span> units</label>
+                <input type="range" id="inp-tolSpotOn" min="0.1" max="5.0" step="0.1" value="1.0" oninput="updateTols()">
+            </div>
+            <div class="setting-item">
+                <label>Minor Error: Error &le; <span id="val-tolMinor">3.0</span> units</label>
+                <input type="range" id="inp-tolMinor" min="1.0" max="10.0" step="0.5" value="3.0" oninput="updateTols()">
+            </div>
+        </div>
+    </details>
+
+    <div class="dash-container">
+        <h3 style="margin:0 0 5px 0;">Prediction Analytics</h3>
+        <div class="matrix-grid">
+            <div>
+                <table class="conf-matrix">
+                    <thead>
+                        <tr><th colspan="3" style="background:#0056b3; color:white;">1. Model Selection</th></tr>
+                        <tr><th>Actual \ Chosen</th><th>Line</th><th>Curve</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td class="mat-actual">Linear</td><td id="m-lin-lin">0 (-)</td><td id="m-lin-cur">0</td></tr>
+                        <tr><td class="mat-actual">Curve</td><td id="m-cur-lin">0</td><td id="m-cur-cur">0 (-)</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div>
+                <table class="conf-matrix">
+                    <thead>
+                        <tr><th colspan="4" style="background:#0056b3; color:white;">2. Reading Accuracy</th></tr>
+                        <tr><th>Task Type</th><th>Spot On</th><th>Minor Err</th><th>Way Off</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td class="mat-actual">Interpolation</td><td id="p-int-exa">0 (-)</td><td id="p-int-clo">0</td><td id="p-int-wrg">0</td></tr>
+                        <tr><td class="mat-actual">Extrapolation</td><td id="p-ext-exa">0 (-)</td><td id="p-ext-clo">0</td><td id="p-ext-wrg">0</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <a href="feedback.html" target="_blank">🐛 Report an Issue / Leave Feedback</a>
+    </div>
+</div>
+
+<script>
+    const bgCanvas = document.getElementById('bgCanvas'), ctxBg = bgCanvas.getContext('2d');
+    const drawCanvas = document.getElementById('drawCanvas'), ctxDraw = drawCanvas.getContext('2d');
+    const trackerCanvas = document.getElementById('trackerCanvas'), ctxTrack = trackerCanvas.getContext('2d');
+    const graphWrapper = document.getElementById('graph-wrapper');
+    
+    const padL = 70, padB = 60, size = 500;
+    
+    let points = [], isDrawing = false, currentTool = 'line', drawingNodes = [];
+    let activeScenario = null;
+    let phase = 1; 
+    let isInterp = true;
+    let hasLogged = false; 
+    
+    let targetX_value = 0, targetY_userLine = 0; 
+    let lineLookup = []; 
+
+    let tolSpotOn = 1.0;
+    let tolMinor = 3.0;
+
+    function updateTols() {
+        tolSpotOn = parseFloat(document.getElementById('inp-tolSpotOn').value);
+        tolMinor = parseFloat(document.getElementById('inp-tolMinor').value);
+        document.getElementById('val-tolSpotOn').innerText = tolSpotOn.toFixed(1);
+        document.getElementById('val-tolMinor').innerText = tolMinor.toFixed(1);
+    }
+
+    let stats = {
+        model: { linear: {line: 0, curve: 0}, curve: {line: 0, curve: 0} },
+        pred: { inter: {exa: 0, clo: 0, wrg: 0}, extra: {exa: 0, clo: 0, wrg: 0} }
+    };
+
+    const scenarioBank = {
+        linear: [
+            { text: "<strong>Physics:</strong> Hooke's Law experiment mapping force to spring extension.", xLabel: "Force (N)", yLabel: "Extension (cm)" },
+            { text: "<strong>Electronics:</strong> Ohm's law experiment mapping current to voltage.", xLabel: "Current (A)", yLabel: "Voltage (V)" }
+        ],
+        curve: [
+            { text: "<strong>Thermodynamics:</strong> A cup of coffee cooling over time.", xLabel: "Time (min)", yLabel: "Temp (°C)", cType: "decay" },
+            { text: "<strong>Biology:</strong> Bacterial population growth in a petri dish.", xLabel: "Time (hrs)", yLabel: "Population (k)", cType: "growth" }
+        ]
+    };
+
+    function init() {
+        phase = 1; points = []; drawingNodes = []; lineLookup = []; hasLogged = false;
+        
+        document.getElementById('step-1').style.opacity = "1";
+        document.getElementById('step-1').style.pointerEvents = "all";
+        document.getElementById('step-2').style.opacity = "0.4";
+        document.getElementById('step-2').style.pointerEvents = "none";
+        document.getElementById('pred-container').style.display = "none";
+        document.getElementById('feedback').style.display = "none";
+        document.getElementById('next-btn').style.display = "none";
+        document.getElementById('chk-btn').style.display = "block";
+        document.getElementById('user-prediction').value = "";
+        
+        ctxDraw.clearRect(0,0,620,620);
+        ctxTrack.clearRect(0,0,620,620);
+        
+        generateData();
+        drawGraph();
+        setTool('line'); 
+    }
+
+    function generateData() {
+        const type = Math.random() < 0.5 ? 'linear' : 'curve';
+        const scenarios = scenarioBank[type];
+        activeScenario = scenarios[Math.floor(Math.random() * scenarios.length)];
+        activeScenario.type = type;
+        
+        document.getElementById('scenario-text').innerHTML = activeScenario.text;
+
+        for (let i = 0; i < 5; i++) {
+            let xVal = 10 + (i * 12); 
+            let xPx = padL + (xVal / 100) * size;
+            let yVal;
+            
+            if (type === 'linear') {
+                let startY = 10 + (Math.random() * 10);
+                let slope = (Math.random() * 0.8 + 0.5); 
+                yVal = startY + (xVal * slope) + (Math.random() * 6 - 3); 
+            } else {
+                if (activeScenario.cType === 'decay') {
+                    yVal = 80 * Math.exp(-0.04 * xVal) + 20 + (Math.random() * 4 - 2);
+                } else {
+                    yVal = 5 * Math.exp(0.04 * xVal) + (Math.random() * 4 - 2);
+                }
+            }
+            
+            let yPx = (padB + size) - (yVal / 100) * size;
+            points.push({x: xPx, y: yPx, xVal: xVal, yVal: yVal});
+        }
+    }
+
+    function drawGraph() {
+        ctxBg.clearRect(0,0,620,620);
+        
+        // 1. Draw Minor Gridlines (Every 1 unit)
+        ctxBg.lineWidth = 1;
+        for(let i=0; i<=100; i++) {
+            let px = padL + (i * (size/100));
+            let py = (padB + size) - (i * (size/100));
+            
+            if (i % 10 === 0) {
+                ctxBg.strokeStyle = "#bbb"; // Major grid lines
+            } else {
+                ctxBg.strokeStyle = "#e5e5e5"; // Minor grid lines (Darkened slightly for visibility)
+            }
+            
+            ctxBg.beginPath(); ctxBg.moveTo(px, padB); ctxBg.lineTo(px, padB+size); ctxBg.stroke();
+            ctxBg.beginPath(); ctxBg.moveTo(padL, py); ctxBg.lineTo(padL+size, py); ctxBg.stroke();
+        }
+
+        // 2. Draw Major Axis Numbers
+        ctxBg.textAlign = "center"; ctxBg.textBaseline = "middle"; ctxBg.font = "12px Arial";
+        ctxBg.fillStyle = "#555";
+        for(let i=0; i<=10; i++) {
+            let px = padL + (i * (size/10));
+            let py = (padB + size) - (i * (size/10));
+            ctxBg.fillText(i * 10, px, padB + size + 15);
+            ctxBg.textAlign = "right";
+            ctxBg.fillText(i * 10, padL - 10, py);
+            ctxBg.textAlign = "center";
+        }
+        
+        // 3. Draw Axis Outline
+        ctxBg.lineWidth = 2; ctxBg.strokeStyle = "#000";
+        ctxBg.strokeRect(padL, padB, size, size);
+
+        // 4. Draw Axis Labels
+        ctxBg.fillStyle = "#000"; ctxBg.font = "bold 14px Arial";
+        ctxBg.fillText(activeScenario.xLabel, padL + (size/2), padB + size + 40);
+        ctxBg.save(); ctxBg.translate(20, padB + (size/2)); ctxBg.rotate(-Math.PI / 2); ctxBg.fillText(activeScenario.yLabel, 0, 0); ctxBg.restore();
+
+        // 5. Draw Points
+        points.forEach(p => {
+            ctxBg.strokeStyle = "#c0392b"; ctxBg.lineWidth = 2;
+            ctxBg.beginPath(); ctxBg.moveTo(p.x-5, p.y-5); ctxBg.lineTo(p.x+5, p.y+5); ctxBg.moveTo(p.x+5, p.y-5); ctxBg.lineTo(p.x-5, p.y+5); ctxBg.stroke();
+        });
+    }
+
+    function setTool(t) {
+        if (phase !== 1) return;
+        currentTool = t; drawingNodes = []; ctxDraw.clearRect(0,0,620,620);
+        document.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById('tool-'+t).classList.add('active');
+    }
+
+    drawCanvas.addEventListener('mousedown', e => {
+        if (phase !== 1) return;
+        const rect = drawCanvas.getBoundingClientRect();
+        const mx = e.clientX - rect.left, my = e.clientY - rect.top;
+        if (currentTool === 'line') { isDrawing = true; drawingNodes = [{x: mx, y: my}]; } 
+        else if (currentTool === 'curve') { drawingNodes.push({x: mx, y: my}); renderDrawing(); }
+    });
+
+    drawCanvas.addEventListener('mousemove', e => {
+        if (phase !== 1 || !isDrawing || currentTool !== 'line') return;
+        const rect = drawCanvas.getBoundingClientRect();
+        drawingNodes[1] = {x: e.clientX - rect.left, y: e.clientY - rect.top};
+        renderDrawing();
+    });
+
+    drawCanvas.addEventListener('mouseup', () => { isDrawing = false; });
+    drawCanvas.addEventListener('dblclick', () => { if (phase === 1 && currentTool === 'curve') renderDrawing(true); });
+
+    function renderDrawing(closed = false) {
+        ctxDraw.clearRect(0,0,620,620);
+        if (drawingNodes.length < 2) {
+            if (drawingNodes.length === 1 && currentTool === 'curve') {
+                ctxDraw.fillStyle = "#0056b3"; ctxDraw.beginPath(); ctxDraw.arc(drawingNodes[0].x, drawingNodes[0].y, 4, 0, 7); ctxDraw.fill();
+            }
+            return;
+        }
+        
+        ctxDraw.strokeStyle = "#0056b3"; ctxDraw.lineWidth = 3; ctxDraw.lineJoin = "round";
+        ctxDraw.beginPath(); ctxDraw.moveTo(drawingNodes[0].x, drawingNodes[0].y);
+
+        if (currentTool === 'line') {
+            ctxDraw.lineTo(drawingNodes[1].x, drawingNodes[1].y);
+        } else if (currentTool === 'curve') {
+            let t = 1; 
+            for (let i = 0; i < drawingNodes.length - 1; i++) {
+                let p0 = (i > 0) ? drawingNodes[i - 1] : drawingNodes[0];
+                let p1 = drawingNodes[i]; let p2 = drawingNodes[i + 1]; let p3 = (i != drawingNodes.length - 2) ? drawingNodes[i + 2] : p2;
+                let cp1x = p1.x + (p2.x - p0.x) / 6 * t, cp1y = p1.y + (p2.y - p0.y) / 6 * t;
+                let cp2x = p2.x - (p3.x - p1.x) / 6 * t, cp2y = p2.y - (p3.y - p1.y) / 6 * t;
+                ctxDraw.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, p2.x, p2.y);
+            }
+        }
+        ctxDraw.stroke();
+
+        if (currentTool === 'curve' && !closed) {
+            ctxDraw.fillStyle = "#0056b3";
+            drawingNodes.forEach(n => { ctxDraw.beginPath(); ctxDraw.arc(n.x, n.y, 4, 0, 7); ctxDraw.fill(); });
+        }
+    }
+
+    function lockAndPredict() {
+        if (drawingNodes.length < 2) return alert("Please draw a line or curve first!");
+        
+        if (currentTool === 'curve') renderDrawing(true);
+        
+        // Scan pixels to build lookup map for user's specific line
+        let imgData = ctxDraw.getImageData(padL, padB, size, size).data;
+        lineLookup = new Array(size).fill(null);
+        
+        for (let x = 0; x < size; x++) {
+            let ySum = 0, yCount = 0;
+            for (let y = 0; y < size; y++) {
+                let index = (y * size + x) * 4 + 3;
+                if (imgData[index] > 100) { ySum += y; yCount++; }
+            }
+            if (yCount > 0) lineLookup[x] = ySum / yCount; 
+        }
+
+        // Build valid target list based strictly on what the user successfully drew on the visible canvas
+        let validTargets = [];
+        for (let x = 20; x <= 100; x += 10) {
+            if (x === 60) continue; 
+            // Array bounds safeguard to prevent NaN out-of-bounds error
+            let px = Math.min(Math.round((x / 100) * size), size - 1);
+            if (lineLookup[px] !== null && lineLookup[px] !== undefined) {
+                validTargets.push(x);
+            }
+        }
+
+        let interpCands = validTargets.filter(x => x >= 20 && x <= 50);
+        let extrapCands = validTargets.filter(x => x >= 70);
+
+        // Decide question type, automatically falling back if the user's line left the canvas early
+        isInterp = Math.random() < 0.4;
+        if (isInterp && interpCands.length === 0) isInterp = false;
+        if (!isInterp && extrapCands.length === 0) isInterp = true;
+
+        let finalCands = isInterp ? interpCands : extrapCands;
+
+        if (finalCands.length === 0) {
+            alert("Your line is too short or left the chart area early! Please draw a trend that spans across as much of the visible data area as possible.");
+            return;
+        }
+
+        targetX_value = finalCands[Math.floor(Math.random() * finalCands.length)];
+        
+        // Array bounds safeguard
+        let pxIndex = Math.min(Math.round((targetX_value / 100) * size), size - 1);
+        targetY_userLine = 100 - ((lineLookup[pxIndex] / size) * 100);
+
+        phase = 2;
+        document.getElementById('step-1').style.opacity = "0.4";
+        document.getElementById('step-1').style.pointerEvents = "none";
+        document.getElementById('step-2').style.opacity = "1";
+        document.getElementById('step-2').style.pointerEvents = "all";
+        document.getElementById('pred-container').style.display = "block";
+        
+        let tag = document.getElementById('vocab-tag');
+        tag.innerText = isInterp ? "Interpolation (Inside Data)" : "Extrapolation (Outside Data)";
+        tag.className = "vocab-tag " + (isInterp ? "tag-inter" : "tag-extra");
+        
+        document.getElementById('pred-question').innerHTML = `What is the expected <strong>${activeScenario.yLabel.split(' ')[0]}</strong> when ${activeScenario.xLabel.split(' ')[0]} is <strong>${targetX_value}</strong>?`;
+    }
+
+    graphWrapper.addEventListener('mousemove', e => {
+        if (phase !== 2) return;
+        const rect = graphWrapper.getBoundingClientRect();
+        let mx = e.clientX - rect.left, my = e.clientY - rect.top;
+        
+        ctxTrack.clearRect(0,0,620,620);
+        
+        if (mx > padL && mx < padL + size && my > padB && my < padB + size) {
+            let relX = Math.min(Math.round(mx - padL), size - 1);
+            let lineY_rel = lineLookup[relX];
+            
+            if (lineY_rel !== null && lineY_rel !== undefined) {
+                let snapY = padB + lineY_rel;
+                
+                ctxTrack.strokeStyle = "rgba(0, 123, 255, 0.8)";
+                ctxTrack.setLineDash([5, 5]);
+                ctxTrack.lineWidth = 1.5;
+                
+                ctxTrack.beginPath();
+                ctxTrack.moveTo(mx, padB + size); ctxTrack.lineTo(mx, snapY);
+                ctxTrack.moveTo(mx, snapY); ctxTrack.lineTo(padL, snapY);
+                ctxTrack.stroke();
+                
+                ctxTrack.fillStyle = "#ffc107"; ctxTrack.setLineDash([]);
+                ctxTrack.beginPath(); ctxTrack.arc(mx, snapY, 6, 0, 7); ctxTrack.fill(); ctxTrack.stroke();
+            }
+        }
+    });
+    graphWrapper.addEventListener('mouseleave', () => ctxTrack.clearRect(0,0,620,620));
+
+    function evaluatePrediction() {
+        const userVal = parseFloat(document.getElementById('user-prediction').value);
+        const fb = document.getElementById('feedback');
+        fb.style.display = "block";
+        
+        if (isNaN(userVal)) {
+            fb.innerHTML = "<strong>Error:</strong> Please enter a number.";
+            fb.style.backgroundColor = "#ffeef0"; fb.style.border = "1px solid #d9534f"; fb.style.color = "#721c24";
+            return;
+        }
+
+        let error = Math.abs(userVal - targetY_userLine);
+        let modelNote = "";
+
+        if (!hasLogged) {
+            hasLogged = true;
+            stats.model[activeScenario.type][currentTool]++;
+            
+            let pType = isInterp ? 'inter' : 'extra';
+            if (error <= tolSpotOn) stats.pred[pType].exa++;
+            else if (error <= tolMinor) stats.pred[pType].clo++;
+            else stats.pred[pType].wrg++;
+
+            updateDashUI();
+
+            // --- SAVE TO WRAPPER DASHBOARD ---
+            const moduleId = "7"; 
+            let modData = JSON.parse(localStorage.getItem(`gs_mod_${moduleId}`)) || { correct: 0, total: 0, details: {} };
+            modData.total += 1;
+            // A Pass requires being Spot On with the reading, AND choosing the correct model!
+            if (error <= tolSpotOn && activeScenario.type === currentTool) modData.correct += 1;
+            modData.details = stats; 
+            localStorage.setItem(`gs_mod_${moduleId}`, JSON.stringify(modData));
+            // ---------------------------------
+        }
+
+        if (activeScenario.type !== currentTool) {
+            modelNote = `<hr style='border:0; border-top:1px solid #ccc; margin:10px 0;'><em><strong>Teacher Note:</strong> While your reading off the graph was handled well, you originally selected the wrong tool to model this data! This physics scenario actually required a ${activeScenario.type === 'linear' ? 'Straight Line' : 'Smooth Curve'}.</em>`;
+        }
+
+        if (error <= tolSpotOn) {
+            fb.innerHTML = `<strong>Spot On!</strong> You correctly read the value off <em>your</em> drawn model.<br>(Exact Y on your line: ${targetY_userLine.toFixed(1)})` + modelNote;
+            fb.style.backgroundColor = "#e6ffed"; fb.style.border = "1px solid #28a745"; fb.style.color = "#155724";
+            document.getElementById('chk-btn').style.display = "none";
+            document.getElementById('next-btn').style.display = "block";
+        } else if (error <= tolMinor) {
+            fb.innerHTML = `<strong>Minor Error:</strong> You are very close, but slightly off. Look closely at the minor gridlines on the Y-axis. Each small square is worth 1 unit. <br>(Exact Y on your line: ${targetY_userLine.toFixed(1)})` + modelNote;
+            fb.style.backgroundColor = "#fff3cd"; fb.style.border = "1px solid #ffeeba"; fb.style.color = "#856404";
+            document.getElementById('chk-btn').style.display = "none";
+            document.getElementById('next-btn').style.display = "block";
+        } else {
+            fb.innerHTML = `<strong>Way Off:</strong> You predicted ${userVal}, but at X=${targetX_value}, your line is actually at Y=${targetY_userLine.toFixed(1)}.<br><br>Hover over the graph exactly at X=${targetX_value}, follow the dashed horizontal line to the Y-axis, and carefully count the minor gridlines.`;
+            fb.style.backgroundColor = "#ffeef0"; fb.style.border = "1px solid #d9534f"; fb.style.color = "#721c24";
+        }
+    }
+
+    function getPctStr(val, total) {
+        if (total === 0) return "0 (-)";
+        return `${val} (${Math.round((val/total)*100)}%)`;
+    }
+
+    function updateDashUI() {
+        // Model Matrix
+        let lTot = stats.model.linear.line + stats.model.linear.curve;
+        document.getElementById('m-lin-lin').innerText = getPctStr(stats.model.linear.line, lTot);
+        document.getElementById('m-lin-lin').className = stats.model.linear.line > 0 ? "mat-match" : "";
+        document.getElementById('m-lin-cur').innerText = stats.model.linear.curve;
+        document.getElementById('m-lin-cur').className = stats.model.linear.curve > 0 ? "mat-err" : "";
+
+        let cTot = stats.model.curve.line + stats.model.curve.curve;
+        document.getElementById('m-cur-cur').innerText = getPctStr(stats.model.curve.curve, cTot);
+        document.getElementById('m-cur-cur').className = stats.model.curve.curve > 0 ? "mat-match" : "";
+        document.getElementById('m-cur-lin').innerText = stats.model.curve.line;
+        document.getElementById('m-cur-lin').className = stats.model.curve.line > 0 ? "mat-err" : "";
+
+        // Prediction Matrix
+        let iTot = stats.pred.inter.exa + stats.pred.inter.clo + stats.pred.inter.wrg;
+        document.getElementById('p-int-exa').innerText = getPctStr(stats.pred.inter.exa, iTot);
+        document.getElementById('p-int-exa').className = stats.pred.inter.exa > 0 ? "mat-match" : "";
+        document.getElementById('p-int-clo').innerText = stats.pred.inter.clo;
+        document.getElementById('p-int-clo').className = stats.pred.inter.clo > 0 ? "mat-meh" : "";
+        document.getElementById('p-int-wrg').innerText = stats.pred.inter.wrg;
+        document.getElementById('p-int-wrg').className = stats.pred.inter.wrg > 0 ? "mat-err" : "";
+
+        let eTot = stats.pred.extra.exa + stats.pred.extra.clo + stats.pred.extra.wrg;
+        document.getElementById('p-ext-exa').innerText = getPctStr(stats.pred.extra.exa, eTot);
+        document.getElementById('p-ext-exa').className = stats.pred.extra.exa > 0 ? "mat-match" : "";
+        document.getElementById('p-ext-clo').innerText = stats.pred.extra.clo;
+        document.getElementById('p-ext-clo').className = stats.pred.extra.clo > 0 ? "mat-meh" : "";
+        document.getElementById('p-ext-wrg').innerText = stats.pred.extra.wrg;
+        document.getElementById('p-ext-wrg').className = stats.pred.extra.wrg > 0 ? "mat-err" : "";
+    }
+
+    window.onload = init;
+</script>
+
+</body>
+</html>

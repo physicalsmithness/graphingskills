@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Graph Skills - Module 1</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 20px auto; padding: 20px; background-color: #f9f9f9; color: #333; }
+        .module-container { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .question-box { margin-bottom: 20px; font-size: 1.2em; font-weight: bold; }
+        .options { display: flex; gap: 10px; margin-bottom: 20px; }
+        button { padding: 10px 20px; font-size: 1em; cursor: pointer; border: 1px solid #ccc; border-radius: 4px; background-color: #e0e0e0; transition: background 0.2s; }
+        button:hover { background-color: #d0d0d0; } button:disabled { cursor: not-allowed; opacity: 0.6; }
+        #next-btn { background-color: #0056b3; color: white; border: none; display: none; } #next-btn:hover { background-color: #004494; }
+        .feedback { margin-bottom: 20px; min-height: 24px;}
+        .dashboard { margin-top: 40px; border-top: 2px solid #eee; padding-top: 20px; }
+        .stats { display: flex; gap: 40px; margin-bottom: 20px; font-size: 1.1em; }
+        table { border-collapse: collapse; width: 100%; max-width: 500px; text-align: center; }
+        th, td { border: 1px solid #aaa; padding: 12px; } th { background-color: #f0f0f0; font-size: 0.9em; }
+        .axis-label { font-weight: bold; background-color: #ddd; } .diagonal { background-color: #f0fdf4; } 
+        .correct-val { color: green; font-weight: bold; font-size: 1.2em; } .wrong-val { color: red; font-weight: bold; font-size: 1.2em; } .empty-val { color: #ccc; }
+        .footer { text-align: center; margin-top: 30px; border-top: 1px solid #eee; padding-top: 15px; font-size: 0.9em; } .footer a { color: #6c757d; text-decoration: none; }
+    </style>
+</head>
+<body>
+
+<div class="module-container">
+    <h2>Module 1: Choosing the Right Graph</h2>
+    <p>Read the scenario and select the most appropriate graph type.</p>
+    <div class="question-box" id="question-text">Loading question...</div>
+    <div class="options" id="options-container">
+        <button onclick="submitAnswer('scatter')">Scatter</button><button onclick="submitAnswer('bar')">Bar</button>
+        <button onclick="submitAnswer('line')">Line</button><button onclick="submitAnswer('pie')">Pie</button>
+    </div>
+    <div class="feedback" id="feedback-text"></div>
+    <button id="next-btn" onclick="nextQuestion()">Next Question</button>
+
+    <div class="dashboard">
+        <h3>Performance Dashboard</h3>
+        <div class="stats">
+            <div><strong>All-Time:</strong> <span id="stat-alltime">0/0 (0%)</span></div>
+            <div><strong>Last 10:</strong> <span id="stat-last10">0/0 (0%)</span></div>
+        </div>
+        <h4>Confusion Matrix</h4>
+        <table>
+            <thead><tr><th colspan="2" rowspan="2" style="border:none; background:none;"></th><th colspan="4" class="axis-label">Graph You Chose &rarr;</th></tr>
+            <tr><th>Scatter</th><th>Bar</th><th>Line</th><th>Pie</th></tr></thead>
+            <tbody id="matrix-body"></tbody>
+        </table>
+    </div>
+    <div class="footer"><a href="feedback.html" target="_blank">🐛 Report an Issue / Leave Feedback</a></div>
+</div>
+
+<script>
+    const questionBank = [
+        { id: 1, scenario: "Comparing the resting heart rates of five different mammal species.", correct: "bar", explanation: "Bar charts are best for comparing distinct, categorical groups." },
+        { id: 2, scenario: "Investigating if there is a relationship between hours spent studying and final exam scores for 50 students.", correct: "scatter", explanation: "Scatter plots are used to look for correlation between two continuous variables." },
+        { id: 3, scenario: "Showing the percentage breakdown of gases that make up the Earth's atmosphere.", correct: "pie", explanation: "Pie charts are ideal for showing parts of a whole (percentages that add up to 100%)." },
+        { id: 4, scenario: "Tracking the average daily temperature in London over a 30-day period.", correct: "line", explanation: "Line graphs are best for tracking continuous changes over time." },
+        { id: 5, scenario: "Looking for a trend between a car's weight and its fuel efficiency (miles per gallon).", correct: "scatter", explanation: "You are looking for a correlation between two paired, continuous numerical variables." },
+        { id: 6, scenario: "Showing the proportion of students in a class who have different eye colors (blue, green, brown, hazel).", correct: "pie", explanation: "You are showing parts of a whole class based on distinct categories." },
+        { id: 7, scenario: "Comparing the top speeds of different models of sports cars.", correct: "bar", explanation: "You are comparing independent categories (car models) against a single numerical value (speed)." },
+        { id: 8, scenario: "Investigating the relationship between the distance a planet is from the sun and the length of its orbit.", correct: "scatter", explanation: "You are looking for a trend or correlation between two paired, continuous numerical variables." },
+        { id: 9, scenario: "Tracking the height of a single sunflower plant measured every week for three months.", correct: "line", explanation: "A line graph is ideal for showing continuous change over a specific period of time." },
+        { id: 10, scenario: "Displaying the total number of goals scored by five different football teams over a season.", correct: "bar", explanation: "Bar charts are best for comparing distinct groups (teams)." },
+        { id: 11, scenario: "Showing the percentage of a city's budget allocated to education, infrastructure, healthcare, and emergency services.", correct: "pie", explanation: "Pie charts are perfect for showing how a complete budget is divided into percentages." },
+        { id: 12, scenario: "Looking at the relationship between the number of hours of sunlight a solar panel receives and the amount of electricity it generates.", correct: "scatter", explanation: "This plots two numerical variables against each other to find a correlation." },
+        { id: 13, scenario: "Monitoring a patient's body temperature every hour over a 24-hour period.", correct: "line", explanation: "Tracking a single continuous variable as it changes over time." },
+        { id: 14, scenario: "Comparing the average lifespan of domestic cats, dogs, rabbits, and horses.", correct: "bar", explanation: "Comparing a single numerical value (lifespan) across distinct categories (animals)." },
+        { id: 15, scenario: "Investigating if there is a link between a person's height and their shoe size.", correct: "scatter", explanation: "Looking for a trend by plotting two paired numerical variables." },
+        { id: 16, scenario: "Showing the breakdown of different hair colors among the population of a town.", correct: "pie", explanation: "Showing parts of a whole population based on categories." },
+        { id: 17, scenario: "Tracking the volume of water in a reservoir over the 12 months of the year.", correct: "line", explanation: "Displaying how a continuous value (volume) changes over a continuous period (months)." },
+        { id: 18, scenario: "Comparing the total annual rainfall recorded in five different countries.", correct: "bar", explanation: "Comparing independent, categorical groups (countries) against a single value." },
+        { id: 19, scenario: "Looking for a relationship between the price of a house and its square footage.", correct: "scatter", explanation: "Plotting two numerical variables to find a correlation." },
+        { id: 20, scenario: "Displaying how a company's total revenue was divided among its four main departments.", correct: "pie", explanation: "Showing parts of a whole (100% of revenue)." },
+        { id: 21, scenario: "Graphing the speed of a roller coaster over the duration of its two-minute ride.", correct: "line", explanation: "Tracking continuous change (speed) over time." },
+        { id: 22, scenario: "Comparing the amount of vitamin C found in apples, oranges, bananas, and strawberries.", correct: "bar", explanation: "Comparing independent, distinct categories." },
+        { id: 23, scenario: "Investigating the relationship between the weight of a package and the cost to ship it.", correct: "scatter", explanation: "Plotting two numerical variables to find a correlation." },
+        { id: 24, scenario: "Showing the percentage of students in a school who travel by bus, car, bike, or walk.", correct: "pie", explanation: "Showing parts of a whole population." },
+        { id: 25, scenario: "Tracking the changing price of a stock over the course of a single trading day.", correct: "line", explanation: "Displaying continuous change over a set period of time." },
+        { id: 26, scenario: "Comparing the number of medals won by the top 10 countries at the Olympics.", correct: "bar", explanation: "Comparing independent, categorical groups against a single numerical value." },
+        { id: 27, scenario: "Looking for a relationship between the amount of fertilizer used and the yield of a crop.", correct: "scatter", explanation: "Plotting two numerical variables to find a trend." },
+        { id: 28, scenario: "Showing how a person spends their 24-hour day (sleep, work, leisure, eating).", correct: "pie", explanation: "Showing parts of a whole (24 hours)." },
+        { id: 29, scenario: "Monitoring the population of an endangered species year by year since 1990.", correct: "line", explanation: "Tracking continuous change in a population over time." },
+        { id: 30, scenario: "Comparing the average daily attendance of four different theme parks.", correct: "bar", explanation: "Comparing distinct categories (theme parks) against a single numerical value." }    
+    ];
+
+    const graphIcons = {
+        bar: `<svg width="70" height="70" viewBox="0 0 80 80"><rect x="15" y="30" width="12" height="40" fill="#0056b3"/><rect x="35" y="15" width="12" height="55" fill="#28a745"/><rect x="55" y="45" width="12" height="25" fill="#d9534f"/><polyline points="10,70 75,70" stroke="#333" stroke-width="3"/><polyline points="10,10 10,70" stroke="#333" stroke-width="3"/></svg>`,
+        scatter: `<svg width="70" height="70" viewBox="0 0 80 80"><line x1="15" y1="65" x2="70" y2="18" stroke="#d9534f" stroke-width="2" stroke-dasharray="5,3"/><circle cx="20" cy="60" r="4" fill="#0056b3"/><circle cx="30" cy="45" r="4" fill="#0056b3"/><circle cx="45" cy="50" r="4" fill="#0056b3"/><circle cx="55" cy="30" r="4" fill="#0056b3"/><circle cx="65" cy="20" r="4" fill="#0056b3"/><polyline points="10,70 75,70" stroke="#333" stroke-width="3"/><polyline points="10,10 10,70" stroke="#333" stroke-width="3"/></svg>`,
+        line: `<svg width="70" height="70" viewBox="0 0 80 80"><polyline points="20,60 35,35 50,45 65,20" fill="none" stroke="#0056b3" stroke-width="3"/><circle cx="20" cy="60" r="3" fill="#d9534f"/><circle cx="35" cy="35" r="3" fill="#d9534f"/><circle cx="50" cy="45" r="3" fill="#d9534f"/><circle cx="65" cy="20" r="3" fill="#d9534f"/><polyline points="10,70 75,70" stroke="#333" stroke-width="3"/><polyline points="10,10 10,70" stroke="#333" stroke-width="3"/></svg>`,
+        pie: `<svg width="70" height="70" viewBox="0 0 80 80"><circle cx="40" cy="40" r="30" fill="#28a745"/><path d="M 40 40 L 40 10 A 30 30 0 0 1 66 25 Z" fill="#0056b3"/><path d="M 40 40 L 66 25 A 30 30 0 0 1 20 62 Z" fill="#d9534f"/></svg>`
+    };
+
+    const graphTypes = ['scatter', 'bar', 'line', 'pie'];
+    let currentQuestionIndex = 0;
+
+    // DATA HYDRATION: Read from memory immediately so stats aren't zeroed out!
+    const MODULE_ID = "1";
+    let matrix = { scatter: { scatter: 0, bar: 0, line: 0, pie: 0 }, bar: { scatter: 0, bar: 0, line: 0, pie: 0 }, line: { scatter: 0, bar: 0, line: 0, pie: 0 }, pie: { scatter: 0, bar: 0, line: 0, pie: 0 } };
+    let allTimeCorrect = 0; let allTimeTotal = 0; let historyLast10 = []; 
+    
+    let savedMem = JSON.parse(localStorage.getItem(`gs_mod_${MODULE_ID}`));
+    if (savedMem) {
+        allTimeCorrect = savedMem.correct || 0;
+        allTimeTotal = savedMem.total || 0;
+        if (savedMem.details) matrix = savedMem.details;
+        if (savedMem.history) historyLast10 = savedMem.history;
+    }
+
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+    shuffleArray(questionBank);
+
+    function loadQuestion() {
+        const q = questionBank[currentQuestionIndex];
+        document.getElementById('question-text').innerText = q.scenario;
+        document.getElementById('feedback-text').innerHTML = "";
+        document.getElementById('next-btn').style.display = "none";
+        document.querySelectorAll('.options button').forEach(btn => btn.disabled = false);
+    }
+
+    function submitAnswer(chosenType) {
+        const q = questionBank[currentQuestionIndex];
+        const isCorrect = (chosenType === q.correct);
+        document.querySelectorAll('.options button').forEach(btn => btn.disabled = true);
+
+        const feedbackEl = document.getElementById('feedback-text');
+        const icon = graphIcons[q.correct];
+        const borderColor = isCorrect ? '#28a745' : '#d9534f';
+        const resultText = isCorrect 
+            ? `<span style="color:green; font-weight:bold; font-size:1.1em;">Correct!</span><br><br>${q.explanation}`
+            : `<span style="color:red; font-weight:bold; font-size:1.1em;">Incorrect.</span><br><br>The correct choice was <strong>${q.correct.toUpperCase()}</strong>.<br><br>${q.explanation}`;
+
+        feedbackEl.innerHTML = `
+            <div style="display:flex; align-items: center; gap: 20px; background: #fff; padding: 15px; border-radius: 8px; border-left: 5px solid ${borderColor}; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                <div style="flex-shrink: 0; background: #f8f9fa; padding: 10px; border-radius: 8px; border: 1px solid #ddd;">${icon}</div>
+                <div>${resultText}</div>
+            </div>`;
+
+        allTimeTotal++;
+        if (isCorrect) allTimeCorrect++;
+        historyLast10.push(isCorrect);
+        if (historyLast10.length > 10) historyLast10.shift();
+        matrix[q.correct][chosenType]++; 
+
+        // --- SAVE TO HYDRATED MEMORY ---
+        let modData = { correct: allTimeCorrect, total: allTimeTotal, details: matrix, history: historyLast10 };
+        localStorage.setItem(`gs_mod_${MODULE_ID}`, JSON.stringify(modData));
+        // -------------------------------
+
+        updateDashboard();
+        document.getElementById('next-btn').style.display = "inline-block";
+    }
+
+    function nextQuestion() {
+        currentQuestionIndex = (currentQuestionIndex + 1) % questionBank.length;
+        loadQuestion();
+    }
+
+    function updateDashboard() {
+        const allTimePct = Math.round((allTimeCorrect / allTimeTotal) * 100) || 0;
+        document.getElementById('stat-alltime').innerText = `${allTimeCorrect}/${allTimeTotal} (${allTimePct}%)`;
+        const last10Correct = historyLast10.filter(Boolean).length;
+        const last10Total = historyLast10.length;
+        const last10Pct = Math.round((last10Correct / last10Total) * 100) || 0;
+        document.getElementById('stat-last10').innerText = `${last10Correct}/${last10Total} (${last10Pct}%)`;
+
+        const tbody = document.getElementById('matrix-body');
+        tbody.innerHTML = ""; 
+        graphTypes.forEach((correctType, index) => {
+            let tr = document.createElement('tr');
+            if (index === 0) {
+                let sideLabel = document.createElement('th'); sideLabel.rowSpan = 4; sideLabel.className = "axis-label"; sideLabel.innerHTML = "Correct<br>Type<br>&darr;"; tr.appendChild(sideLabel);
+            }
+            let rowLabel = document.createElement('th'); rowLabel.innerText = correctType.charAt(0).toUpperCase() + correctType.slice(1); tr.appendChild(rowLabel);
+
+            graphTypes.forEach(chosenType => {
+                let td = document.createElement('td');
+                let count = matrix[correctType][chosenType];
+                let isDiagonal = (correctType === chosenType);
+                if (isDiagonal) td.classList.add('diagonal');
+
+                if (count > 0) { td.innerText = count; td.classList.add(isDiagonal ? 'correct-val' : 'wrong-val'); } 
+                else { td.innerText = "-"; td.classList.add('empty-val'); }
+                tr.appendChild(td);
+            });
+            tbody.appendChild(tr);
+        });
+    }
+
+    updateDashboard(); loadQuestion();
+</script>
+</body>
+</html>
