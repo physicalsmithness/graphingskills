@@ -189,6 +189,9 @@
         curriculum.forEach(mod => {
             let total = getT(mod.id);
             let d = getD(mod.id);
+            // Re-fetch the main object to get data.correct directly
+            let rawData = JSON.parse(localStorage.getItem(`gs_mod_${mod.id}`)) || {};
+            let correctCount = rawData.correct || 0;
             
             let statsHTML = "";
             
@@ -196,8 +199,8 @@
                 statsHTML = `<div class="stat-row"><span>Status:</span> <span style="color:#6c757d;">Not Started</span></div>`;
             } else {
                 if (mod.id === "1" || mod.id === "2") {
-                    let cor = JSON.parse(localStorage.getItem(`gs_mod_${mod.id}`)).correct || 0;
-                    statsHTML = `<div class="stat-row"><span>Accuracy:</span> <span class="stat-val">${pct(cor, total)}</span></div>`;
+                    statsHTML = `<div class="stat-row"><span>Attempts:</span> <span>${total}</span></div>
+                                 <div class="stat-row"><span>Overall Accuracy:</span> <span class="stat-val">${pct(correctCount, total)}</span></div>`;
                 } 
                 else if (mod.id === "3") {
                     statsHTML = `<div class="stat-row"><span>Quantity Found:</span> <span class="stat-val">${pct(d.qtyEarned, d.qtyTotal)}</span></div>
@@ -205,10 +208,12 @@
                                  <div class="stat-row"><span>Precision Found:</span> <span class="stat-val">${pct(d.precEarned, d.precTotal)}</span></div>`;
                 } 
                 else if (mod.id === "4a") {
-                    statsHTML = `<div class="stat-row"><span>Perfect Axes Chosen:</span> <span class="stat-val">${pct(d.correct, total)}</span></div>`;
+                    // FIXED: Using data.correct instead of d.correct
+                    statsHTML = `<div class="stat-row"><span>Perfect Axes Chosen:</span> <span class="stat-val">${pct(correctCount, total)}</span></div>`;
                 } 
                 else if (mod.id === "4b") {
-                    statsHTML = `<div class="stat-row"><span>Perfect Grid Numbering:</span> <span class="stat-val">${pct(d.perfect, total)}</span></div>`;
+                    // FIXED: Using data.correct instead of d.perfect
+                    statsHTML = `<div class="stat-row"><span>Perfect Grid Numbering:</span> <span class="stat-val">${pct(correctCount, total)}</span></div>`;
                 } 
                 else if (mod.id === "5") {
                     let p=0, h=0, b=0;
