@@ -41,7 +41,7 @@
         .notice-banner strong { color: #2980b9; }
 
         /* Home Screen Cards */
-        .home-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 20px; padding-bottom: 40px;}
+        .home-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 20px; padding-bottom: 40px;}
         .home-card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border: 1px solid #e9ecef; display: flex; flex-direction: column; transition: transform 0.2s;}
         .home-card:hover { transform: translateY(-3px); box-shadow: 0 6px 12px rgba(0,0,0,0.08); }
         .home-card h3 { margin: 0 0 5px 0; color: #2c3e50; font-size: 1.15em;}
@@ -51,6 +51,7 @@
         .stat-row { display: flex; justify-content: space-between; font-size: 0.9em; margin-bottom: 6px; color: #495057; border-bottom: 1px solid #f1f3f5; padding-bottom: 4px;}
         .stat-row:last-child { margin-bottom: 0; border-bottom: none; padding-bottom: 0;}
         .stat-val { font-weight: bold; color: #28a745;}
+        .stat-att { font-weight: bold; color: #0056b3;}
         
         .home-card button { background: #f8f9fa; border: 1px solid #ced4da; color: #2c3e50; padding: 10px; border-radius: 4px; cursor: pointer; font-weight: bold; transition: 0.2s; width: 100%;}
         .home-card button:hover { background: #3498db; color: white; border-color: #3498db;}
@@ -75,7 +76,7 @@
     <div class="sidebar">
         <div class="sidebar-header" onclick="showHome()">
             <h2>Graph Skills</h2>
-            <p>🏠 HOME / SYLLABUS / STATS </p>
+            <p>🏠 HOME / SYLLABUS</p>
         </div>
         <ul class="nav-list" id="nav-list"></ul>
         <div class="dash-btn" id="nav-dash" onclick="showDiagnostics()">
@@ -166,8 +167,13 @@
         iframe.src = mod.file; 
     }
 
-    // Helper Math
-    const pct = (val, tot) => tot > 0 ? Math.round((val/tot)*100) + "%" : "0%";
+    // Math Format Helper: val/tot (pct%)
+    const fmt = (val, tot) => {
+        let safeVal = val || 0;
+        let safeTot = tot || 0;
+        return safeTot > 0 ? `${safeVal}/${safeTot} (${Math.round((safeVal/safeTot)*100)}%)` : `0/0 (0%)`;
+    };
+
     const getD = (id) => {
         try { return (JSON.parse(localStorage.getItem(`gs_mod_${id}`)) || {}).details || {}; } 
         catch(e) { return {}; }
@@ -189,7 +195,6 @@
         curriculum.forEach(mod => {
             let total = getT(mod.id);
             let d = getD(mod.id);
-            // Re-fetch the main object to get data.correct directly
             let rawData = JSON.parse(localStorage.getItem(`gs_mod_${mod.id}`)) || {};
             let correctCount = rawData.correct || 0;
             
@@ -198,29 +203,29 @@
             if (total === 0) {
                 statsHTML = `<div class="stat-row"><span>Status:</span> <span style="color:#6c757d;">Not Started</span></div>`;
             } else {
+                // Add the Master Attempt Counter to the top of every stats box
+                statsHTML += `<div class="stat-row"><span>Total Attempts:</span> <span class="stat-att">${total}</span></div>`;
+
                 if (mod.id === "1" || mod.id === "2") {
-                    statsHTML = `<div class="stat-row"><span>Attempts:</span> <span>${total}</span></div>
-                                 <div class="stat-row"><span>Overall Accuracy:</span> <span class="stat-val">${pct(correctCount, total)}</span></div>`;
+                    statsHTML += `<div class="stat-row"><span>Overall Accuracy:</span> <span class="stat-val">${fmt(correctCount, total)}</span></div>`;
                 } 
                 else if (mod.id === "3") {
-                    statsHTML = `<div class="stat-row"><span>Quantity Found:</span> <span class="stat-val">${pct(d.qtyEarned, d.qtyTotal)}</span></div>
-                                 <div class="stat-row"><span>Unit Found:</span> <span class="stat-val">${pct(d.unitEarned, d.unitTotal)}</span></div>
-                                 <div class="stat-row"><span>Precision Found:</span> <span class="stat-val">${pct(d.precEarned, d.precTotal)}</span></div>`;
+                    statsHTML += `<div class="stat-row"><span>Quantity Found:</span> <span class="stat-val">${fmt(d.qtyEarned, d.qtyTotal)}</span></div>
+                                  <div class="stat-row"><span>Unit Found:</span> <span class="stat-val">${fmt(d.unitEarned, d.unitTotal)}</span></div>
+                                  <div class="stat-row"><span>Precision Found:</span> <span class="stat-val">${fmt(d.precEarned, d.precTotal)}</span></div>`;
                 } 
                 else if (mod.id === "4a") {
-                    // FIXED: Using data.correct instead of d.correct
-                    statsHTML = `<div class="stat-row"><span>Perfect Axes Chosen:</span> <span class="stat-val">${pct(correctCount, total)}</span></div>`;
+                    statsHTML += `<div class="stat-row"><span>Perfect Axes Chosen:</span> <span class="stat-val">${fmt(correctCount, total)}</span></div>`;
                 } 
                 else if (mod.id === "4b") {
-                    // FIXED: Using data.correct instead of d.perfect
-                    statsHTML = `<div class="stat-row"><span>Perfect Grid Numbering:</span> <span class="stat-val">${pct(correctCount, total)}</span></div>`;
+                    statsHTML += `<div class="stat-row"><span>Perfect Grid Numbering:</span> <span class="stat-val">${fmt(correctCount, total)}</span></div>`;
                 } 
                 else if (mod.id === "5") {
                     let p=0, h=0, b=0;
                     [1,2,3,4].forEach(l => { p+=d[l]?.p||0; h+=d[l]?.h||0; b+=d[l]?.b||0; });
-                    let t = p+h+b;
-                    statsHTML = `<div class="stat-row"><span>Perfect Placements:</span> <span class="stat-val">${pct(p, t)}</span></div>
-                                 <div class="stat-row"><span>Perfect or &le; ½ Box Off:</span> <span class="stat-val">${pct(p+h, t)}</span></div>`;
+                    let tPts = p+h+b; // Number of individual points plotted across all attempts
+                    statsHTML += `<div class="stat-row"><span>Perfect Placements:</span> <span class="stat-val">${fmt(p, tPts)}</span></div>
+                                  <div class="stat-row"><span>Perfect or &le; ½ Box Off:</span> <span class="stat-val">${fmt(p+h, tPts)}</span></div>`;
                 } 
                 else if (mod.id === "6") {
                     let outCor = (d.outlier?.has?.cor||0) + (d.outlier?.non?.cor||0) + (d.outlier?.non?.deb||0);
@@ -232,9 +237,9 @@
                     let execCor = (d.exec?.line?.perf||0) + (d.exec?.curve?.perf||0);
                     let execTot = Object.values(d.exec?.line||{}).reduce((a,b)=>a+b,0) + Object.values(d.exec?.curve||{}).reduce((a,b)=>a+b,0);
 
-                    statsHTML = `<div class="stat-row"><span>Anomaly Detection:</span> <span class="stat-val">${pct(outCor, outTot)}</span></div>
-                                 <div class="stat-row"><span>Tool Selection:</span> <span class="stat-val">${pct(toolCor, toolTot)}</span></div>
-                                 <div class="stat-row"><span>Drawing Execution:</span> <span class="stat-val">${pct(execCor, execTot)}</span></div>`;
+                    statsHTML += `<div class="stat-row"><span>Anomaly Detection:</span> <span class="stat-val">${fmt(outCor, outTot)}</span></div>
+                                  <div class="stat-row"><span>Tool Selection:</span> <span class="stat-val">${fmt(toolCor, toolTot)}</span></div>
+                                  <div class="stat-row"><span>Drawing Execution:</span> <span class="stat-val">${fmt(execCor, execTot)}</span></div>`;
                 } 
                 else if (mod.id === "7") {
                     let modCor = (d.model?.linear?.line||0) + (d.model?.curve?.curve||0);
@@ -242,8 +247,8 @@
                     let readCor = (d.pred?.inter?.exa||0) + (d.pred?.extra?.exa||0);
                     let readTot = Object.values(d.pred?.inter||{}).reduce((a,b)=>a+b,0) + Object.values(d.pred?.extra||{}).reduce((a,b)=>a+b,0);
 
-                    statsHTML = `<div class="stat-row"><span>Correct Model Used:</span> <span class="stat-val">${pct(modCor, modTot)}</span></div>
-                                 <div class="stat-row"><span>Spot-On Reading Accuracy:</span> <span class="stat-val">${pct(readCor, readTot)}</span></div>`;
+                    statsHTML += `<div class="stat-row"><span>Correct Model Used:</span> <span class="stat-val">${fmt(modCor, modTot)}</span></div>
+                                  <div class="stat-row"><span>Spot-On Reading Accuracy:</span> <span class="stat-val">${fmt(readCor, readTot)}</span></div>`;
                 } 
                 else if (mod.id === "8") {
                     let selT = d.sel ? Object.values(d.sel).reduce((a,b)=>a+b,0) : 0;
@@ -252,11 +257,11 @@
                     let mathT = d.math ? Object.values(d.math).reduce((a,b)=>a+b,0) : 0;
                     let unitT = d.unit ? Object.values(d.unit).reduce((a,b)=>a+b,0) : 0;
 
-                    statsHTML = `<div class="stat-row"><span>Safe Point Selection:</span> <span class="stat-val">${pct(d.sel?.line||0, selT)}</span></div>
-                                 <div class="stat-row"><span>Coord Reading Accuracy:</span> <span class="stat-val">${pct(d.rd?.perf||0, rdT)}</span></div>
-                                 <div class="stat-row"><span>Triangle Size Rule:</span> <span class="stat-val">${pct(d.tri?.ok||0, triT)}</span></div>
-                                 <div class="stat-row"><span>Math Execution:</span> <span class="stat-val">${pct(d.math?.perf||0, mathT)}</span></div>
-                                 <div class="stat-row"><span>Physics Units:</span> <span class="stat-val">${pct(d.unit?.cor||0, unitT)}</span></div>`;
+                    statsHTML += `<div class="stat-row"><span>Safe Point Selection:</span> <span class="stat-val">${fmt(d.sel?.line||0, selT)}</span></div>
+                                  <div class="stat-row"><span>Coord Reading Accuracy:</span> <span class="stat-val">${fmt(d.rd?.perf||0, rdT)}</span></div>
+                                  <div class="stat-row"><span>Triangle Size Rule:</span> <span class="stat-val">${fmt(d.tri?.ok||0, triT)}</span></div>
+                                  <div class="stat-row"><span>Math Execution:</span> <span class="stat-val">${fmt(d.math?.perf||0, mathT)}</span></div>
+                                  <div class="stat-row"><span>Physics Units:</span> <span class="stat-val">${fmt(d.unit?.cor||0, unitT)}</span></div>`;
                 }
             }
 

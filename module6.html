@@ -130,15 +130,16 @@
     
     try {
         let savedMem = JSON.parse(localStorage.getItem(`gs_mod_${MODULE_ID}`));
-        if (savedMem) { 
+        // Ensure the old save file has the exact new schema (e.g. exec.curve) before loading
+        if (savedMem && savedMem.details && savedMem.details.exec && savedMem.details.exec.curve) { 
             totalPasses = savedMem.correct || 0; 
             totalAttempts = savedMem.total || 0; 
-            if (savedMem.details && savedMem.details.outlier && savedMem.details.outlier.has) {
-                stats = savedMem.details; 
-            }
+            stats = savedMem.details; 
+        } else if (savedMem) {
+            // Nuke incompatible older versions to prevent freezing
+            localStorage.removeItem(`gs_mod_${MODULE_ID}`);
         }
     } catch(e) {
-        console.warn("Corrupted memory cleared.");
         localStorage.removeItem(`gs_mod_${MODULE_ID}`);
     }
 
@@ -375,6 +376,9 @@
         upd('e-lin-perf', eL.perf, eL.perf+eL.unb+eL.far, 'mat-match'); upd('e-lin-unb', eL.unb, null, 'mat-err'); upd('e-lin-far', eL.far, null, 'mat-err');
         upd('e-cur-perf', eC.perf, eC.perf+eC.unb+eC.far+eC.shp, 'mat-match'); upd('e-cur-unb', eC.unb, null, 'mat-err'); upd('e-cur-far', eC.far, null, 'mat-err'); upd('e-cur-shp', eC.shp, null, 'mat-err');
     }
+
+    // BOOT UP THE ENGINE!
+    init();
 </script>
 </body>
 </html>
