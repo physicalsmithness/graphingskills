@@ -4,31 +4,129 @@
     <meta charset="UTF-8">
     <title>Physics Graph Skills</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; display: flex; height: 100vh; background-color: #f4f7f6; color: #333; overflow: hidden; }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            margin: 0; 
+            padding: 0; 
+            display: flex; 
+            height: 100vh; 
+            background-color: #f4f7f6; 
+            color: #333; 
+            overflow: hidden; 
+        }
         
         /* Student Login Modal */
-        #login-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 9999; display: flex; justify-content: center; align-items: center; }
-        .modal-content { background: white; padding: 40px; border-radius: 8px; width: 400px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
-        .modal-content input { width: 90%; padding: 12px; margin: 10px 0; font-size: 1.1em; border: 1px solid #ccc; border-radius: 4px; }
-        .modal-btn { background: #28a745; color: white; border: none; padding: 12px 20px; font-size: 1.1em; font-weight: bold; border-radius: 4px; cursor: pointer; width: 95%; margin-top: 15px;}
+        #login-modal { 
+            position: fixed; 
+            top: 0; left: 0; 
+            width: 100%; height: 100%; 
+            background: rgba(0,0,0,0.8); 
+            z-index: 9999; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+        }
+        .modal-content { 
+            background: white; 
+            padding: 40px; 
+            border-radius: 8px; 
+            width: 400px; 
+            text-align: center; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3); 
+        }
+        .modal-content input { 
+            width: 90%; 
+            padding: 12px; 
+            margin: 10px 0; 
+            font-size: 1.1em; 
+            border: 1px solid #ccc; 
+            border-radius: 4px; 
+        }
+        .modal-btn { 
+            background: #28a745; 
+            color: white; 
+            border: none; 
+            padding: 12px 20px; 
+            font-size: 1.1em; 
+            font-weight: bold; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            width: 95%; 
+            margin-top: 15px;
+        }
         .modal-btn:hover { background: #218838; }
 
         /* Sidebar Styles */
-        .sidebar { width: 320px; background-color: #2c3e50; color: white; display: flex; flex-direction: column; box-shadow: 2px 0 5px rgba(0,0,0,0.1); z-index: 10; flex-shrink: 0;}
+        .sidebar { 
+            width: 320px; 
+            background-color: #2c3e50; 
+            color: white; 
+            display: flex; 
+            flex-direction: column; 
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1); 
+            z-index: 10; 
+            flex-shrink: 0;
+        }
         
-        /* Static Brand Header */
-        .sidebar-brand { padding: 25px 20px; background-color: #1a252f; text-align: center; border-bottom: 1px solid #111820; }
-        .sidebar-brand h2 { margin: 0; font-size: 1.6em; letter-spacing: 1px; color: #ecf0f1; text-transform: uppercase;}
+        .sidebar-brand { 
+            padding: 25px 20px; 
+            background-color: #1a252f; 
+            text-align: center; 
+            border-bottom: 1px solid #111820; 
+        }
+        .sidebar-brand h2 { 
+            margin: 0; 
+            font-size: 1.6em; 
+            letter-spacing: 1px; 
+            color: #ecf0f1; 
+            text-transform: uppercase;
+        }
         
-        /* Navigation List */
-        .nav-list { flex: 1; overflow-y: auto; padding: 15px 0; margin: 0; list-style: none; }
-        .nav-item { padding: 12px 20px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; border-left: 4px solid transparent; transition: 0.2s; font-size: 0.95em; color: #ecf0f1;}
+        .nav-list { 
+            flex: 1; 
+            overflow-y: auto; 
+            padding: 15px 0; 
+            margin: 0; 
+            list-style: none; 
+        }
+        .nav-item { 
+            padding: 12px 20px; 
+            cursor: pointer; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            border-left: 4px solid transparent; 
+            transition: 0.2s; 
+            font-size: 0.95em; 
+            color: #ecf0f1;
+        }
         .nav-item:hover { background-color: #34495e; }
-        .nav-item.active { background-color: #34495e; border-left-color: #3498db; font-weight: bold; color: #fff;}
-        .nav-item .mod-num { font-size: 0.8em; color: #bdc3c7; background: #1a252f; padding: 3px 6px; border-radius: 4px; flex-shrink: 0; margin-left: 10px;}
+        .nav-item.active { 
+            background-color: #34495e; 
+            border-left-color: #3498db; 
+            font-weight: bold; 
+            color: #fff;
+        }
+        .nav-item .mod-num { 
+            font-size: 0.8em; 
+            color: #bdc3c7; 
+            background: #1a252f; 
+            padding: 3px 6px; 
+            border-radius: 4px; 
+            flex-shrink: 0; 
+            margin-left: 10px;
+        }
         
         /* Dashboard/Home Buttons */
-        .dash-btn { color: white; padding: 16px; text-align: center; font-weight: bold; cursor: pointer; transition: 0.2s; font-size: 1.05em; }
+        .dash-btn { 
+            color: white; 
+            padding: 16px; 
+            text-align: center; 
+            font-weight: bold; 
+            cursor: pointer; 
+            transition: 0.2s; 
+            font-size: 1.05em; 
+        }
         
         .dash-btn.green { background-color: #27ae60; border-bottom: 2px solid #1e8449; }
         .dash-btn.green:hover { background-color: #2ecc71; border-bottom-color: #27ae60; }
@@ -43,25 +141,80 @@
         .dash-btn.blue.active { background-color: #1a5276; box-shadow: inset 0 3px 6px rgba(0,0,0,0.2); }
 
         /* Main Content Area */
-        .main-content { flex: 1; display: flex; flex-direction: column; position: relative; overflow: hidden;}
-        .top-bar { height: 60px; background: white; border-bottom: 1px solid #dee2e6; display: flex; align-items: center; padding: 0 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); z-index: 5; flex-shrink: 0;}
+        .main-content { 
+            flex: 1; 
+            display: flex; 
+            flex-direction: column; 
+            position: relative; 
+            overflow: hidden;
+        }
+        .top-bar { 
+            height: 60px; 
+            background: white; 
+            border-bottom: 1px solid #dee2e6; 
+            display: flex; 
+            align-items: center; 
+            padding: 0 20px; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05); 
+            z-index: 5; 
+            flex-shrink: 0;
+        }
         .top-bar h3 { margin: 0; color: #2c3e50; }
         
         .content-area { flex: 1; position: relative; overflow: hidden; }
         iframe { width: 100%; height: 100%; border: none; position: absolute; top: 0; left: 0; background: #f4f7f6; }
         
         /* View Panels */
-        .view-panel { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #f4f7f6; padding: 30px 40px; box-sizing: border-box; overflow-y: auto; display: none; z-index: 2; }
-        .dash-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid #dee2e6;}
+        .view-panel { 
+            position: absolute; 
+            top: 0; left: 0; 
+            width: 100%; height: 100%; 
+            background: #f4f7f6; 
+            padding: 30px 40px; 
+            box-sizing: border-box; 
+            overflow-y: auto; 
+            display: none; 
+            z-index: 2; 
+        }
+        .dash-header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 20px; 
+            padding-bottom: 10px; 
+            border-bottom: 2px solid #dee2e6;
+        }
         .dash-header h1 { margin: 0; color: #2c3e50; }
         
-        /* Notice Banner */
-        .notice-banner { background: #eef2f5; border-left: 5px solid #3498db; padding: 15px 20px; border-radius: 6px; margin-bottom: 30px; color: #2c3e50; font-size: 1em; line-height: 1.4;}
+        .notice-banner { 
+            background: #eef2f5; 
+            border-left: 5px solid #3498db; 
+            padding: 15px 20px; 
+            border-radius: 6px; 
+            margin-bottom: 30px; 
+            color: #2c3e50; 
+            font-size: 1em; 
+            line-height: 1.4;
+        }
         .notice-banner strong { color: #2980b9; }
 
         /* Home Screen Cards */
-        .home-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 20px; padding-bottom: 40px;}
-        .home-card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border: 1px solid #e9ecef; display: flex; flex-direction: column; transition: transform 0.2s;}
+        .home-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); 
+            gap: 20px; 
+            padding-bottom: 40px;
+        }
+        .home-card { 
+            background: white; 
+            padding: 20px; 
+            border-radius: 8px; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05); 
+            border: 1px solid #e9ecef; 
+            display: flex; 
+            flex-direction: column; 
+            transition: transform 0.2s;
+        }
         .home-card:hover { transform: translateY(-3px); box-shadow: 0 6px 12px rgba(0,0,0,0.08); }
         .home-card h3 { margin: 0 0 5px 0; color: #2c3e50; font-size: 1.15em;}
         .home-card p { color: #6c757d; font-size: 0.9em; line-height: 1.4; flex-grow: 1; margin: 0 0 15px 0;}
@@ -85,7 +238,6 @@
         .diag-table th, .diag-table td { border: 1px solid #dee2e6; padding: 8px 12px; text-align: left;}
         .diag-table th { background-color: #f8f9fa; color: #495057;}
         
-        /* Table Cell Colors */
         .err-val { color: #d9534f; font-weight: bold; text-align: center; width: 80px;}
         .zero-val { color: #ccc; text-align: center; width: 80px;}
         .corr-val { color: #28a745; font-weight: bold; text-align: center;}
@@ -155,387 +307,10 @@
             <div id="dashboard-view" class="view-panel">
                 <div class="dash-header"><h1>Error Diagnostic Breakdown</h1></div>
                 <div class="notice-banner" style="border-left-color: #e67e22;">
-                    <strong>🩺 Identify Your Habits:</strong> This page aggregates specific errors you've made across the entire curriculum to help you identify negative habits (like consistently squashing the scale, or misreading gridlines).
+                    <strong>🩺 Identify Your Habits:</strong> This page aggregates specific errors you've made across the entire curriculum to help you identify negative habits.
                 </div>
                 <div id="dashboard-content"></div>
                 <button class="btn-clear" onclick="clearData()">🗑️ Reset All My Progress Data</button>
             </div>
 
-            <div id="full-stats-view" class="view-panel">
-                <div class="dash-header"><h1>Full Module Statistics</h1></div>
-                <div class="notice-banner" style="border-left-color: #2980b9;">
-                    <strong>📊 Raw Data Matrices:</strong> This page reconstructs the detailed confusion matrices and raw statistics tables for every single module, allowing you to review your exact performance profile module-by-module.
-                </div>
-                <div id="full-stats-content"></div>
-            </div>
-        </div>
-    </div>
-
-<script>
-    // ==========================================
-    // 1. DATA TRANSMISSION (GOOGLE APPS SCRIPT)
-    // ==========================================
-    // PASTE YOUR GOOGLE WEB APP URL HERE:
-    const GOOGLE_APP_URL = "https://script.google.com/macros/s/YOUR_URL_HERE/exec";
-
-    document.addEventListener("DOMContentLoaded", () => {
-        if (!localStorage.getItem("gs_studentName")) {
-            document.getElementById("login-modal").style.display = "flex";
-        } else {
-            showHome(); // Load Home Screen on startup if logged in
-        }
-    });
-
-    function startSession() {
-        let name = document.getElementById("student-name").value.trim();
-        let code = document.getElementById("class-code").value.trim();
-        if (!name) return alert("Please enter your name.");
-        
-        localStorage.setItem("gs_studentName", name);
-        localStorage.setItem("gs_classCode", code || "None");
-        document.getElementById("login-modal").style.display = "none";
-        showHome();
-    }
-
-    // Global function called by individual iframes (modules) to send data
-    window.logToTeacher = function(moduleName, scenarioId, scenario, status, errors) {
-        let payload = {
-            studentName: localStorage.getItem("gs_studentName") || "Unknown",
-            classCode: localStorage.getItem("gs_classCode") || "Unknown",
-            moduleName: moduleName,
-            scenarioId: scenarioId,
-            scenario: scenario,
-            status: status,
-            errors: errors
-        };
-
-        fetch(GOOGLE_APP_URL, {
-            method: "POST",
-            mode: "no-cors", 
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload)
-        }).catch(err => console.log("Tracking error:", err));
-    };
-
-
-    // ==========================================
-    // 2. UI AND NAVIGATION
-    // ==========================================
-    const curriculum = [
-        { id: "1", file: "module1.html", title: "Choosing the Graph Type", desc: "Learn when to use scatter plots vs line graphs vs bar charts." },
-        { id: "2", file: "module2.html", title: "Assigning Axes", desc: "Master the rules for assigning independent and dependent variables." },
-        { id: "3", file: "module3.html", title: "Perfect Axis Labels", desc: "Practice writing complete labels containing quantity, units, and precision." },
-        { id: "4a", file: "module4a.html", title: "Scaling Axes (Quick)", desc: "Choose optimal starting values and scales to maximize graph area." },
-        { id: "4b", file: "module4b.html", title: "Scaling Axes (Full)", desc: "Number the axes cleanly and plot data perfectly without falling off the chart." },
-        { id: "5", file: "module5.html", title: "Precision Plotting", desc: "Develop high-precision plotting skills, snapping accurately to half-squares." },
-        { id: "6", file: "module6.html", title: "Trends & Outliers", desc: "Identify anomalies and draw balanced, smooth lines or curves of best fit." },
-        { id: "7", file: "module7.html", title: "Interpolation & Extrapolation", desc: "Use your lines of best fit to carefully extract predicted grid values." },
-        { id: "8", file: "module8.html", title: "Calculating Gradients", desc: "Extract coordinates to accurately calculate physical rates of change." }
-    ];
-
-    const navList = document.getElementById('nav-list');
-    const iframe = document.getElementById('module-frame');
-    const homeView = document.getElementById('home-view');
-    const dashView = document.getElementById('dashboard-view');
-    const fullStatsView = document.getElementById('full-stats-view');
-    const topTitle = document.getElementById('top-title');
-    
-    const navHomeBtn = document.getElementById('nav-home');
-    const navDashBtn = document.getElementById('nav-dash');
-    const navFullBtn = document.getElementById('nav-full');
-    const homeGrid = document.getElementById('home-grid');
-
-    curriculum.forEach(mod => {
-        let li = document.createElement('li');
-        li.className = 'nav-item';
-        li.id = `nav-mod-${mod.id}`;
-        li.innerHTML = `${mod.title} <span class="mod-num">M${mod.id}</span>`;
-        li.onclick = () => loadModule(mod);
-        navList.appendChild(li);
-    });
-
-    function hideAllViews() {
-        iframe.style.display = "none"; homeView.style.display = "none"; dashView.style.display = "none"; fullStatsView.style.display = "none";
-        document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-        navHomeBtn.classList.remove('active'); navDashBtn.classList.remove('active'); navFullBtn.classList.remove('active');
-    }
-
-    function loadModule(mod) {
-        hideAllViews();
-        document.getElementById(`nav-mod-${mod.id}`).classList.add('active');
-        topTitle.innerText = `Module ${mod.id}: ${mod.title}`;
-        iframe.style.display = "block";
-        iframe.src = mod.file; 
-    }
-
-    // Data Helpers
-    const fmt = (val, tot) => { let safeVal = val || 0; let safeTot = tot || 0; return safeTot > 0 ? `${safeVal}/${safeTot} (${Math.round((safeVal/safeTot)*100)}%)` : `0/0 (0%)`; };
-    const getD = (id) => { try { return (JSON.parse(localStorage.getItem(`gs_mod_${id}`)) || {}).details || {}; } catch(e) { return {}; } };
-    const getT = (id) => { try { return (JSON.parse(localStorage.getItem(`gs_mod_${id}`)) || {}).total || 0; } catch(e) { return 0; } };
-    const getRaw = (id) => { try { return JSON.parse(localStorage.getItem(`gs_mod_${id}`)) || {}; } catch(e) { return {}; } };
-
-    // --- HOME SCREEN RENDERER ---
-    function showHome() {
-        hideAllViews(); navHomeBtn.classList.add('active'); iframe.src = ""; topTitle.innerText = "Curriculum Home"; homeView.style.display = "block"; homeGrid.innerHTML = "";
-        
-        curriculum.forEach(mod => {
-            let total = getT(mod.id), d = getD(mod.id), correctCount = getRaw(mod.id).correct || 0, statsHTML = "";
-            if (total === 0) { statsHTML = `<div class="stat-row"><span>Status:</span> <span style="color:#6c757d;">Not Started</span></div>`; } 
-            else {
-                statsHTML += `<div class="stat-row"><span>Total Attempts:</span> <span class="stat-att">${total}</span></div>`;
-                if (mod.id === "1" || mod.id === "2") { statsHTML += `<div class="stat-row"><span>Overall Accuracy:</span> <span class="stat-val">${fmt(correctCount, total)}</span></div>`; } 
-                else if (mod.id === "3") {
-                    statsHTML += `<div class="stat-row"><span>Quantity Found:</span> <span class="stat-val">${fmt(d.qtyEarned, d.qtyTotal)}</span></div>
-                                  <div class="stat-row"><span>Unit Found:</span> <span class="stat-val">${fmt(d.unitEarned, d.unitTotal)}</span></div>
-                                  <div class="stat-row"><span>Precision Found:</span> <span class="stat-val">${fmt(d.precEarned, d.precTotal)}</span></div>`;
-                } 
-                else if (mod.id === "4a") { statsHTML += `<div class="stat-row"><span>Perfect Axes Chosen:</span> <span class="stat-val">${fmt(correctCount, total)}</span></div>`; } 
-                else if (mod.id === "4b") { statsHTML += `<div class="stat-row"><span>Perfect Grid Numbering:</span> <span class="stat-val">${fmt(correctCount, total)}</span></div>`; } 
-                else if (mod.id === "5") {
-                    let p=0, h=0, b=0; [1,2,3,4].forEach(l => { p+=d[l]?.p||0; h+=d[l]?.h||0; b+=d[l]?.b||0; }); let tPts = p+h+b; 
-                    statsHTML += `<div class="stat-row"><span>Perfect Placements:</span> <span class="stat-val">${fmt(p, tPts)}</span></div>
-                                  <div class="stat-row"><span>Perfect or &le; ½ Box Off:</span> <span class="stat-val">${fmt(p+h, tPts)}</span></div>`;
-                } 
-                else if (mod.id === "6") {
-                    let outCor = (d.outlier?.has?.cor||0) + (d.outlier?.non?.cor||0) + (d.outlier?.non?.deb||0), outTot = Object.values(d.outlier?.has||{}).reduce((a,b)=>a+b,0) + Object.values(d.outlier?.non||{}).reduce((a,b)=>a+b,0);
-                    let toolCor = (d.trend?.linear?.line||0) + (d.trend?.curve?.curve||0) + (d.trend?.dots?.join||0), toolTot = Object.values(d.trend?.linear||{}).reduce((a,b)=>a+b,0) + Object.values(d.trend?.curve||{}).reduce((a,b)=>a+b,0) + Object.values(d.trend?.dots||{}).reduce((a,b)=>a+b,0);
-                    let execCor = (d.exec?.line?.perf||0) + (d.exec?.curve?.perf||0), execTot = Object.values(d.exec?.line||{}).reduce((a,b)=>a+b,0) + Object.values(d.exec?.curve||{}).reduce((a,b)=>a+b,0);
-                    statsHTML += `<div class="stat-row"><span>Anomaly Detection:</span> <span class="stat-val">${fmt(outCor, outTot)}</span></div>
-                                  <div class="stat-row"><span>Tool Selection:</span> <span class="stat-val">${fmt(toolCor, toolTot)}</span></div>
-                                  <div class="stat-row"><span>Drawing Execution:</span> <span class="stat-val">${fmt(execCor, execTot)}</span></div>`;
-                } 
-                else if (mod.id === "7") {
-                    let modCor = (d.model?.linear?.line||0) + (d.model?.curve?.curve||0), modTot = Object.values(d.model?.linear||{}).reduce((a,b)=>a+b,0) + Object.values(d.model?.curve||{}).reduce((a,b)=>a+b,0);
-                    let readCor = (d.pred?.inter?.exa||0) + (d.pred?.extra?.exa||0), readTot = Object.values(d.pred?.inter||{}).reduce((a,b)=>a+b,0) + Object.values(d.pred?.extra||{}).reduce((a,b)=>a+b,0);
-                    statsHTML += `<div class="stat-row"><span>Correct Model Used:</span> <span class="stat-val">${fmt(modCor, modTot)}</span></div>
-                                  <div class="stat-row"><span>Spot-On Reading Accuracy:</span> <span class="stat-val">${fmt(readCor, readTot)}</span></div>`;
-                } 
-                else if (mod.id === "8") {
-                    let selT = d.sel ? Object.values(d.sel).reduce((a,b)=>a+b,0) : 0, rdT = d.rd ? Object.values(d.rd).reduce((a,b)=>a+b,0) : 0, triT = d.tri ? Object.values(d.tri).reduce((a,b)=>a+b,0) : 0, mathT = d.math ? Object.values(d.math).reduce((a,b)=>a+b,0) : 0, unitT = d.unit ? Object.values(d.unit).reduce((a,b)=>a+b,0) : 0;
-                    statsHTML += `<div class="stat-row"><span>Safe Point Selection:</span> <span class="stat-val">${fmt(d.sel?.line||0, selT)}</span></div>
-                                  <div class="stat-row"><span>Coord Reading Accuracy:</span> <span class="stat-val">${fmt(d.rd?.perf||0, rdT)}</span></div>
-                                  <div class="stat-row"><span>Triangle Size Rule:</span> <span class="stat-val">${fmt(d.tri?.ok||0, triT)}</span></div>
-                                  <div class="stat-row"><span>Math Execution:</span> <span class="stat-val">${fmt(d.math?.perf||0, mathT)}</span></div>
-                                  <div class="stat-row"><span>Physics Units:</span> <span class="stat-val">${fmt(d.unit?.cor||0, unitT)}</span></div>`;
-                }
-            }
-            let card = document.createElement('div'); card.className = "home-card";
-            card.innerHTML = `<div style="flex-grow: 1;"><h3 style="display:flex; justify-content:space-between; align-items:center;">${mod.title} <span style="font-size:0.7em; background:#eef2f5; color:#0056b3; padding:2px 6px; border-radius:4px;">Mod ${mod.id}</span></h3><p>${mod.desc}</p><div class="stat-box">${statsHTML}</div></div><button onclick="loadModuleById('${mod.id}')">Practice Skill &rarr;</button>`;
-            homeGrid.appendChild(card);
-        });
-    }
-
-    // --- AGGREGATED DIAGNOSTICS RENDERER ---
-    function showDiagnostics() {
-        hideAllViews(); navDashBtn.classList.add('active'); topTitle.innerText = "Diagnostic Breakdown"; iframe.src = ""; dashView.style.display = "block";
-        const content = document.getElementById('dashboard-content'); const formatCell = (val) => val > 0 ? `<td class="err-val">${val}</td>` : `<td class="zero-val">-</td>`;
-        let m1 = getD('1'), m2 = getD('2'), m3 = getD('3'), m4a = getD('4a'), m4b = getD('4b'), m5 = getD('5'), m6 = getD('6'), m7 = getD('7'), m8 = getD('8');
-        let html = "";
-
-        html += `<div class="diag-section"><h2 class="diag-header">Graph Design & Logic (Modules 1, 2 & 3)</h2><p class="diag-desc">Tracks conceptual errors when establishing the foundation of the graph.</p><table class="diag-table"><tr><th>Error Type</th><th>Description</th><th>Occurrences</th></tr>
-                <tr><td><strong>Wrong Graph Type</strong></td><td>Selecting a line/bar chart instead of a scatter plot, etc.</td>${formatCell(getT('1') - ((JSON.parse(localStorage.getItem('gs_mod_1'))||{}).correct||0))}</tr>
-                <tr><td><strong>Swapped Axes</strong></td><td>Putting the independent variable on the Y-Axis.</td>${formatCell(m2.wrongWayRound||0)}</tr>
-                <tr><td><strong>Assumption Error</strong></td><td>Forcing a causal relationship where only a correlation exists.</td>${formatCell((m2.thoughtMattered||0) + (m2.thoughtDidntMatter||0))}</tr>
-                <tr><td><strong>Missing Quantity</strong></td><td>Failing to state what is being measured in the label.</td>${formatCell((m3.qtyTotal||0) - (m3.qtyEarned||0))}</tr>
-                <tr><td><strong>Missing/Bad Unit</strong></td><td>Leaving out units or using technically incorrect formatting.</td>${formatCell((m3.unitTotal||0) - (m3.unitEarned||0))}</tr>
-                <tr><td><strong>Lacks Precision</strong></td><td>Failing to add contextual detail to the label.</td>${formatCell((m3.precTotal||0) - (m3.precEarned||0))}</tr></table></div>`;
-
-        html += `<div class="diag-section"><h2 class="diag-header">Axis Setup & Scaling (Modules 4a & 4b)</h2><p class="diag-desc">Tracks mechanical errors made when establishing the size, spacing, and numbering of an axis.</p><table class="diag-table"><tr><th>Error Type</th><th>Description</th><th>Occurrences</th></tr>
-                <tr><td><strong>False/Inappropriate Zero</strong></td><td>Starting at 0 when it needlessly squashes data or is physically arbitrary.</td>${formatCell((m4a.falseZero||0) + (m4b.nonZeroStart||0))}</tr>
-                <tr><td><strong>Squashed Scale</strong></td><td>Using less than 50% of the available grid space.</td>${formatCell((m4a.squashed||0) + (m4b.squashed||0))}</tr>
-                <tr><td><strong>Awkward Divisions</strong></td><td>Using a scale that doesn't easily divide by the minor grid lines.</td>${formatCell((m4a.awkward||0) + (m4b.awkwardScale||0))}</tr>
-                <tr><td><strong>Off Chart</strong></td><td>Scale is too small; data falls off the top/side.</td>${formatCell((m4a.offChart||0) + (m4b.offChart||0))}</tr>
-                <tr><td><strong>Categorical vs Continuous Rule</strong></td><td>Putting numbers in spaces or words on lines.</td>${formatCell((m4b.barChartError||0) + (m4b.lineLabelError||0))}</tr>
-                <tr><td><strong>Bar Chart Origin Error</strong></td><td>Breaking the axis on a bar chart (destroys proportions).</td>${formatCell(m4b.barOriginError||0)}</tr>
-                <tr><td><strong>Missing Justification</strong></td><td>Breaking the axis without a valid reason.</td>${formatCell(m4a.badReason||0)}</tr></table></div>`;
-
-        let plotMin = (m5['1']?.h||0) + (m5['2']?.h||0) + (m5['3']?.h||0) + (m5['4']?.h||0), plotBad = (m5['1']?.b||0) + (m5['2']?.b||0) + (m5['3']?.b||0) + (m5['4']?.b||0);
-        html += `<div class="diag-section"><h2 class="diag-header">Grid Execution Profile (Modules 5, 7 & 8)</h2><p class="diag-desc">Tracks your physical precision when dropping points or reading coordinates from the grid.</p><table class="diag-table"><tr><th>Error Type</th><th>Description</th><th>Occurrences</th></tr>
-                <tr><td><strong>Minor Misread</strong></td><td>Reading or plotting slightly off the exact gridline (by ~1 minor box).</td>${formatCell(plotMin + (m7.pred?.inter?.clo||0) + (m7.pred?.extra?.clo||0) + (m8.rd?.min||0))}</tr>
-                <tr><td><strong>Severe Inaccuracy</strong></td><td>Plotting/reading wildly far from the correct location.</td>${formatCell(plotBad + (m7.pred?.inter?.wrg||0) + (m7.pred?.extra?.wrg||0) + (m8.rd?.off||0))}</tr>
-                <tr><td><strong>Coordinate Swaps</strong></td><td>Mixing up (X, Y) coordinates or reading points backwards.</td>${formatCell((m8.rd?.sxy||0) + (m8.rd?.sp12||0))}</tr></table></div>`;
-
-        let modWrong = (m6.trend?.linear?.curve||0) + (m6.trend?.curve?.line||0) + (m7.model?.linear?.curve||0) + (m7.model?.curve?.line||0);
-        html += `<div class="diag-section"><h2 class="diag-header">Modeling Profile (Modules 6, 7 & 8)</h2><p class="diag-desc">Tracks how well you identify trends and utilize Lines of Best Fit.</p><table class="diag-table"><tr><th>Error Type</th><th>Description</th><th>Occurrences</th></tr>
-                <tr><td><strong>Wrong Model Used</strong></td><td>Drawing a straight line when physics requires a curve (or vice versa).</td>${formatCell(modWrong)}</tr>
-                <tr><td><strong>Missed Anomaly</strong></td><td>Failing to spot a clear outlier in the data.</td>${formatCell((m6.outlier?.has?.ign||0) + (m6.outlier?.has?.wrg||0))}</tr>
-                <tr><td><strong>Unbalanced Trend</strong></td><td>Leaving too many data points exclusively on one side of the line.</td>${formatCell((m6.exec?.line?.unb||0) + (m6.exec?.curve?.unb||0))}</tr>
-                <tr><td><strong>Short / Far Trend</strong></td><td>Line doesn't cover full data span, or is drawn too far from points.</td>${formatCell((m6.exec?.line?.far||0) + (m6.exec?.curve?.far||0))}</tr>
-                <tr><td><strong>Wobbly Curve</strong></td><td>Drawing a curve that loops backwards or changes concavity.</td>${formatCell(m6.exec?.curve?.shp||0)}</tr>
-                <tr><td><strong>Raw Data Reliance</strong></td><td>Using raw data dots for calculations instead of trusting the Model line.</td>${formatCell((m8.sel?.raw||0) + (m8.sel?.flt||0))}</tr></table></div>`;
-
-        html += `<div class="diag-section"><h2 class="diag-header">Gradient Mathematics (Module 8)</h2><p class="diag-desc">Tracks mathematical operations and physics units during rate-of-change calculations.</p><table class="diag-table"><tr><th>Error Type</th><th>Description</th><th>Occurrences</th></tr>
-                <tr><td><strong>Triangle Too Small</strong></td><td>Using points too close together, multiplying grid reading errors.</td>${formatCell(m8.tri?.sml||0)}</tr>
-                <tr><td><strong>Rounding Error</strong></td><td>Making a mistake when rounding the final gradient value.</td>${formatCell(m8.math?.rnd||0)}</tr>
-                <tr><td><strong>Inverse Calc</strong></td><td>Calculating Run divided by Rise (ΔX / ΔY).</td>${formatCell(m8.math?.inv||0)}</tr>
-                <tr><td><strong>Power of 10 Error</strong></td><td>Missing a decimal place or unit multiplier.</td>${formatCell(m8.math?.p10||0)}</tr>
-                <tr><td><strong>Misc Math Error</strong></td><td>General calculation failure.</td>${formatCell(m8.math?.oth||0)}</tr>
-                <tr><td><strong>Physics Unit Error</strong></td><td>Applying the wrong final physics unit to the rate of change.</td>${formatCell(m8.unit?.err||0)}</tr></table></div>`;
-
-        content.innerHTML = html;
-    }
-
-    // --- FULL STATS RENDERER ---
-    function showFullStats() {
-        hideAllViews(); navFullBtn.classList.add('active'); topTitle.innerText = "Full Module Statistics"; iframe.src = ""; fullStatsView.style.display = "block";
-        const content = document.getElementById('full-stats-content');
-        
-        let html = "";
-        const cVal = (v) => v > 0 ? `<td class="corr-val">${v}</td>` : `<td class="zero-val">-</td>`;
-        const eVal = (v) => v > 0 ? `<td class="err-val">${v}</td>` : `<td class="zero-val">-</td>`;
-        const nData = `<div class="no-data-msg">No data recorded yet for this module.</div>`;
-
-        // Mod 1
-        html += `<div class="diag-section blue-top"><h2 class="diag-header">Module 1: Graph Type Selection</h2>`;
-        if(getT('1') === 0) { html += nData; } else {
-            let m1 = getD('1'); let types = ['scatter', 'bar', 'line', 'pie'];
-            html += `<table class="diag-table"><thead><tr><th colspan="2" rowspan="2" style="background:none; border:none;"></th><th colspan="4" class="axis-label">Graph You Chose &rarr;</th></tr><tr><th>Scatter</th><th>Bar</th><th>Line</th><th>Pie</th></tr></thead><tbody>`;
-            types.forEach((cType, i) => {
-                html += `<tr>`; if(i===0) html += `<th rowspan="4" class="axis-label">Correct<br>Type<br>&darr;</th>`;
-                html += `<td class="mat-actual">${cType.charAt(0).toUpperCase() + cType.slice(1)}</td>`;
-                types.forEach(uType => { let v = m1[cType]?.[uType]||0; let isDiag = cType===uType; html += `<td class="${isDiag?'diagonal':''} ${v>0?(isDiag?'corr-val':'err-val'):'zero-val'}">${v>0?v:'-'}</td>`; });
-                html += `</tr>`;
-            }); html += `</tbody></table>`;
-        } html += `</div>`;
-
-        // Mod 2
-        html += `<div class="diag-section blue-top"><h2 class="diag-header">Module 2: Assigning Axes</h2>`;
-        if(getT('2') === 0) { html += nData; } else {
-            let m2 = getD('2');
-            html += `<table class="diag-table"><thead><tr><th>Outcome Category</th><th>Count</th></tr></thead><tbody>
-                <tr><td class="mat-actual">Correct (Assigned correctly)</td>${cVal(m2.correctStrict)}</tr>
-                <tr><td class="mat-actual">Correct (Recognized it didn't matter)</td>${cVal(m2.correctEither)}</tr>
-                <tr><td class="mat-actual">Wrong Way Round</td>${eVal(m2.wrongWayRound)}</tr>
-                <tr><td class="mat-actual">Thought it mattered (but it didn't)</td>${eVal(m2.thoughtMattered)}</tr>
-                <tr><td class="mat-actual">Thought it didn't matter (but it did)</td>${eVal(m2.thoughtDidntMatter)}</tr>
-                <tr><td class="mat-actual">Nonsensical choice</td>${eVal(m2.nonsensical)}</tr></tbody></table>`;
-        } html += `</div>`;
-
-        // Mod 3
-        html += `<div class="diag-section blue-top"><h2 class="diag-header">Module 3: Axis Labels</h2>`;
-        if(getT('3') === 0) { html += nData; } else {
-            let m3 = getD('3');
-            html += `<table class="diag-table"><thead><tr><th>Metric</th><th>Score</th><th>Percentage</th></tr></thead><tbody>
-                <tr><td class="mat-actual">Total Score</td><td>${m3.earnedPts}/${m3.totalPts} Pts</td><td class="corr-val">${fmt(m3.earnedPts, m3.totalPts).split(' ')[1]}</td></tr>
-                <tr><td class="mat-actual">Quantity Extracted</td><td>${m3.qtyEarned}/${m3.qtyTotal}</td><td class="corr-val">${fmt(m3.qtyEarned, m3.qtyTotal).split(' ')[1]}</td></tr>
-                <tr><td class="mat-actual">Unit Extracted</td><td>${m3.unitEarned}/${m3.unitTotal}</td><td class="corr-val">${fmt(m3.unitEarned, m3.unitTotal).split(' ')[1]}</td></tr>
-                <tr><td class="mat-actual">Precision Added</td><td>${m3.precEarned}/${m3.precTotal}</td><td class="corr-val">${fmt(m3.precEarned, m3.precTotal).split(' ')[1]}</td></tr></tbody></table>`;
-        } html += `</div>`;
-
-        // Mod 4a
-        html += `<div class="diag-section blue-top"><h2 class="diag-header">Module 4a: Scaling Axes (Quick)</h2>`;
-        if(getT('4a') === 0) { html += nData; } else {
-            let m4a = getD('4a');
-            html += `<table class="diag-table"><thead><tr><th>Outcome</th><th>Count</th></tr></thead><tbody>
-                <tr><td class="mat-actual">Perfect Axes</td>${cVal(m4a.correct)}</tr><tr><td class="mat-actual">False Zero Error</td>${eVal(m4a.falseZero)}</tr>
-                <tr><td class="mat-actual">Off Chart (Scale too small)</td>${eVal(m4a.offChart)}</tr><tr><td class="mat-actual">Squashed (< 50% Used)</td>${eVal(m4a.squashed)}</tr>
-                <tr><td class="mat-actual">Awkward Divisions</td>${eVal(m4a.awkward)}</tr><tr><td class="mat-actual">Bad Origin Reason</td>${eVal(m4a.badReason)}</tr></tbody></table>`;
-        } html += `</div>`;
-
-        // Mod 4b
-        html += `<div class="diag-section blue-top"><h2 class="diag-header">Module 4b: Scaling Axes (Full)</h2>`;
-        if(getT('4b') === 0) { html += nData; } else {
-            let m4b = getD('4b');
-            html += `<table class="diag-table"><thead><tr><th>Outcome</th><th>Count</th></tr></thead><tbody>
-                <tr><td class="mat-actual">Perfect Numbering</td>${cVal(m4b.perfect)}</tr><tr><td class="mat-actual">Bar Chart Lines Error</td>${eVal(m4b.barChartError)}</tr>
-                <tr><td class="mat-actual">Bar Chart Origin Error</td>${eVal(m4b.barOriginError)}</tr><tr><td class="mat-actual">Line Label Error</td>${eVal(m4b.lineLabelError)}</tr>
-                <tr><td class="mat-actual">Category Typo</td>${eVal(m4b.typoError)}</tr><tr><td class="mat-actual">Inappropriate Zero</td>${eVal(m4b.nonZeroStart)}</tr>
-                <tr><td class="mat-actual">Uneven Scale</td>${eVal(m4b.unevenScale)}</tr><tr><td class="mat-actual">Off Chart</td>${eVal(m4b.offChart)}</tr>
-                <tr><td class="mat-actual">Squashed</td>${eVal(m4b.squashed)}</tr><tr><td class="mat-actual">Awkward Divisions</td>${eVal(m4b.awkwardScale)}</tr></tbody></table>`;
-        } html += `</div>`;
-
-        // Mod 5
-        html += `<div class="diag-section blue-top"><h2 class="diag-header">Module 5: Precision Plotting</h2>`;
-        if(getT('5') === 0) { html += nData; } else {
-            let m5 = getD('5');
-            html += `<table class="diag-table"><thead><tr><th>Level</th><th>Perfect</th><th>½ Off</th><th>1+ Off</th></tr></thead><tbody>`;
-            [1,2,3,4].forEach(l => {
-                let d = m5[l]||{p:0,h:0,b:0}, t = d.p+d.h+d.b;
-                html += `<tr><td class="mat-actual">Level ${l}</td>
-                <td class="${d.p>0?'corr-val':'zero-val'}">${fmt(d.p, t)}</td><td class="${d.h>0?'mat-meh':'zero-val'}">${fmt(d.h, t)}</td><td class="${d.b>0?'err-val':'zero-val'}">${fmt(d.b, t)}</td></tr>`;
-            }); html += `</tbody></table>`;
-        } html += `</div>`;
-
-        // Mod 6
-        html += `<div class="diag-section blue-top"><h2 class="diag-header">Module 6: Trends & Outliers</h2>`;
-        if(getT('6') === 0) { html += nData; } else {
-            let m6 = getD('6'), o = m6.outlier||{}, t = m6.trend||{}, e = m6.exec||{};
-            const pFmt = (v, tot) => v>0?`<td class="mat-match">${fmt(v,tot)}</td>`:`<td class="zero-val">-</td>`;
-            const eFmt = (v) => v>0?`<td class="mat-err">${v}</td>`:`<td class="zero-val">-</td>`;
-            const mFmt = (v) => v>0?`<td class="mat-meh">${v}</td>`:`<td class="zero-val">-</td>`;
-            
-            html += `<div class="matrix-grid">
-                <div><table class="diag-table"><thead><tr><th colspan="5">1. Outlier Detection</th></tr><tr><th>State\\Act</th><th>Correct</th><th>Debat.</th><th>Wrong</th><th>Missed</th></tr></thead><tbody>
-                <tr><td class="mat-actual">Has Anom.</td>${pFmt(o.has?.cor, (o.has?.cor||0)+(o.has?.wrg||0)+(o.has?.ign||0))}<td class="mat-na">-</td>${eFmt(o.has?.wrg)}${eFmt(o.has?.ign)}</tr>
-                <tr><td class="mat-actual">No Anom.</td>${pFmt(o.non?.cor, (o.non?.cor||0)+(o.non?.deb||0)+(o.non?.wrg||0))}${mFmt(o.non?.deb)}${eFmt(o.non?.wrg)}<td class="mat-na">-</td></tr></tbody></table></div>
-                
-                <div><table class="diag-table"><thead><tr><th colspan="4">2. Trend Selection</th></tr><tr><th>Actual\\Ch</th><th>Line</th><th>Curve</th><th>Dots</th></tr></thead><tbody>
-                <tr><td class="mat-actual">Linear</td>${pFmt(t.linear?.line, (t.linear?.line||0)+(t.linear?.curve||0)+(t.linear?.join||0))}${mFmt(t.linear?.curve)}${eFmt(t.linear?.join)}</tr>
-                <tr><td class="mat-actual">Curve</td>${mFmt(t.curve?.line)}${pFmt(t.curve?.curve, (t.curve?.line||0)+(t.curve?.curve||0)+(t.curve?.join||0))}${eFmt(t.curve?.join)}</tr>
-                <tr><td class="mat-actual">Seq. Dots</td>${eFmt(t.dots?.line)}${eFmt(t.dots?.curve)}${pFmt(t.dots?.join, (t.dots?.line||0)+(t.dots?.curve||0)+(t.dots?.join||0))}</tr></tbody></table></div>
-                
-                <div><table class="diag-table"><thead><tr><th colspan="5">3. Drawing Execution</th></tr><tr><th>Tool</th><th>Perfect</th><th>Unbal.</th><th>Short</th><th>Shape/Dist</th></tr></thead><tbody>
-                <tr><td class="mat-actual">Line</td>${pFmt(e.line?.perf, (e.line?.perf||0)+(e.line?.unb||0)+(e.line?.far||0))}${eFmt(e.line?.unb)}${eFmt(e.line?.far)}<td class="mat-na">-</td></tr>
-                <tr><td class="mat-actual">Curve</td>${pFmt(e.curve?.perf, (e.curve?.perf||0)+(e.curve?.unb||0)+(e.curve?.far||0)+(e.curve?.shp||0))}${eFmt(e.curve?.unb)}${eFmt(e.curve?.far)}${eFmt(e.curve?.shp)}</tr></tbody></table></div>
-            </div>`;
-        } html += `</div>`;
-
-        // Mod 7
-        html += `<div class="diag-section blue-top"><h2 class="diag-header">Module 7: Interpolation & Extrapolation</h2>`;
-        if(getT('7') === 0) { html += nData; } else {
-            let m7 = getD('7'), m = m7.model||{}, p = m7.pred||{};
-            const pFmt = (v, tot) => v>0?`<td class="mat-match">${fmt(v,tot)}</td>`:`<td class="zero-val">-</td>`;
-            const eFmt = (v) => v>0?`<td class="mat-err">${v}</td>`:`<td class="zero-val">-</td>`;
-            const mFmt = (v) => v>0?`<td class="mat-meh">${v}</td>`:`<td class="zero-val">-</td>`;
-
-            html += `<div class="matrix-grid">
-                <div><table class="diag-table"><thead><tr><th colspan="3">1. Model Selection</th></tr><tr><th>Actual\\Ch</th><th>Line</th><th>Curve</th></tr></thead><tbody>
-                <tr><td class="mat-actual">Linear</td>${pFmt(m.linear?.line, (m.linear?.line||0)+(m.linear?.curve||0))}${eFmt(m.linear?.curve)}</tr>
-                <tr><td class="mat-actual">Curve</td>${eFmt(m.curve?.line)}${pFmt(m.curve?.curve, (m.curve?.line||0)+(m.curve?.curve||0))}</tr></tbody></table></div>
-                
-                <div><table class="diag-table"><thead><tr><th colspan="4">2. Reading Accuracy</th></tr><tr><th>Type</th><th>Spot On</th><th>Minor Err</th><th>Way Off</th></tr></thead><tbody>
-                <tr><td class="mat-actual">Interp.</td>${pFmt(p.inter?.exa, (p.inter?.exa||0)+(p.inter?.clo||0)+(p.inter?.wrg||0))}${mFmt(p.inter?.clo)}${eFmt(p.inter?.wrg)}</tr>
-                <tr><td class="mat-actual">Extrap.</td>${pFmt(p.extra?.exa, (p.extra?.exa||0)+(p.extra?.clo||0)+(p.extra?.wrg||0))}${mFmt(p.extra?.clo)}${eFmt(p.extra?.wrg)}</tr></tbody></table></div>
-            </div>`;
-        } html += `</div>`;
-
-        // Mod 8
-        html += `<div class="diag-section blue-top"><h2 class="diag-header">Module 8: Calculating Gradients</h2>`;
-        if(getT('8') === 0) { html += nData; } else {
-            let m8 = getD('8'), s = m8.sel||{}, r = m8.rd||{}, t = m8.tri||{}, ma = m8.math||{}, u = m8.unit||{};
-            const pFmt = (v, tot) => v>0?`<td class="mat-match">${fmt(v,tot)}</td>`:`<td class="zero-val">-</td>`;
-            const eFmt = (v) => v>0?`<td class="mat-err">${v}</td>`:`<td class="zero-val">-</td>`;
-            const mFmt = (v) => v>0?`<td class="mat-meh">${v}</td>`:`<td class="zero-val">-</td>`;
-
-            html += `<div class="matrix-grid">
-                <div><table class="diag-table"><thead><tr><th colspan="4">1. Point Selection</th></tr><tr><th>Tgt</th><th>On Line</th><th>Raw</th><th>Float</th></tr></thead><tbody>
-                <tr><td class="mat-actual">Line</td>${pFmt(s.line, (s.line||0)+(s.raw||0)+(s.flt||0))}${eFmt(s.raw)}${eFmt(s.flt)}</tr></tbody></table></div>
-                
-                <div><table class="diag-table"><thead><tr><th colspan="6">2. Coordinate Reading</th></tr><tr><th>Acc.</th><th>Perf</th><th>Minor</th><th>Sw X/Y</th><th>Sw P1/2</th><th>Off</th></tr></thead><tbody>
-                <tr><td class="mat-actual">Grids</td>${pFmt(r.perf, (r.perf||0)+(r.min||0)+(r.sxy||0)+(r.sp12||0)+(r.off||0))}${mFmt(r.min)}${eFmt(r.sxy)}${eFmt(r.sp12)}${eFmt(r.off)}</tr></tbody></table></div>
-                
-                <div><table class="diag-table"><thead><tr><th colspan="2">3. Triangle Size</th></tr><tr><th>Large</th><th>Too Small</th></tr></thead><tbody>
-                <tr>${pFmt(t.ok, (t.ok||0)+(t.sml||0))}${eFmt(t.sml)}</tr></tbody></table></div>
-                
-                <div><table class="diag-table"><thead><tr><th colspan="5">4. Math Execution</th></tr><tr><th>Correct</th><th>Rnd Err</th><th>Inverse</th><th>Pow 10</th><th>Oth.</th></tr></thead><tbody>
-                <tr>${pFmt(ma.perf, (ma.perf||0)+(ma.rnd||0)+(ma.inv||0)+(ma.p10||0)+(ma.oth||0))}${eFmt(ma.rnd)}${eFmt(ma.inv)}${eFmt(ma.p10)}${eFmt(ma.oth)}</tr></tbody></table></div>
-                
-                <div><table class="diag-table"><thead><tr><th colspan="2">5. Physics Units</th></tr><tr><th>Correct</th><th>Wrong</th></tr></thead><tbody>
-                <tr>${pFmt(u.cor, (u.cor||0)+(u.err||0))}${eFmt(u.err)}</tr></tbody></table></div>
-            </div>`;
-        } html += `</div>`;
-
-        content.innerHTML = html;
-    }
-
-    function clearData() {
-        if(confirm("Are you sure you want to reset all your progress data? This cannot be undone!")) {
-            curriculum.forEach(mod => localStorage.removeItem(`gs_mod_${mod.id}`));
-            showHome();
-        }
-    }
-
-</script>
-
-</body>
-</html>
+            <div id="
