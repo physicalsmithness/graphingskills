@@ -8,147 +8,271 @@
         .module-container { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         .app-layout { display: grid; grid-template-columns: 620px auto; gap: 30px; margin-top: 15px; }
         .graph-wrapper { position: relative; width: 620px; height: 620px; background: #fff; border: 1px solid #ccc; cursor: crosshair;}
-        canvas { display: block; position: absolute; top: 0; left: 0; } #bgCanvas { z-index: 1; } #drawCanvas { z-index: 2; }
+        canvas { display: block; position: absolute; top: 0; left: 0; } #bgCanvas { z-index: 1; } #plotCanvas { z-index: 2; pointer-events: none;} #interactCanvas { z-index: 3; }
         .info-panel { background: #f8f9fa; padding: 20px; border-radius: 8px; border: 1px solid #ddd; }
-        .scenario-box { padding: 15px; background: #eef2f5; border-radius: 6px; border-left: 4px solid #0056b3; margin-bottom: 20px; font-size: 1.05em; line-height: 1.4;}
-        .step-box { padding: 15px; background: #fff; border-radius: 6px; border: 1px solid #ccc; margin-bottom: 15px;}
-        input[type="number"], input[type="text"] { padding: 8px; font-size: 1em; width: 80px; border: 1px solid #ccc; border-radius: 4px;}
-        .coord-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px;}
-        .btn-main { display: block; padding: 12px; font-size: 1.1em; cursor: pointer; border: none; border-radius: 4px; background-color: #0056b3; color: white; width: 100%; margin-top: 10px; font-weight: bold;}
-        .btn-main:hover { background-color: #004494; } .btn-main:disabled { opacity: 0.6; cursor: not-allowed; }
-        .split-fb { padding: 12px; border-radius: 4px; font-size: 0.9em; line-height: 1.4; border-left: 5px solid; background: #fff; margin-top: 10px;}
-        .pass-box { border-color: #28a745; color: #155724; } .err-box { border-color: #d9534f; color: #721c24; } .meh-box { border-color: #ffc107; color: #856404; }
+        .scenario-box { padding: 15px; background: #eef2f5; border-radius: 6px; border: 1px solid #0056b3; margin-bottom: 20px; font-size: 1.05em; line-height: 1.4;}
+        .step-box { padding: 15px; background: #fff; border-radius: 6px; border-left: 5px solid #0056b3; margin-bottom: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);}
+        .btn-main { display: block; padding: 12px; font-size: 1.1em; cursor: pointer; border: none; border-radius: 4px; background-color: #0056b3; color: white; width: 100%; flex: 1;}
+        .btn-main:hover { background-color: #004494; } .btn-success { background-color: #28a745; } .btn-success:hover { background-color: #218838; }
+        .btn-secondary { background-color: #6c757d; margin-top: 10px;} .btn-secondary:hover { background-color: #5a6268; }
+        .math-input-group { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; background: #f8f9fa; padding: 10px; border-radius: 4px; border: 1px solid #e9ecef;}
+        .math-input-group label { font-weight: bold; width: 140px;} .input-wrapper { display: flex; align-items: center; gap: 5px; justify-content: flex-end;}
+        .math-input { padding: 8px; font-size: 1.05em; border: 1px solid #ccc; border-radius: 4px; text-align: center;} .math-input.mini { width: 60px; padding: 6px; }
+        .feedback-container { margin-top: 15px; display: none; } .split-fb { padding: 12px; border-radius: 4px; margin-bottom: 8px; font-size: 0.95em; line-height: 1.4; border-left: 5px solid; }
+        .pass-box { background-color: #f8fff9; border-color: #28a745; color: #155724; } .err-box { background-color: #fffafa; border-color: #d9534f; color: #721c24; }
+        .result-box { background-color: #eef2f5; border-color: #0056b3; color: #004494; font-size: 1.05em; margin-top: 15px;}
+        .golden-rule { background: #fff3cd; border-left: 4px solid #ffc107; padding: 10px; margin-bottom: 20px; font-style: italic; }
+        .settings-panel { background: #f1f3f5; border: 1px solid #ced4da; border-radius: 6px; padding: 10px 15px; margin-top: 20px; } .settings-panel summary { font-weight: bold; cursor: pointer; color: #495057; outline: none;}
+        .settings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; font-size: 0.9em;} .setting-item { display: flex; flex-direction: column; gap: 5px; } .setting-item input[type=range] { width: 100%; }
+        .dash-container { margin-top: 30px; border-top: 2px solid #ccc; padding-top: 15px; } .matrix-grid { display: flex; flex-wrap: wrap; gap: 15px; margin-top: 10px;}
+        .conf-matrix { border-collapse: collapse; font-size: 0.8em; background: #fff; text-align: center;} .conf-matrix th, .conf-matrix td { border: 1px solid #aaa; padding: 6px; } .conf-matrix th { background: #e9ecef; font-weight: bold;}
+        .mat-actual { font-weight: bold; text-align: left; background: #f8f9fa;} .mat-match { background-color: #d4edda; font-weight: bold; color: #155724;} .mat-meh { background-color: #fff3cd; color: #856404;} .mat-fail { background-color: #f8d7da; color: #721c24; font-weight: bold;}
+        .footer { text-align: center; margin-top: 30px; border-top: 1px solid #eee; padding-top: 15px; font-size: 0.9em; } .footer a { color: #6c757d; text-decoration: none; } .footer a:hover { color: #333; text-decoration: underline; }
     </style>
 </head>
 <body>
 <div class="module-container">
-    <h2 style="margin-top:0;">Module 8: Calculating Gradients</h2>
+    <h2 style="margin-top:0;">Module 8: Calculating Gradients (Rates of Change)</h2>
+    <div class="golden-rule"><strong>The Golden Rules of Gradients:</strong> <br>1. The gradient measures the rate of change of your <strong>Model</strong>, not the raw experimental data.<br>2. Any visual reading introduces small human errors. Choose points that minimize the mathematical impact of these errors on your final calculation.</div>
+
     <div class="app-layout">
-        <div class="graph-wrapper"><canvas id="bgCanvas" width="620" height="620"></canvas><canvas id="drawCanvas" width="620" height="620"></canvas></div>
+        <div class="graph-wrapper" id="graph-wrapper"><canvas id="bgCanvas" width="620" height="620"></canvas><canvas id="plotCanvas" width="620" height="620"></canvas><canvas id="interactCanvas" width="620" height="620"></canvas></div>
         <div class="info-panel">
-            <div class="scenario-box" id="scenario-text">Loading...</div>
-            <div class="step-box"><strong>Step 1: Point Selection</strong><br><small>Click TWO points ON THE LINE to build your triangle.</small></div>
+            <div class="scenario-box" id="scenario-text">Initializing Engine...</div>
             <div class="step-box">
-                <strong>Step 2: Read Coordinates</strong>
-                <div class="coord-inputs">
-                    <div>P1 X: <input type="number" id="p1x"></div><div>P1 Y: <input type="number" id="p1y"></div>
-                    <div>P2 X: <input type="number" id="p2x"></div><div>P2 Y: <input type="number" id="p2y"></div>
+                <strong>Step 1: Choose Your Points</strong>
+                <p style="font-size: 0.85em; color: #555;">Click twice on the graph to drop the two anchor points for your calculation.</p>
+                <button class="btn-main btn-secondary" onclick="clearTriangle()">Reset Points</button>
+            </div>
+            <div class="step-box">
+                <strong>Step 2: Calculate the Math</strong>
+                <p style="font-size: 0.85em; color: #666;">Read the (X, Y) coordinates of your points from the axes. Then calculate the gradient and select the correct units.</p>
+                <div class="math-input-group"><label>Point 1 (Left):</label><div class="input-wrapper">( <input type="number" step="any" id="val-x1" class="math-input mini"> , <input type="number" step="any" id="val-y1" class="math-input mini"> )</div></div>
+                <div class="math-input-group"><label>Point 2 (Right):</label><div class="input-wrapper">( <input type="number" step="any" id="val-x2" class="math-input mini"> , <input type="number" step="any" id="val-y2" class="math-input mini"> )</div></div>
+                <div class="math-input-group" style="background: #e2e3e5; border-color: #ced4da;">
+                    <label>Gradient (m):</label>
+                    <div class="input-wrapper"><input type="number" step="any" id="val-grad" class="math-input" style="border-color: #0056b3; font-weight: bold; width: 75px;"><select id="val-unit" class="math-input" style="width: 100px; padding: 7px; font-weight: bold; color: #0056b3; border-color: #0056b3;"></select></div>
+                </div>
+                <div style="display:flex; gap:10px; margin-top:15px;">
+                    <button class="btn-main" id="chk-btn" onclick="evaluateGradient()">Submit Calculation</button>
+                    <button class="btn-main btn-success" id="next-btn" style="display:none;" onclick="init()">Next Graph</button>
                 </div>
             </div>
-            <div class="step-box">
-                <strong>Step 3: Calculate Gradient</strong><br><small>Rate of Change = ΔY / ΔX</small>
-                <div style="margin-top:10px;">Value: <input type="number" id="grad-val" step="any" style="width:120px;"> Unit: <input type="text" id="grad-unit" placeholder="e.g. m/s"></div>
-            </div>
-            <button class="btn-main" id="eval-btn" onclick="evaluateGradient()">Evaluate Calculation</button>
-            <button class="btn-main" id="next-btn" style="background:#28a745; display:none;" onclick="init()">Next Practice Scenario</button>
-            <div id="feedback"></div>
+            <div id="feedback" class="feedback-container"></div>
         </div>
     </div>
+
+    <details class="settings-panel">
+        <summary>⚙️ Adjust Grading Strictness</summary>
+        <div class="settings-grid">
+            <div class="setting-item"><label>Point "On-Line" Tolerance: &plusmn;<span id="val-tolClick">0.5</span></label><input type="range" id="inp-tolClick" min="0.0" max="5.0" step="0.1" value="0.5" oninput="updateTols()"></div>
+            <div class="setting-item"><label>Coordinate Read Tolerance: &plusmn;<span id="val-tolRead">0.5</span></label><input type="range" id="inp-tolRead" min="0.0" max="5.0" step="0.1" value="0.5" oninput="updateTols()"></div>
+            <div class="setting-item"><label>Min Triangle Size (% of X-Axis): <span id="val-tolSize">50</span>%</label><input type="range" id="inp-tolSize" min="10" max="90" step="5" value="50" oninput="updateTols()"></div>
+        </div>
+    </details>
+
+    <div class="dash-container"><h3 style="margin:0 0 5px 0;">Gradient Skill Analytics</h3>
+        <div class="matrix-grid">
+            <div><table class="conf-matrix"><thead><tr><th colspan="4" style="background:#0056b3; color:white;">1. Point Selection</th></tr><tr><th>Target</th><th>On Line</th><th>Raw Data</th><th>Floating</th></tr></thead><tbody id="s-body"><tr><td class="mat-actual">Line of Best Fit</td><td id="s-sel-line">0 (-)</td><td id="s-sel-raw">0</td><td id="s-sel-flt">0</td></tr></tbody></table></div>
+            <div><table class="conf-matrix"><thead><tr><th colspan="6" style="background:#0056b3; color:white;">2. Coordinate Reading</th></tr><tr><th>Accuracy</th><th>Perfect</th><th>Minor Err</th><th>Swap X/Y</th><th>Swap P1/P2</th><th>Way Off</th></tr></thead><tbody id="r-body"><tr><td class="mat-actual">Grids</td><td id="s-rd-perf">0 (-)</td><td id="s-rd-min">0</td><td id="s-rd-sxy">0</td><td id="s-rd-sp12">0</td><td id="s-rd-off">0</td></tr></tbody></table></div>
+            <div><table class="conf-matrix"><thead><tr><th colspan="2" style="background:#0056b3; color:white;">3. Triangle Size</th></tr><tr><th>Large Enough</th><th>Too Small</th></tr></thead><tbody id="t-body"><tr><td id="s-tri-ok">0 (-)</td><td id="s-tri-sml">0</td></tr></tbody></table></div>
+            <div><table class="conf-matrix"><thead><tr><th colspan="5" style="background:#0056b3; color:white;">4. Math Execution</th></tr><tr><th>Correct</th><th>Round Err</th><th>Inverse</th><th>Pow 10</th><th>Other Wrong</th></tr></thead><tbody id="m-body"><tr><td id="s-m-perf">0 (-)</td><td id="s-m-rnd">0</td><td id="s-m-inv">0</td><td id="s-m-p10">0</td><td id="s-m-oth">0</td></tr></tbody></table></div>
+            <div><table class="conf-matrix"><thead><tr><th colspan="2" style="background:#0056b3; color:white;">5. Physics Units</th></tr><tr><th>Correct</th><th>Wrong</th></tr></thead><tbody id="u-body"><tr><td id="s-u-cor">0 (-)</td><td id="s-u-err">0</td></tr></tbody></table></div>
+        </div>
+    </div>
+    <div class="footer"><a href="feedback.html" target="_blank">🐛 Report an Issue / Leave Feedback</a></div>
 </div>
 
 <script>
-    const scenarioBank = [
-        { id: 801, t: "Velocity-Time Graph (Acceleration)", xL: "Time (s)", yL: "Velocity (m/s)", u: "m/s²", minX: 0, maxX: 10, minY: 0, maxY: 50 },
-        { id: 802, t: "Hooke's Law (Spring Constant)", xL: "Extension (m)", yL: "Force (N)", u: "N/m", minX: 0, maxX: 0.5, minY: 0, maxY: 10 },
-        { id: 803, t: "Ohm's Law (Resistance)", xL: "Current (A)", yL: "Voltage (V)", u: "Ω", minX: 0, maxX: 5, minY: 0, maxY: 20 }
-    ];
+    const bgCanvas = document.getElementById('bgCanvas'), ctxBg = bgCanvas.getContext('2d'), plotCanvas = document.getElementById('plotCanvas'), ctxPlot = plotCanvas.getContext('2d'), interactCanvas = document.getElementById('interactCanvas'), ctxInt = interactCanvas.getContext('2d'), padL = 70, padB = 60, size = 500;
+    let points = [], activeScenario = null, lineModel = { m: 0, c: 0, startX: 0, endX: 0 }, hasLogged = false, anchors = []; 
+    let tolClick = 0.5, tolRead = 0.5, tolSize = 50;
 
-    const bgCanvas = document.getElementById('bgCanvas'), ctxBg = bgCanvas.getContext('2d'), drawCanvas = document.getElementById('drawCanvas'), ctxDraw = drawCanvas.getContext('2d'), pad = 60, size = 500;
-    let points = [], lineM = 0, lineC = 0, userPts = [], activeScen = null;
+    // --- CRASH-PROOF HYDRATION ---
+    const MODULE_ID = "8";
+    let stats = { sel: { line: 0, raw: 0, flt: 0 }, rd: { perf: 0, min: 0, sxy: 0, sp12: 0, off: 0 }, tri: { ok: 0, sml: 0 }, math: { perf: 0, rnd: 0, inv: 0, p10: 0, oth: 0 }, unit: { cor: 0, err: 0 } };
+    let totalPasses = 0, totalAttempts = 0;
     
-    const MODULE_ID = "8"; let stats = { sel: { line: 0, raw: 0, flt: 0 }, rd: { perf: 0, min: 0, sxy: 0, sp12: 0, off: 0 }, tri: { ok: 0, sml: 0 }, math: { perf: 0, rnd: 0, inv: 0, p10: 0, oth: 0 }, unit: { cor: 0, err: 0 } }; let totalPasses = 0, totalAttempts = 0;
-    try { let mem = JSON.parse(localStorage.getItem(`gs_mod_${MODULE_ID}`)); if(mem && mem.details) { totalPasses = mem.correct || 0; totalAttempts = mem.total || 0; stats = mem.details; } } catch(e){}
-
-    function init() {
-        points = []; userPts = []; ['p1x','p1y','p2x','p2y','grad-val','grad-unit'].forEach(id => document.getElementById(id).value = "");
-        document.getElementById('feedback').innerHTML = ""; document.getElementById('next-btn').style.display = "none"; document.getElementById('eval-btn').style.display = "block";
-        
-        activeScen = scenarioBank[Math.floor(Math.random() * scenarioBank.length)];
-        document.getElementById('scenario-text').innerHTML = `<strong>${activeScen.t}</strong><br>Calculate the gradient of the line of best fit.`;
-        
-        lineM = (activeScen.maxY - activeScen.minY) / (activeScen.maxX - activeScen.minX) * (0.8 + Math.random()*0.4);
-        lineC = activeScen.minY + (Math.random() * 0.1 * (activeScen.maxY - activeScen.minY));
-        
-        let spanX = activeScen.maxX - activeScen.minX;
-        for (let i=1; i<=6; i++) {
-            let px = activeScen.minX + (i/7)*spanX + (Math.random()*0.05*spanX);
-            let py = lineM*px + lineC + ((Math.random()*0.15 - 0.075)*(activeScen.maxY - activeScen.minY));
-            points.push({ dx: px, dy: py, px: pad + ((px - activeScen.minX)/spanX)*size, py: pad + size - ((py - activeScen.minY)/(activeScen.maxY - activeScen.minY))*size });
-        }
-        drawGrid();
-    }
-
-    function drawGrid() {
-        ctxBg.clearRect(0,0,620,620); ctxDraw.clearRect(0,0,620,620); ctxBg.strokeStyle = "#eee"; ctxBg.lineWidth = 1;
-        for(let i=0; i<=10; i++) { let p = pad + (i*(size/10)); ctxBg.beginPath(); ctxBg.moveTo(p, pad); ctxBg.lineTo(p, pad+size); ctxBg.stroke(); ctxBg.beginPath(); ctxBg.moveTo(pad, p); ctxBg.lineTo(pad+size, p); ctxBg.stroke(); }
-        ctxBg.lineWidth = 2; ctxBg.strokeStyle = "#000"; ctxBg.strokeRect(pad, pad, size, size);
-        ctxBg.fillStyle = "#000"; ctxBg.font = "bold 14px Arial"; ctxBg.textAlign = "center"; ctxBg.fillText(activeScen.xL, pad+(size/2), pad+size+40); ctxBg.save(); ctxBg.translate(20, pad+(size/2)); ctxBg.rotate(-Math.PI/2); ctxBg.fillText(activeScen.yL, 0, 0); ctxBg.restore();
-        
-        // Draw Best Fit Line
-        ctxBg.strokeStyle = "#0056b3"; ctxBg.lineWidth = 3; ctxBg.beginPath();
-        let py0 = pad + size - ((lineC - activeScen.minY)/(activeScen.maxY - activeScen.minY))*size; ctxBg.moveTo(pad, py0);
-        let pyMax = pad + size - (((lineM*activeScen.maxX + lineC) - activeScen.minY)/(activeScen.maxY - activeScen.minY))*size; ctxBg.lineTo(pad+size, pyMax); ctxBg.stroke();
-        
-        points.forEach(p => { ctxBg.strokeStyle = "#c0392b"; ctxBg.lineWidth = 2; ctxBg.beginPath(); ctxBg.moveTo(p.px-5, p.py-5); ctxBg.lineTo(p.px+5, p.py+5); ctxBg.moveTo(p.px+5, p.py-5); ctxBg.lineTo(p.px-5, p.py+5); ctxBg.stroke(); });
-    }
-
-    drawCanvas.addEventListener('mousedown', e => {
-        if(userPts.length >= 2) return;
-        let r = drawCanvas.getBoundingClientRect(), mx = e.clientX - r.left, my = e.clientY - r.top;
-        if(mx >= pad && mx <= pad+size && my >= pad && my <= pad+size) {
-            userPts.push({ x: mx, y: my });
-            ctxDraw.fillStyle = "#e67e22"; ctxDraw.beginPath(); ctxDraw.arc(mx, my, 6, 0, 7); ctxDraw.fill();
-            if(userPts.length === 2) {
-                ctxDraw.strokeStyle = "#e67e22"; ctxDraw.setLineDash([5,5]); ctxDraw.beginPath(); ctxDraw.moveTo(userPts[0].x, userPts[0].y); ctxDraw.lineTo(userPts[1].x, userPts[0].y); ctxDraw.lineTo(userPts[1].x, userPts[1].y); ctxDraw.stroke(); ctxDraw.setLineDash([]);
+    try {
+        let savedMem = JSON.parse(localStorage.getItem(`gs_mod_${MODULE_ID}`));
+        if (savedMem) { 
+            totalPasses = savedMem.correct || 0; 
+            totalAttempts = savedMem.total || 0; 
+            if (savedMem.details && savedMem.details.sel) {
+                stats = savedMem.details; 
             }
         }
+    } catch(e) {
+        console.warn("Corrupted memory cleared.");
+        localStorage.removeItem(`gs_mod_${MODULE_ID}`);
+    }
+    // ------------------------------
+
+    function updateTols() {
+        tolClick = parseFloat(document.getElementById('inp-tolClick').value); tolRead = parseFloat(document.getElementById('inp-tolRead').value); tolSize = parseInt(document.getElementById('inp-tolSize').value);
+        document.getElementById('val-tolClick').innerText = tolClick.toFixed(1); document.getElementById('val-tolRead').innerText = tolRead.toFixed(1); document.getElementById('val-tolSize').innerText = tolSize;
+    }
+
+    const scenarioBank = [
+        { text: "<strong>Kinematics:</strong> A distance-time graph of a moving vehicle.", xLabel: "Time (s)", yLabel: "Distance (m)", xUnit: "s", yUnit: "m", gradUnit: "m/s", phys: "Speed", trueM: [0.6, 1.2] },
+        { text: "<strong>Dynamics:</strong> A velocity-time graph of a rocket.", xLabel: "Time (s)", yLabel: "Velocity (m/s)", xUnit: "s", yUnit: "m/s", gradUnit: "m/s\u00B2", phys: "Acceleration", trueM: [0.5, 1.4] },
+        { text: "<strong>Materials:</strong> A mass-volume graph of an unknown metal.", xLabel: "Volume (cm\u00B3)", yLabel: "Mass (g)", xUnit: "cm\u00B3", yUnit: "g", gradUnit: "g/cm\u00B3", phys: "Density", trueM: [0.4, 1.1] },
+        { text: "<strong>Electronics:</strong> A voltage-current graph of an ohmic component.", xLabel: "Current (A)", yLabel: "Voltage (V)", xUnit: "A", yUnit: "V", gradUnit: "\u03A9", phys: "Resistance", trueM: [0.7, 1.4] },
+        { text: "<strong>Physics:</strong> A force-extension graph for a metal spring.", xLabel: "Force (N)", yLabel: "Extension (cm)", xUnit: "N", yUnit: "cm", gradUnit: "cm/N", phys: "Spring Constant", trueM: [0.3, 1.0] }
+    ];
+
+    function populateUnitDropdown() {
+        const sel = document.getElementById('val-unit'); sel.innerHTML = '<option value="">Unit...</option>';
+        let yBase = activeScenario.yUnit.replace(/[\u00B2\u00B3]/g, ''), xBase = activeScenario.xUnit.replace(/[\u00B2\u00B3]/g, '');
+        let opts = new Set(); opts.add(activeScenario.gradUnit); 
+        if (activeScenario.gradUnit === '\u03A9') { opts.add('V/A'); opts.add('A/V'); } else { opts.add(activeScenario.xUnit + "/" + activeScenario.yUnit); }
+        opts.add(activeScenario.yUnit + "\u00B7" + activeScenario.xUnit); opts.add(yBase + "\u00B2"); opts.add(xBase + "\u00B2"); opts.add("cm\u00B2"); opts.add(activeScenario.yUnit); opts.add(activeScenario.xUnit);
+        let optArr = Array.from(opts).sort(); optArr.forEach(u => { let opt = document.createElement('option'); opt.value = u; opt.innerText = u; sel.appendChild(opt); });
+    }
+
+    function init() {
+        points = []; anchors = []; hasLogged = false; document.getElementById('feedback').style.display = "none"; document.getElementById('feedback').innerHTML = "";
+        document.getElementById('next-btn').style.display = "none"; document.getElementById('chk-btn').style.display = "block";
+        ['val-x1','val-y1','val-x2','val-y2','val-grad','val-unit'].forEach(id => document.getElementById(id).value = "");
+        ctxPlot.clearRect(0,0,620,620); ctxInt.clearRect(0,0,620,620); generateData(); populateUnitDropdown(); drawBackground(); drawDataAndLine(); updateDashUI();
+    }
+
+    function generateData() {
+        activeScenario = scenarioBank[Math.floor(Math.random() * scenarioBank.length)]; document.getElementById('scenario-text').innerHTML = activeScenario.text;
+        let trueSlope = activeScenario.trueM[0] + Math.random() * (activeScenario.trueM[1] - activeScenario.trueM[0]), trueIntercept = 5 + Math.random() * 10;
+        lineModel.startX = 5 + Math.random() * 10; lineModel.endX = Math.min(85 + Math.random() * 10, (95 - trueIntercept) / trueSlope);
+        for (let i = 0; i < 6; i++) {
+            let xVal = lineModel.startX + (i * ((lineModel.endX - lineModel.startX) / 5));
+            let yVal = Math.max(2, Math.min((xVal * trueSlope) + trueIntercept + (Math.random() * 8 - 4), 98)); 
+            points.push({x: padL + (xVal / 100) * size, y: (padB + size) - (yVal / 100) * size, xVal, yVal});
+        }
+        let sumX=0, sumY=0, sumXY=0, sumXX=0, n = points.length;
+        points.forEach(p => { sumX += p.xVal; sumY += p.yVal; sumXY += p.xVal * p.yVal; sumXX += p.xVal * p.xVal; });
+        lineModel.m = (n * sumXY - sumX * sumY) / (n * sumXX - sumX * sumX); lineModel.c = (sumY - lineModel.m * sumX) / n;
+    }
+
+    function drawBackground() {
+        ctxBg.clearRect(0,0,620,620); ctxBg.lineWidth = 1; ctxBg.strokeStyle = "#ebebeb";
+        for(let i=0; i<=100; i++) {
+            if (i % 10 !== 0) { let px = padL + (i * (size/100)), py = (padB + size) - (i * (size/100)); ctxBg.beginPath(); ctxBg.moveTo(px, padB); ctxBg.lineTo(px, padB+size); ctxBg.stroke(); ctxBg.beginPath(); ctxBg.moveTo(padL, py); ctxBg.lineTo(padL+size, py); ctxBg.stroke(); }
+        }
+        ctxBg.textAlign = "center"; ctxBg.textBaseline = "middle"; ctxBg.font = "12px Arial"; ctxBg.fillStyle = "#555";
+        for(let i=0; i<=10; i++) {
+            let px = padL + (i * (size/10)), py = (padB + size) - (i * (size/10));
+            ctxBg.strokeStyle = i % 5 === 0 ? "#ccc" : "#e0e0e0"; ctxBg.lineWidth = i % 5 === 0 ? 1.5 : 1;
+            ctxBg.beginPath(); ctxBg.moveTo(px, padB); ctxBg.lineTo(px, padB+size); ctxBg.stroke(); ctxBg.beginPath(); ctxBg.moveTo(padL, py); ctxBg.lineTo(padL+size, py); ctxBg.stroke();
+            ctxBg.fillText(i * 10, px, padB + size + 15); ctxBg.textAlign = "right"; ctxBg.fillText(i * 10, padL - 10, py); ctxBg.textAlign = "center";
+        }
+        ctxBg.lineWidth = 2; ctxBg.strokeStyle = "#000"; ctxBg.strokeRect(padL, padB, size, size); ctxBg.fillStyle = "#000"; ctxBg.font = "bold 14px Arial"; ctxBg.fillText(activeScenario.xLabel, padL + (size/2), padB + size + 40); ctxBg.save(); ctxBg.translate(20, padB + (size/2)); ctxBg.rotate(-Math.PI / 2); ctxBg.fillText(activeScenario.yLabel, 0, 0); ctxBg.restore();
+    }
+
+    function drawDataAndLine() {
+        points.forEach(p => { ctxPlot.strokeStyle = "#c0392b"; ctxPlot.lineWidth = 2; ctxPlot.beginPath(); ctxPlot.moveTo(p.x-5, p.y-5); ctxPlot.lineTo(p.x+5, p.y+5); ctxPlot.moveTo(p.x+5, p.y-5); ctxPlot.lineTo(p.x-5, p.y+5); ctxPlot.stroke(); });
+        let x1 = 0, y1 = lineModel.m * x1 + lineModel.c; if (y1 < 0) { y1 = 0; x1 = -lineModel.c / lineModel.m; }
+        let x2 = 100, y2 = lineModel.m * x2 + lineModel.c; if (y2 > 100) { y2 = 100; x2 = (100 - lineModel.c) / lineModel.m; }
+        ctxPlot.save(); ctxPlot.beginPath(); ctxPlot.rect(padL, padB, size, size); ctxPlot.clip(); ctxPlot.strokeStyle = "#0056b3"; ctxPlot.lineWidth = 3;
+        ctxPlot.beginPath(); ctxPlot.moveTo(padL+(x1/100)*size, (padB+size)-(y1/100)*size); ctxPlot.lineTo(padL+(x2/100)*size, (padB+size)-(y2/100)*size); ctxPlot.stroke(); ctxPlot.restore();
+    }
+
+    function clearTriangle() { anchors = []; ctxInt.clearRect(0,0,620,620); }
+
+    interactCanvas.addEventListener('mousedown', e => {
+        if (anchors.length >= 2) return; 
+        const rect = interactCanvas.getBoundingClientRect(), mx = e.clientX - rect.left, my = e.clientY - rect.top;
+        if (mx < padL || mx > padL + size || my < padB || my > padB + size) return;
+        let cX = ((mx - padL) / size) * 100, cY = ((padB + size - my) / size) * 100;
+        if (anchors.length === 1 && Math.abs(anchors[0].xVal - cX) < 5) return;
+        anchors.push({ xPx: mx, yPx: my, xVal: cX, yVal: cY }); anchors.sort((a, b) => a.xVal - b.xVal); renderTriangle();
     });
 
-    function evaluateGradient() {
-        if(userPts.length < 2) return alert("Select two points on the line first.");
-        let p1x = parseFloat(document.getElementById('p1x').value), p1y = parseFloat(document.getElementById('p1y').value);
-        let p2x = parseFloat(document.getElementById('p2x').value), p2y = parseFloat(document.getElementById('p2y').value);
-        let gV = parseFloat(document.getElementById('grad-val').value), gU = document.getElementById('grad-unit').value.trim();
-        if(isNaN(p1x)||isNaN(p1y)||isNaN(p2x)||isNaN(p2y)||isNaN(gV)) return alert("Fill in all numerical fields.");
-
-        let isPass = true; let fH = ""; let errLog = [];
-
-        // 1. Selection & Reading (simplified for brevity)
-        let trueDX1 = activeScen.minX + ((userPts[0].x - pad)/size)*(activeScen.maxX - activeScen.minX);
-        let trueDY1 = activeScen.minY + ((pad + size - userPts[0].y)/size)*(activeScen.maxY - activeScen.minY);
-        let tolX = (activeScen.maxX - activeScen.minX)/50, tolY = (activeScen.maxY - activeScen.minY)/50;
-        
-        let readErr = Math.abs(p1x - trueDX1) + Math.abs(p1y - trueDY1); // crude read check
-        if(readErr <= tolX*2) { stats.rd.perf++; fH += `<div class="split-fb pass-box">✅ Read: Good coordinate extraction.</div>`; }
-        else { stats.rd.off++; isPass = false; fH += `<div class="split-fb err-box">❌ Read: Coordinates misread from grid.</div>`; errLog.push("Misread Grid"); }
-
-        // 2. Triangle Size
-        let triDist = Math.abs(userPts[1].x - userPts[0].x);
-        if(triDist > size*0.4) { stats.tri.ok++; fH += `<div class="split-fb pass-box">✅ Triangle: Nice large triangle used.</div>`; }
-        else { stats.tri.sml++; isPass = false; fH += `<div class="split-fb err-box">❌ Triangle: Too small! Points must be far apart.</div>`; errLog.push("Triangle too small"); }
-
-        // 3. Math
-        let expectedGrad = (p2y - p1y) / (p2x - p1x);
-        let mErr = Math.abs(gV - expectedGrad);
-        if(mErr < 0.05) { stats.math.perf++; fH += `<div class="split-fb pass-box">✅ Math: Calculation is correct.</div>`; }
-        else { stats.math.oth++; isPass = false; fH += `<div class="split-fb err-box">❌ Math: Calculation error. Expected ${expectedGrad.toFixed(2)}.</div>`; errLog.push("Math error"); }
-
-        // 4. Units
-        if(gU.toLowerCase() === activeScen.u.toLowerCase() || gU === activeScen.u.replace('²','2')) { stats.unit.cor++; fH += `<div class="split-fb pass-box">✅ Unit: Correct physics unit.</div>`; }
-        else { stats.unit.err++; isPass = false; fH += `<div class="split-fb err-box">❌ Unit: Incorrect. Should be ${activeScen.u}.</div>`; errLog.push("Wrong unit"); }
-
-        document.getElementById('feedback').innerHTML = fH; document.getElementById('eval-btn').style.display = "none"; document.getElementById('next-btn').style.display = "block";
-        totalAttempts++; if(isPass) totalPasses++;
-        
-        // --- TRACKING CODE ---
-        let statusText = isPass ? "Pass" : "Fail";
-        let errorString = errLog.length > 0 ? errLog.join(" | ") : "None";
-        if (window.parent && window.parent.logToTeacher) { window.parent.logToTeacher("Module 8", activeScen.id, activeScen.t, statusText, errorString); }
-        // ---------------------
-
-        localStorage.setItem(`gs_mod_${MODULE_ID}`, JSON.stringify({ correct: totalPasses, total: totalAttempts, details: stats }));
+    function renderTriangle() {
+        ctxInt.clearRect(0,0,620,620);
+        anchors.forEach(a => { ctxInt.fillStyle = "#ffc107"; ctxInt.strokeStyle = "#000"; ctxInt.lineWidth = 1; ctxInt.beginPath(); ctxInt.arc(a.xPx, a.yPx, 6, 0, 7); ctxInt.fill(); ctxInt.stroke(); });
+        if (anchors.length === 2) {
+            let p1 = anchors[0], p2 = anchors[1]; ctxInt.strokeStyle = "#28a745"; ctxInt.lineWidth = 2; ctxInt.setLineDash([5, 5]);
+            ctxInt.beginPath(); ctxInt.moveTo(p1.xPx, p1.yPx); ctxInt.lineTo(p2.xPx, p1.yPx); ctxInt.moveTo(p2.xPx, p1.yPx); ctxInt.lineTo(p2.xPx, p2.yPx); ctxInt.stroke(); ctxInt.setLineDash([]);
+            ctxInt.strokeStyle = "rgba(100, 100, 100, 0.5)"; ctxInt.lineWidth = 1; ctxInt.setLineDash([3, 3]);
+            ctxInt.beginPath(); ctxInt.moveTo(p1.xPx, p1.yPx); ctxInt.lineTo(p1.xPx, padB+size); ctxInt.moveTo(p1.xPx, p1.yPx); ctxInt.lineTo(padL, p1.yPx);
+            ctxInt.moveTo(p2.xPx, p2.yPx); ctxInt.lineTo(p2.xPx, padB+size); ctxInt.moveTo(p2.xPx, p2.yPx); ctxInt.lineTo(padL, p2.yPx); ctxInt.stroke(); ctxInt.setLineDash([]);
+        }
     }
-    init();
+
+    function evaluateGradient() {
+        const fb = document.getElementById('feedback'); fb.style.display = "block"; fb.innerHTML = "";
+        if (anchors.length < 2) return fb.innerHTML = `<div class="split-fb err-box">❌ <strong>Error:</strong> Drop your two anchor points on the graph first!</div>`;
+        let inpGradStr = document.getElementById('val-grad').value.trim(), inpX1 = parseFloat(document.getElementById('val-x1').value), inpY1 = parseFloat(document.getElementById('val-y1').value), inpX2 = parseFloat(document.getElementById('val-x2').value), inpY2 = parseFloat(document.getElementById('val-y2').value), inpGrad = parseFloat(inpGradStr), inpUnit = document.getElementById('val-unit').value;
+        if (isNaN(inpX1) || isNaN(inpY1) || isNaN(inpX2) || isNaN(inpY2) || isNaN(inpGrad) || inpUnit === "") return fb.innerHTML = `<div class="split-fb err-box">❌ <strong>Error:</strong> Fill in all coordinates, gradient, and unit.</div>`;
+
+        let p1 = anchors[0], p2 = anchors[1], status = "pass"; 
+        let fbB = { sel: { pass: true, msg: "<strong>Point Selection:</strong> Perfect." }, rd: { pass: true, msg: "<strong>Coordinate Reading:</strong> Accurate." }, tri: { pass: true, msg: "<strong>Triangle Size:</strong> Large enough." }, math: { pass: true, msg: "<strong>Math:</strong> Gradient calculated correctly." }, unit: { pass: true, msg: "<strong>Units:</strong> Correct." } };
+        let a_sel = 'line', a_rd = 'perf', a_tri = 'ok', a_math = [], a_unit = 'cor';
+
+        let c1Off = Math.abs(p1.yVal - (lineModel.m * p1.xVal + lineModel.c)) > Math.max(tolClick, 1.0), c2Off = Math.abs(p2.yVal - (lineModel.m * p2.xVal + lineModel.c)) > Math.max(tolClick, 1.0);
+        if (c1Off || c2Off) {
+            status = "err"; fbB.sel.pass = false; let hitRaw = false;
+            points.forEach(pt => { if (Math.hypot(p1.xPx - pt.x, p1.yPx - pt.y) < 15 || Math.hypot(p2.xPx - pt.x, p2.yPx - pt.y) < 15) hitRaw = true; });
+            if (hitRaw) { a_sel = 'raw'; fbB.sel.msg = "<strong>Point Selection:</strong> Used raw data. Use the Line of Best Fit."; } else { a_sel = 'flt'; fbB.sel.msg = "<strong>Point Selection:</strong> Points floating. Click the blue line."; }
+        }
+
+        let maxErr = Math.max(Math.abs(inpX1-p1.xVal), Math.abs(inpY1-p1.yVal), Math.abs(inpX2-p2.xVal), Math.abs(inpY2-p2.yVal));
+        if (maxErr > tolRead) {
+            status = "err"; fbB.rd.pass = false;
+            if (Math.abs(inpX1-p2.xVal)<=tolRead && Math.abs(inpY1-p2.yVal)<=tolRead && Math.abs(inpX2-p1.xVal)<=tolRead && Math.abs(inpY2-p1.yVal)<=tolRead) { a_rd = 'sp12'; fbB.rd.msg = `<strong>Reading:</strong> Swapped P1 and P2.`; } 
+            else if ((Math.abs(inpX1-p1.yVal)<=tolRead && Math.abs(inpY1-p1.xVal)<=tolRead) || (Math.abs(inpX2-p2.yVal)<=tolRead && Math.abs(inpY2-p2.xVal)<=tolRead)) { a_rd = 'sxy'; fbB.rd.msg = `<strong>Reading:</strong> Swapped X/Y.`; } 
+            else if (maxErr <= tolRead + 1.5) { a_rd = 'min'; fbB.rd.msg = `<strong>Reading:</strong> Slightly off. Check gridlines.`; } else { a_rd = 'off'; fbB.rd.msg = `<strong>Reading:</strong> Way off.`; }
+        }
+
+        if ((inpX2 - inpX1) < tolSize && a_rd === 'perf') { status = "err"; fbB.tri.pass = false; a_tri = 'sml'; fbB.tri.msg = `<strong>Size:</strong> Less than ${tolSize}%. Draw larger.`; }
+
+        let exG = (inpY2 - inpY1) / (inpX2 - inpX1), dP = (inpGradStr.includes('.')) ? inpGradStr.split('.')[1].length : 0, f = Math.pow(10, dP);
+        let exInv = (inpX2 - inpX1) / (inpY2 - inpY1);
+        if (Math.abs(inpGrad - exInv) < 0.05) { status = "err"; fbB.math.pass = false; a_math.push('inv'); fbB.math.msg = `<strong>Math:</strong> Inverse calculation (Run/Rise).`; } 
+        else {
+            let rndEx = Math.round((exG + Number.EPSILON) * f) / f;
+            if (Math.abs(inpGrad - rndEx) > 1e-9) {
+                status = "err"; fbB.math.pass = false; let rat = Math.abs(inpGrad/exG), lR = Math.log10(rat);
+                if (Math.abs(Math.round(lR)-lR)<0.1 && Math.round(lR)!==0) { a_math.push('p10'); fbB.math.msg = `<strong>Math:</strong> Power of 10 error.`; } 
+                else if (Math.abs(inpGrad-exG)>0 && Math.abs(inpGrad-exG)<=2.5*Math.pow(10,-dP)) { a_math.push('rnd'); fbB.math.msg = `<strong>Math:</strong> Rounding error. Expected ${rndEx}.`; } 
+                else { a_math.push('oth'); fbB.math.msg = `<strong>Math:</strong> (${inpY2}-${inpY1})÷(${inpX2}-${inpX1}) ≠ ${inpGradStr}.`; }
+            }
+        }
+        if (a_math.length === 0) a_math.push('perf'); 
+
+        let vU = [activeScenario.gradUnit]; if (activeScenario.gradUnit === '\u03A9') vU.push('V/A');
+        if (!vU.includes(inpUnit)) { status = "err"; fbB.unit.pass = false; a_unit = 'err'; fbB.unit.msg = `<strong>Unit Error:</strong> Should be ${activeScenario.yUnit} / ${activeScenario.xUnit}.`; }
+
+        if (!hasLogged) {
+            hasLogged = true; stats.sel[a_sel]++; stats.rd[a_rd]++; stats.tri[a_tri]++; stats.unit[a_unit]++; a_math.forEach(m => stats.math[m]++); updateDashUI();
+            
+            // --- SAVE TO HYDRATED MEMORY ---
+            let isPass = (status === "pass");
+            totalAttempts += 1;
+            if (isPass) totalPasses += 1;
+            let modData = { correct: totalPasses, total: totalAttempts, details: stats }; 
+            localStorage.setItem(`gs_mod_${MODULE_ID}`, JSON.stringify(modData));
+            // -------------------------------
+        }
+
+        let fbHTML = ""; Object.values(fbB).forEach(b => fbHTML += `<div class="split-fb ${b.pass ? 'pass-box' : 'err-box'}">${b.pass ? '✅' : '❌'} ${b.msg}</div>`);
+        if (status === "pass") {
+            fbHTML += `<div class="split-fb result-box">🎉 <strong>Complete!</strong><br>Rate of change: <strong>${inpGrad} ${inpUnit}</strong>.<br><br><em>This represents the object's <strong>${activeScenario.phys}</strong>.</em></div>`;
+            document.getElementById('chk-btn').style.display = "none"; document.getElementById('next-btn').style.display = "block"; document.getElementById('next-btn').innerText = "Next Graph";
+        } else {
+            document.getElementById('chk-btn').style.display = "block"; document.getElementById('next-btn').style.display = "block"; document.getElementById('next-btn').innerText = "Skip Graph"; document.getElementById('next-btn').className = "btn-main btn-secondary";
+        }
+        fb.innerHTML = fbHTML;
+    }
+
+    function getPctStr(v, t) { return t === 0 ? "0 (-)" : `${v} (${Math.round((v/t)*100)}%)`; }
+    function updateDashUI() {
+        const upd = (id, v, t, cls) => { let e = document.getElementById(id); if(!e) return; e.innerText = t?getPctStr(v,t):v; e.className = v>0?cls:""; };
+        upd('s-sel-line', stats.sel.line, stats.sel.line+stats.sel.raw+stats.sel.flt, 'mat-match'); upd('s-sel-raw', stats.sel.raw, null, 'mat-fail'); upd('s-sel-flt', stats.sel.flt, null, 'mat-fail');
+        upd('s-rd-perf', stats.rd.perf, stats.rd.perf+stats.rd.min+stats.rd.sxy+stats.rd.sp12+stats.rd.off, 'mat-match'); upd('s-rd-min', stats.rd.min, null, 'mat-meh'); upd('s-rd-sxy', stats.rd.sxy, null, 'mat-fail'); upd('s-rd-sp12', stats.rd.sp12, null, 'mat-fail'); upd('s-rd-off', stats.rd.off, null, 'mat-fail');
+        upd('s-tri-ok', stats.tri.ok, stats.tri.ok+stats.tri.sml, 'mat-match'); upd('s-tri-sml', stats.tri.sml, null, 'mat-fail');
+        upd('s-m-perf', stats.math.perf, null, 'mat-match'); upd('s-m-rnd', stats.math.rnd, null, 'mat-fail'); upd('s-m-inv', stats.math.inv, null, 'mat-fail'); upd('s-m-p10', stats.math.p10, null, 'mat-fail'); upd('s-m-oth', stats.math.oth, null, 'mat-fail');
+        upd('s-u-cor', stats.unit.cor, stats.unit.cor+stats.unit.err, 'mat-match'); upd('s-u-err', stats.unit.err, null, 'mat-fail');
+    }
+    window.onload = init;
 </script>
 </body>
 </html>

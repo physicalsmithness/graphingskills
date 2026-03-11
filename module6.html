@@ -9,35 +9,59 @@
         .app-layout { display: grid; grid-template-columns: 620px auto; gap: 30px; margin-top: 15px; }
         .graph-wrapper { position: relative; width: 620px; height: 620px; background: #fff; border: 1px solid #ccc; cursor: crosshair;}
         canvas { display: block; position: absolute; top: 0; left: 0; } #bgCanvas { z-index: 1; } #drawCanvas { z-index: 2; }
+        
         .info-panel { background: #f8f9fa; padding: 20px; border-radius: 8px; border: 1px solid #ddd; }
         .scenario-box { padding: 15px; background: #eef2f5; border-radius: 6px; border: 1px solid #0056b3; margin-bottom: 20px; font-size: 1.05em; line-height: 1.4;}
+        
         .step-box { padding: 15px; background: #fff; border-radius: 6px; border-left: 5px solid #6c757d; margin-bottom: 15px; transition: 0.3s; box-shadow: 0 2px 4px rgba(0,0,0,0.05);}
         .step-box.active { border-left-color: #0056b3; }
+        
         .btn-main { display: block; padding: 12px; font-size: 1.1em; cursor: pointer; border: none; border-radius: 4px; background-color: #0056b3; color: white; width: 100%; margin-top: 10px;}
         .btn-main:hover { background-color: #004494; } 
+        
         .tool-btn { padding: 10px; border: 1px solid #ccc; background: #fff; cursor: pointer; border-radius: 4px; flex: 1; font-size: 0.9em; font-weight: bold; color: #333;}
-        .tool-btn.active { background: #0056b3; color: white; border-color: #0056b3; } .tool-btn.action-btn { background: #eef2f5; border-color: #ced4da; } .tool-btn.action-btn:hover { background: #dde2e6; }
+        .tool-btn.active { background: #0056b3; color: white; border-color: #0056b3; } 
+        .tool-btn.action-btn { background: #eef2f5; border-color: #ced4da; }
+        .tool-btn.action-btn:hover { background: #dde2e6; }
+        
         .outlier-section { margin-top: 10px; padding: 8px; background: #fff4e5; border-radius: 4px; font-size: 0.9em; cursor: pointer; display: flex; align-items: center; gap: 8px;}
+        
         .golden-rule { background: #fff3cd; border-left: 4px solid #ffc107; padding: 10px; margin-bottom: 20px; font-style: italic; }
-        .feedback-container { margin-top: 15px; display: none; flex-direction: column; gap: 8px;} .split-fb { padding: 12px; border-radius: 4px; font-size: 0.95em; line-height: 1.4; border-left: 5px solid; background: #fff; } .pass-box { border-color: #28a745; color: #155724; background-color: #f8fff9; } .err-box { border-color: #d9534f; color: #721c24; background-color: #fffafa; } .meh-box { border-color: #ffc107; color: #856404; background-color: #fff8e6; }
-        #next-btn { background-color: #28a745; margin-top: 10px;} #next-btn:hover { background-color: #218838; }
-        .settings-panel { background: #f1f3f5; border: 1px solid #ced4da; border-radius: 6px; padding: 10px 15px; margin-top: 20px; } .settings-panel summary { font-weight: bold; cursor: pointer; color: #495057; outline: none;} .settings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; font-size: 0.9em;} .setting-item { display: flex; flex-direction: column; gap: 5px; } .setting-item input[type=range] { width: 100%; }
-        .dash-container { margin-top: 20px; padding-top: 15px; } .matrix-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 10px;} .conf-matrix { width: 100%; border-collapse: collapse; font-size: 0.8em; background: #fff; text-align: center;} .conf-matrix th, .conf-matrix td { border: 1px solid #aaa; padding: 4px; } .conf-matrix th { background: #e9ecef; font-weight: bold;} .mat-actual { font-weight: bold; text-align: left; background: #f8f9fa;} .mat-match { background-color: #d4edda; font-weight: bold; color: #155724;} .mat-meh { background-color: #fff3cd; color: #856404;} .mat-err { background-color: #f8d7da; color: #721c24; font-weight: bold;} .mat-na { background-color: #e9ecef; color: #aaa; }
-        .footer { text-align: center; margin-top: 30px; border-top: 1px solid #eee; padding-top: 15px; font-size: 0.9em; } .footer a { color: #6c757d; text-decoration: none; }
+        
+        /* Colored Feedback System */
+        .feedback-container { margin-top: 15px; display: none; flex-direction: column; gap: 8px;}
+        .split-fb { padding: 12px; border-radius: 4px; font-size: 0.95em; line-height: 1.4; border-left: 5px solid; background: #fff; }
+        .pass-box { border-color: #28a745; color: #155724; background-color: #f8fff9; }
+        .err-box { border-color: #d9534f; color: #721c24; background-color: #fffafa; }
+        .meh-box { border-color: #ffc107; color: #856404; background-color: #fff8e6; }
+        
+        #next-btn { background-color: #28a745; margin-top: 10px;} 
+        #next-btn:hover { background-color: #218838; }
+
+        .settings-panel { background: #f1f3f5; border: 1px solid #ced4da; border-radius: 6px; padding: 10px 15px; margin-top: 20px; } .settings-panel summary { font-weight: bold; cursor: pointer; color: #495057; outline: none;}
+        .settings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; font-size: 0.9em;} .setting-item { display: flex; flex-direction: column; gap: 5px; } .setting-item input[type=range] { width: 100%; }
+        .dash-container { margin-top: 20px; padding-top: 15px; } .matrix-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 10px;}
+        .conf-matrix { width: 100%; border-collapse: collapse; font-size: 0.8em; background: #fff; text-align: center;} .conf-matrix th, .conf-matrix td { border: 1px solid #aaa; padding: 4px; } .conf-matrix th { background: #e9ecef; font-weight: bold;}
+        .mat-actual { font-weight: bold; text-align: left; background: #f8f9fa;} .mat-match { background-color: #d4edda; font-weight: bold; color: #155724;} .mat-meh { background-color: #fff3cd; color: #856404;} .mat-err { background-color: #f8d7da; color: #721c24; font-weight: bold;} .mat-na { background-color: #e9ecef; color: #aaa; }
+        .footer { text-align: center; margin-top: 30px; border-top: 1px solid #eee; padding-top: 15px; font-size: 0.9em; } .footer a { color: #6c757d; text-decoration: none; } .footer a:hover { color: #333; text-decoration: underline; }
     </style>
 </head>
 <body>
 <div class="module-container">
     <h2 style="margin-top:0;">Module 6: Contextual Trends & Outliers</h2>
     <div class="golden-rule"><strong>The Golden Rule:</strong> Draw the simplest trend justified by the data. The line must span the valid data points, be balanced, and be smooth!</div>
+    
     <div class="app-layout">
         <div class="graph-wrapper"><canvas id="bgCanvas" width="620" height="620"></canvas><canvas id="drawCanvas" width="620" height="620"></canvas></div>
+        
         <div class="info-panel">
             <div class="scenario-box" id="scenario-text">Loading scenario...</div>
+            
             <div class="step-box active">
                 <strong>Step 1: Outlier Check</strong>
                 <label class="outlier-section"><input type="checkbox" id="outlier-mode" onchange="toggleOutlierMode()"> <span>Is there an anomaly? (Check, then click point)</span></label>
             </div>
+            
             <div class="step-box active">
                 <strong>Step 2: Choose Trend Tool</strong>
                 <div style="display:flex; gap:5px; margin-top:10px;">
@@ -46,109 +70,314 @@
                     <button id="tool-join" class="tool-btn" onclick="setTool('join')">Join Dots</button>
                 </div>
             </div>
+            
             <div class="step-box active">
                 <strong>Step 3: Draw</strong>
                 <p id="instr" style="font-size: 0.85em; color: #666; min-height: 35px; margin-bottom: 10px;">Drag to draw a straight line.</p>
-                <div style="display:flex; gap:5px; margin-bottom:15px;"><button class="tool-btn action-btn" onclick="undoPoint()">↩️ Undo Point</button><button class="tool-btn action-btn" onclick="clearDrawing()">🗑️ Clear All</button></div>
+                <div style="display:flex; gap:5px; margin-bottom:15px;">
+                    <button class="tool-btn action-btn" onclick="undoPoint()">↩️ Undo Point</button>
+                    <button class="tool-btn action-btn" onclick="clearDrawing()">🗑️ Clear All</button>
+                </div>
                 <button class="btn-main" id="eval-btn" onclick="evaluateTrend()">Evaluate My Graph</button>
-                <button id="next-btn" class="btn-main" style="display:none;" onclick="init()">Next Practice Scenario</button>
+                <button id="next-btn" class="btn-main" style="display:none;" onclick="init()">Next Question</button>
             </div>
+            
             <div id="feedback" class="feedback-container"></div>
         </div>
     </div>
     
-    <details class="settings-panel"><summary>⚙️ Adjust Grading Strictness</summary><div class="settings-grid"><div class="setting-item"><label>Line: Max Avg Dist (<span id="val-tolLineErr">45</span>px)</label><input type="range" id="inp-tolLineErr" min="10" max="100" value="45" oninput="updateTols()"></div><div class="setting-item"><label>Line: Max Imbalance (<span id="val-tolLineBal">3</span> pts)</label><input type="range" id="inp-tolLineBal" min="1" max="5" value="3" oninput="updateTols()"></div><div class="setting-item"><label>Curve: Max Avg Dist (<span id="val-tolCurveErr">30</span>px)</label><input type="range" id="inp-tolCurveErr" min="10" max="100" value="30" oninput="updateTols()"></div><div class="setting-item"><label>Curve: Wobble Sens. (<span id="val-tolCurveWob">0.10</span>)</label><input type="range" id="inp-tolCurveWob" min="0.05" max="0.5" step="0.01" value="0.10" oninput="updateTols()"></div></div></details>
-    <div class="dash-container"><h3 style="margin:0 0 5px 0;">Performance Analytics</h3><div class="matrix-grid"><div><table class="conf-matrix"><thead><tr><th colspan="5" style="background:#0056b3; color:white;">1. Outlier Detection</th></tr><tr><th>State \ Action</th><th>Correct</th><th>Debat.</th><th>Wrong</th><th>Missed</th></tr></thead><tbody id="o-body"><tr><td class="mat-actual">Has Anomaly</td><td id="o-has-cor">0 (-)</td><td class="mat-na">-</td><td id="o-has-wrg">0</td><td id="o-has-ign">0</td></tr><tr><td class="mat-actual">No Anomaly</td><td id="o-non-cor">0 (-)</td><td id="o-non-deb">0</td><td id="o-non-wrg">0</td><td class="mat-na">-</td></tr></tbody></table></div><div><table class="conf-matrix"><thead><tr><th colspan="4" style="background:#0056b3; color:white;">2. Trend Tool Selection</th></tr><tr><th>Actual \ Chosen</th><th>Line</th><th>Curve</th><th>Dots</th></tr></thead><tbody id="t-body"><tr><td class="mat-actual">Linear</td><td id="t-lin-lin">0 (-)</td><td id="t-lin-cur">0</td><td id="t-lin-dot">0</td></tr><tr><td class="mat-actual">Curve</td><td id="t-cur-lin">0</td><td id="t-cur-cur">0 (-)</td><td id="t-cur-dot">0</td></tr><tr><td class="mat-actual">Sequential</td><td id="t-dot-lin">0</td><td id="t-dot-cur">0</td><td id="t-dot-dot">0 (-)</td></tr></tbody></table></div><div><table class="conf-matrix"><thead><tr><th colspan="5" style="background:#0056b3; color:white;">3. Drawing Execution</th></tr><tr><th>Tool</th><th>Perfect</th><th>Unbal.</th><th>Short</th><th>Shape/Dist</th></tr></thead><tbody id="e-body"><tr><td class="mat-actual">Line</td><td id="e-lin-perf">0 (-)</td><td id="e-lin-unb">0</td><td id="e-lin-far">0</td><td class="mat-na">-</td></tr><tr><td class="mat-actual">Curve</td><td id="e-cur-perf">0 (-)</td><td id="e-cur-unb">0</td><td id="e-cur-far">0</td><td id="e-cur-shp">0</td></tr></tbody></table></div></div></div>
+    <details class="settings-panel">
+        <summary>⚙️ Adjust Grading Strictness</summary>
+        <div class="settings-grid">
+            <div class="setting-item"><label>Line: Max Avg Dist (<span id="val-tolLineErr">45</span>px)</label><input type="range" id="inp-tolLineErr" min="10" max="100" value="45" oninput="updateTols()"></div>
+            <div class="setting-item"><label>Line: Max Imbalance (<span id="val-tolLineBal">3</span> pts)</label><input type="range" id="inp-tolLineBal" min="1" max="5" value="3" oninput="updateTols()"></div>
+            <div class="setting-item"><label>Curve: Max Avg Dist (<span id="val-tolCurveErr">30</span>px)</label><input type="range" id="inp-tolCurveErr" min="10" max="100" value="30" oninput="updateTols()"></div>
+            <div class="setting-item"><label>Curve: Wobble Sens. (<span id="val-tolCurveWob">0.10</span>)</label><input type="range" id="inp-tolCurveWob" min="0.05" max="0.5" step="0.01" value="0.10" oninput="updateTols()"></div>
+        </div>
+    </details>
+    
+    <div class="dash-container"><h3 style="margin:0 0 5px 0;">Performance Analytics</h3>
+        <div class="matrix-grid">
+            <div><table class="conf-matrix"><thead><tr><th colspan="5" style="background:#0056b3; color:white;">1. Outlier Detection</th></tr><tr><th>State \ Action</th><th>Correct</th><th>Debat.</th><th>Wrong</th><th>Missed</th></tr></thead><tbody id="o-body">
+                <tr><td class="mat-actual">Has Anomaly</td><td id="o-has-cor">0 (-)</td><td class="mat-na">-</td><td id="o-has-wrg">0</td><td id="o-has-ign">0</td></tr>
+                <tr><td class="mat-actual">No Anomaly</td><td id="o-non-cor">0 (-)</td><td id="o-non-deb">0</td><td id="o-non-wrg">0</td><td class="mat-na">-</td></tr>
+            </tbody></table></div>
+            <div><table class="conf-matrix"><thead><tr><th colspan="4" style="background:#0056b3; color:white;">2. Trend Tool Selection</th></tr><tr><th>Actual \ Chosen</th><th>Line</th><th>Curve</th><th>Dots</th></tr></thead><tbody id="t-body">
+                <tr><td class="mat-actual">Linear</td><td id="t-lin-lin">0 (-)</td><td id="t-lin-cur">0</td><td id="t-lin-dot">0</td></tr>
+                <tr><td class="mat-actual">Curve</td><td id="t-cur-lin">0</td><td id="t-cur-cur">0 (-)</td><td id="t-cur-dot">0</td></tr>
+                <tr><td class="mat-actual">Sequential</td><td id="t-dot-lin">0</td><td id="t-dot-cur">0</td><td id="t-dot-dot">0 (-)</td></tr>
+            </tbody></table></div>
+            <div><table class="conf-matrix"><thead><tr><th colspan="5" style="background:#0056b3; color:white;">3. Drawing Execution</th></tr><tr><th>Tool</th><th>Perfect</th><th>Unbal.</th><th>Short</th><th>Shape/Dist</th></tr></thead><tbody id="e-body">
+                <tr><td class="mat-actual">Line</td><td id="e-lin-perf">0 (-)</td><td id="e-lin-unb">0</td><td id="e-lin-far">0</td><td class="mat-na">-</td></tr>
+                <tr><td class="mat-actual">Curve</td><td id="e-cur-perf">0 (-)</td><td id="e-cur-unb">0</td><td id="e-cur-far">0</td><td id="e-cur-shp">0</td></tr>
+            </tbody></table></div>
+        </div>
+    </div>
     <div class="footer"><a href="feedback.html" target="_blank">🐛 Report an Issue / Leave Feedback</a></div>
 </div>
 
 <script>
     const bgCanvas = document.getElementById('bgCanvas'), ctxBg = bgCanvas.getContext('2d'), drawCanvas = document.getElementById('drawCanvas'), ctxDraw = drawCanvas.getContext('2d'), pad = 60, size = 500;
     let points = [], outlierIdx = -1, userOutlier = -1, isDrawing = false, currentTool = 'line', drawingNodes = [], activeScenario = null;
-    let tolLineErr = 45, tolLineBal = 3, tolCurveErr = 30, tolCurveWob = 0.10;
-    const MODULE_ID = "6"; let stats = { outlier: { has: { cor: 0, wrg: 0, ign: 0 }, non: { cor: 0, deb: 0, wrg: 0 } }, trend: { linear: { line: 0, curve: 0, join: 0 }, curve: { line: 0, curve: 0, join: 0 }, dots: { line: 0, curve: 0, join: 0 } }, exec: { line: { perf: 0, unb: 0, far: 0 }, curve: { perf: 0, unb: 0, far: 0, shp: 0 } } }; let totalPasses = 0, totalAttempts = 0;
     
-    try { let savedMem = JSON.parse(localStorage.getItem(`gs_mod_${MODULE_ID}`)); if (savedMem && savedMem.details && savedMem.details.exec && savedMem.details.exec.curve) { totalPasses = savedMem.correct || 0; totalAttempts = savedMem.total || 0; stats = savedMem.details; } else if (savedMem) { localStorage.removeItem(`gs_mod_${MODULE_ID}`); } } catch(e) { localStorage.removeItem(`gs_mod_${MODULE_ID}`); }
+    // Tighter default tolerances for Curves
+    let tolLineErr = 45, tolLineBal = 3, tolCurveErr = 30, tolCurveWob = 0.10;
 
-    function updateTols() { tolLineErr = parseFloat(document.getElementById('inp-tolLineErr').value); tolLineBal = parseFloat(document.getElementById('inp-tolLineBal').value); tolCurveErr = parseFloat(document.getElementById('inp-tolCurveErr').value); tolCurveWob = parseFloat(document.getElementById('inp-tolCurveWob').value); document.getElementById('val-tolLineErr').innerText = tolLineErr; document.getElementById('val-tolLineBal').innerText = tolLineBal; document.getElementById('val-tolCurveErr').innerText = tolCurveErr; document.getElementById('val-tolCurveWob').innerText = tolCurveWob; }
+    // BULLETPROOF HYDRATION
+    const MODULE_ID = "6";
+    let stats = { outlier: { has: { cor: 0, wrg: 0, ign: 0 }, non: { cor: 0, deb: 0, wrg: 0 } }, trend: { linear: { line: 0, curve: 0, join: 0 }, curve: { line: 0, curve: 0, join: 0 }, dots: { line: 0, curve: 0, join: 0 } }, exec: { line: { perf: 0, unb: 0, far: 0 }, curve: { perf: 0, unb: 0, far: 0, shp: 0 } } };
+    let totalPasses = 0, totalAttempts = 0;
+    
+    try {
+        let savedMem = JSON.parse(localStorage.getItem(`gs_mod_${MODULE_ID}`));
+        // Ensure the old save file has the exact new schema (e.g. exec.curve) before loading
+        if (savedMem && savedMem.details && savedMem.details.exec && savedMem.details.exec.curve) { 
+            totalPasses = savedMem.correct || 0; 
+            totalAttempts = savedMem.total || 0; 
+            stats = savedMem.details; 
+        } else if (savedMem) {
+            // Nuke incompatible older versions to prevent freezing
+            localStorage.removeItem(`gs_mod_${MODULE_ID}`);
+        }
+    } catch(e) {
+        localStorage.removeItem(`gs_mod_${MODULE_ID}`);
+    }
+
+    function updateTols() {
+        tolLineErr = parseFloat(document.getElementById('inp-tolLineErr').value); tolLineBal = parseFloat(document.getElementById('inp-tolLineBal').value);
+        tolCurveErr = parseFloat(document.getElementById('inp-tolCurveErr').value); tolCurveWob = parseFloat(document.getElementById('inp-tolCurveWob').value);
+        document.getElementById('val-tolLineErr').innerText = tolLineErr; document.getElementById('val-tolLineBal').innerText = tolLineBal; document.getElementById('val-tolCurveErr').innerText = tolCurveErr; document.getElementById('val-tolCurveWob').innerText = tolCurveWob;
+    }
 
     const scenarioBank = {
-        linear: [ { id: 601, text: "<strong>Physics:</strong> Extension of a metal spring vs force.", rationale: "Hooke's Law dictates a directly proportional straight line.", xLabel: "Force (N)", yLabel: "Extension (cm)" }, { id: 602, text: "<strong>Electronics:</strong> Voltage vs current.", rationale: "Ohm's law requires a straight line.", xLabel: "Current (A)", yLabel: "Voltage (V)" } ],
-        curve: [ { id: 603, text: "<strong>Thermodynamics:</strong> Coffee cooling.", rationale: "Cooling rates drop rapidly and then flatten out.", xLabel: "Time (min)", yLabel: "Temp (°C)", cType: "decay" }, { id: 604, text: "<strong>Physics:</strong> Radioactive activity.", rationale: "Radioactive decay follows a smooth exponential curve.", xLabel: "Time (Days)", yLabel: "Activity (Bq)", cType: "decay" } ],
-        dots: [ { id: 605, text: "<strong>Economics:</strong> Stock price.", rationale: "Prices are an unpredictable sequence. Join the dots.", xLabel: "Day", yLabel: "Price ($)" }, { id: 606, text: "<strong>Meteorology:</strong> Rainfall.", rationale: "Weather acts sporadically. Join the dots.", xLabel: "Day", yLabel: "Rainfall (mm)" } ]
+        linear: [ { text: "<strong>Physics:</strong> Extension of a metal spring vs force.", rationale: "Hooke's Law dictates a directly proportional straight line.", xLabel: "Force (N)", yLabel: "Extension (cm)" }, { text: "<strong>Electronics:</strong> Voltage vs current.", rationale: "Ohm's law requires a straight line.", xLabel: "Current (A)", yLabel: "Voltage (V)" } ],
+        curve: [ { text: "<strong>Thermodynamics:</strong> Coffee cooling.", rationale: "Cooling rates drop rapidly and then flatten out.", xLabel: "Time (min)", yLabel: "Temp (°C)", cType: "decay" }, { text: "<strong>Physics:</strong> Radioactive activity.", rationale: "Radioactive decay follows a smooth exponential curve.", xLabel: "Time (Days)", yLabel: "Activity (Bq)", cType: "decay" } ],
+        dots: [ { text: "<strong>Economics:</strong> Stock price.", rationale: "Prices are an unpredictable sequence. Join the dots.", xLabel: "Day", yLabel: "Price ($)" }, { text: "<strong>Meteorology:</strong> Rainfall.", rationale: "Weather acts sporadically. Join the dots.", xLabel: "Day", yLabel: "Rainfall (mm)" } ]
     };
 
-    function init() { points = []; userOutlier = -1; drawingNodes = []; document.getElementById('outlier-mode').checked = false; document.getElementById('eval-btn').style.display = "block"; document.getElementById('next-btn').style.display = "none"; document.getElementById('feedback').style.display = "none"; generateData(); drawGraph(); setTool('line'); updateDashUI(); }
+    function init() {
+        points = []; userOutlier = -1; drawingNodes = []; document.getElementById('outlier-mode').checked = false; document.getElementById('eval-btn').style.display = "block"; document.getElementById('next-btn').style.display = "none"; document.getElementById('feedback').style.display = "none";
+        generateData(); drawGraph(); setTool('line'); updateDashUI();
+    }
 
     function generateData() {
         const type = (Math.random() < 0.4) ? 'linear' : ((Math.random() < 0.8) ? 'curve' : 'dots'); 
         activeScenario = scenarioBank[type][Math.floor(Math.random() * scenarioBank[type].length)]; activeScenario.type = type; document.getElementById('scenario-text').innerHTML = activeScenario.text;
         outlierIdx = (type !== 'dots' && Math.random() < 0.20) ? Math.floor(Math.random() * 4) + 1 : -1;
-        for (let i = 0; i < 7; i++) { let x = 80 + (i * 70), y; if (type === 'linear') { y = (500 - Math.random()*40) + (i * -(Math.random()*25 + 20)) + (Math.random()*16 - 8); } else if (type === 'curve') { y = activeScenario.cType === 'decay' ? 520 - (380*Math.exp(-0.65*i)) + (Math.random()*12-6) : 520 - (12*Math.exp(0.55*i)) + (Math.random()*12-6); } else { y = 150 + Math.random() * 300; } if (i === outlierIdx) y += (y > 300 ? -150 : 150); points.push({x, y: Math.max(pad + 10, Math.min(y, pad + size - 10))}); }
+        for (let i = 0; i < 7; i++) {
+            let x = 80 + (i * 70), y;
+            if (type === 'linear') { y = (500 - Math.random()*40) + (i * -(Math.random()*25 + 20)) + (Math.random()*16 - 8); } 
+            else if (type === 'curve') { y = activeScenario.cType === 'decay' ? 520 - (380*Math.exp(-0.65*i)) + (Math.random()*12-6) : 520 - (12*Math.exp(0.55*i)) + (Math.random()*12-6); } 
+            else { y = 150 + Math.random() * 300; }
+            if (i === outlierIdx) y += (y > 300 ? -150 : 150); 
+            points.push({x, y: Math.max(pad + 10, Math.min(y, pad + size - 10))});
+        }
     }
 
     function drawGraph() {
         ctxBg.clearRect(0,0,620,620); ctxBg.strokeStyle = "#eee"; ctxBg.lineWidth = 1;
         for(let i=0; i<=10; i++) { let p = pad + (i * (size/10)); ctxBg.beginPath(); ctxBg.moveTo(p, pad); ctxBg.lineTo(p, pad+size); ctxBg.stroke(); ctxBg.beginPath(); ctxBg.moveTo(pad, p); ctxBg.lineTo(pad+size, p); ctxBg.stroke(); }
         ctxBg.lineWidth = 2; ctxBg.strokeStyle = "#000"; ctxBg.strokeRect(pad, pad, size, size); ctxBg.fillStyle = "#000"; ctxBg.font = "bold 14px Arial"; ctxBg.textAlign = "center"; ctxBg.fillText(activeScenario.xLabel, pad + (size/2), pad + size + 40); ctxBg.save(); ctxBg.translate(20, pad + (size/2)); ctxBg.rotate(-Math.PI / 2); ctxBg.fillText(activeScenario.yLabel, 0, 0); ctxBg.restore();
-        points.forEach((p, i) => { ctxBg.strokeStyle = (i === userOutlier) ? "#ccc" : "#c0392b"; ctxBg.lineWidth = 2; ctxBg.beginPath(); ctxBg.moveTo(p.x-5, p.y-5); ctxBg.lineTo(p.x+5, p.y+5); ctxBg.moveTo(p.x+5, p.y-5); ctxBg.lineTo(p.x-5, p.y+5); ctxBg.stroke(); if(i === userOutlier) { ctxBg.strokeStyle = "#999"; ctxBg.setLineDash([2,2]); ctxBg.beginPath(); ctxBg.arc(p.x, p.y, 12, 0, 7); ctxBg.stroke(); ctxBg.setLineDash([]); } });
+        points.forEach((p, i) => {
+            ctxBg.strokeStyle = (i === userOutlier) ? "#ccc" : "#c0392b"; ctxBg.lineWidth = 2; ctxBg.beginPath(); ctxBg.moveTo(p.x-5, p.y-5); ctxBg.lineTo(p.x+5, p.y+5); ctxBg.moveTo(p.x+5, p.y-5); ctxBg.lineTo(p.x-5, p.y+5); ctxBg.stroke();
+            if(i === userOutlier) { ctxBg.strokeStyle = "#999"; ctxBg.setLineDash([2,2]); ctxBg.beginPath(); ctxBg.arc(p.x, p.y, 12, 0, 7); ctxBg.stroke(); ctxBg.setLineDash([]); }
+        });
     }
 
-    function setTool(t) { currentTool = t; document.getElementById('outlier-mode').checked = false; drawingNodes = []; ctxDraw.clearRect(0,0,620,620); document.querySelectorAll('.tool-btn:not(.action-btn)').forEach(b => b.classList.remove('active')); document.getElementById('tool-'+t).classList.add('active'); document.getElementById('instr').innerText = { 'line':'Click and drag across the grid to draw a line.', 'curve':'Click points along the path to build a smooth curve. Dbl-click to finish.', 'join':'Sequential dots joined automatically. Evaluate choice.' }[t]; if (t === 'join') { drawingNodes = points.filter((p, i) => i !== userOutlier).map(p => ({x: p.x, y: p.y})); renderDrawing(true); } }
-    function undoPoint() { if (isDrawing) return; if (currentTool === 'curve' && drawingNodes.length > 0) { drawingNodes.pop(); renderDrawing(); } }
-    function clearDrawing() { if (isDrawing) return; drawingNodes = []; renderDrawing(); }
+    function setTool(t) {
+        currentTool = t; document.getElementById('outlier-mode').checked = false; drawingNodes = []; ctxDraw.clearRect(0,0,620,620);
+        document.querySelectorAll('.tool-btn:not(.action-btn)').forEach(b => b.classList.remove('active')); document.getElementById('tool-'+t).classList.add('active');
+        document.getElementById('instr').innerText = { 'line':'Click and drag across the grid to draw a line.', 'curve':'Click points along the path to build a smooth curve. Dbl-click to finish.', 'join':'Sequential dots joined automatically. Evaluate choice.' }[t];
+        if (t === 'join') { drawingNodes = points.filter((p, i) => i !== userOutlier).map(p => ({x: p.x, y: p.y})); renderDrawing(true); }
+    }
 
-    drawCanvas.addEventListener('mousedown', e => { const rect = drawCanvas.getBoundingClientRect(), mx = e.clientX - rect.left, my = e.clientY - rect.top; if (document.getElementById('outlier-mode').checked) { points.forEach((p, i) => { if (Math.hypot(p.x - mx, p.y - my) < 20) { userOutlier = (userOutlier === i) ? -1 : i; drawGraph(); }}); return; } if (currentTool === 'line') { isDrawing = true; drawingNodes = [{x: mx, y: my}]; } else if (currentTool === 'curve') { drawingNodes.push({x: mx, y: my}); renderDrawing(); } });
+    // --- Interaction & Undo Controls ---
+    function undoPoint() {
+        if (isDrawing) return;
+        if (currentTool === 'curve' && drawingNodes.length > 0) { drawingNodes.pop(); renderDrawing(); }
+    }
+    function clearDrawing() {
+        if (isDrawing) return;
+        drawingNodes = []; renderDrawing();
+    }
+
+    drawCanvas.addEventListener('mousedown', e => {
+        const rect = drawCanvas.getBoundingClientRect(), mx = e.clientX - rect.left, my = e.clientY - rect.top;
+        if (document.getElementById('outlier-mode').checked) { points.forEach((p, i) => { if (Math.hypot(p.x - mx, p.y - my) < 20) { userOutlier = (userOutlier === i) ? -1 : i; drawGraph(); }}); return; }
+        if (currentTool === 'line') { isDrawing = true; drawingNodes = [{x: mx, y: my}]; } else if (currentTool === 'curve') { drawingNodes.push({x: mx, y: my}); renderDrawing(); }
+    });
     drawCanvas.addEventListener('mousemove', e => { if (isDrawing && currentTool === 'line') { drawingNodes[1] = {x: e.clientX - drawCanvas.getBoundingClientRect().left, y: e.clientY - drawCanvas.getBoundingClientRect().top}; renderDrawing(); } });
     drawCanvas.addEventListener('mouseup', () => isDrawing = false); drawCanvas.addEventListener('dblclick', () => { if (currentTool === 'curve') renderDrawing(true); });
 
     function renderDrawing(closed = false) {
-        ctxDraw.clearRect(0,0,620,620); if (drawingNodes.length < 2) { if (drawingNodes.length===1 && currentTool!=='line') { ctxDraw.fillStyle="#0056b3"; ctxDraw.beginPath(); ctxDraw.arc(drawingNodes[0].x, drawingNodes[0].y, 4, 0, 7); ctxDraw.fill(); } return; }
+        ctxDraw.clearRect(0,0,620,620);
+        if (drawingNodes.length < 2) { if (drawingNodes.length===1 && currentTool!=='line') { ctxDraw.fillStyle="#0056b3"; ctxDraw.beginPath(); ctxDraw.arc(drawingNodes[0].x, drawingNodes[0].y, 4, 0, 7); ctxDraw.fill(); } return; }
         ctxDraw.strokeStyle = "#0056b3"; ctxDraw.lineWidth = 3; ctxDraw.lineJoin = "round"; ctxDraw.beginPath(); ctxDraw.moveTo(drawingNodes[0].x, drawingNodes[0].y);
-        if (currentTool === 'line' || currentTool === 'join') { for (let i = 1; i < drawingNodes.length; i++) ctxDraw.lineTo(drawingNodes[i].x, drawingNodes[i].y); } else if (currentTool === 'curve') { for (let i = 0; i < drawingNodes.length - 1; i++) { let p0 = (i > 0) ? drawingNodes[i - 1] : drawingNodes[0], p1 = drawingNodes[i], p2 = drawingNodes[i + 1], p3 = (i != drawingNodes.length - 2) ? drawingNodes[i + 2] : p2; ctxDraw.bezierCurveTo(p1.x + (p2.x - p0.x)/6, p1.y + (p2.y - p0.y)/6, p2.x - (p3.x - p1.x)/6, p2.y - (p3.y - p1.y)/6, p2.x, p2.y); } }
+        if (currentTool === 'line' || currentTool === 'join') { for (let i = 1; i < drawingNodes.length; i++) ctxDraw.lineTo(drawingNodes[i].x, drawingNodes[i].y); } 
+        else if (currentTool === 'curve') {
+            for (let i = 0; i < drawingNodes.length - 1; i++) {
+                let p0 = (i > 0) ? drawingNodes[i - 1] : drawingNodes[0], p1 = drawingNodes[i], p2 = drawingNodes[i + 1], p3 = (i != drawingNodes.length - 2) ? drawingNodes[i + 2] : p2;
+                ctxDraw.bezierCurveTo(p1.x + (p2.x - p0.x)/6, p1.y + (p2.y - p0.y)/6, p2.x - (p3.x - p1.x)/6, p2.y - (p3.y - p1.y)/6, p2.x, p2.y);
+            }
+        }
         ctxDraw.stroke(); if (currentTool === 'curve' && !closed) { ctxDraw.fillStyle = "#0056b3"; drawingNodes.forEach(n => { ctxDraw.beginPath(); ctxDraw.arc(n.x, n.y, 4, 0, 7); ctxDraw.fill(); }); }
     }
-    function toggleOutlierMode() { const a = document.getElementById('outlier-mode').checked; document.getElementById('instr').innerText = a ? "Click a point to label it as an outlier." : "Switch back to a tool to draw."; if(a) { document.querySelectorAll('.tool-btn:not(.action-btn)').forEach(b => b.classList.remove('active')); ctxDraw.clearRect(0,0,620,620); drawingNodes = []; } else setTool(currentTool); }
-    function sqr(x) { return x * x } function dist2(v, w) { return sqr(v.x - w.x) + sqr(v.y - w.y) } function distToSegmentSquared(p, v, w) { let l2 = dist2(v, w); if (l2 === 0) return dist2(p, v); let t = ((p.x - v.x) * (w.x - v.x) + (p.y - v.y) * (w.y - v.y)) / l2; t = Math.max(0, Math.min(1, t)); return dist2(p, { x: v.x + t * (w.x - v.x), y: v.y + t * (w.y - v.y) }); } function distToSegment(p, v, w) { return Math.sqrt(distToSegmentSquared(p, v, w)); }
 
+    function toggleOutlierMode() {
+        const a = document.getElementById('outlier-mode').checked; document.getElementById('instr').innerText = a ? "Click a point to label it as an outlier." : "Switch back to a tool to draw.";
+        if(a) { document.querySelectorAll('.tool-btn:not(.action-btn)').forEach(b => b.classList.remove('active')); ctxDraw.clearRect(0,0,620,620); drawingNodes = []; } else setTool(currentTool);
+    }
+
+    // Mathematical Distance Helper for Curves
+    function sqr(x) { return x * x }
+    function dist2(v, w) { return sqr(v.x - w.x) + sqr(v.y - w.y) }
+    function distToSegmentSquared(p, v, w) {
+        let l2 = dist2(v, w);
+        if (l2 === 0) return dist2(p, v);
+        let t = ((p.x - v.x) * (w.x - v.x) + (p.y - v.y) * (w.y - v.y)) / l2;
+        t = Math.max(0, Math.min(1, t));
+        return dist2(p, { x: v.x + t * (w.x - v.x), y: v.y + t * (w.y - v.y) });
+    }
+    function distToSegment(p, v, w) { return Math.sqrt(distToSegmentSquared(p, v, w)); }
+
+    // --- GRADING ENGINE ---
     function evaluateTrend() {
         const fb = document.getElementById('feedback'); fb.style.display = "flex"; document.getElementById('eval-btn').style.display = "none";
-        let fbOutlier = null, fbTool = null, fbExec = null; let isOverallPass = true; 
-        if (outlierIdx !== -1) { if (userOutlier === outlierIdx) { stats.outlier.has.cor++; fbOutlier = { cls: "pass-box", text: "✅ <strong>Outlier:</strong> You correctly identified the anomaly." }; } else if (userOutlier !== -1) { stats.outlier.has.wrg++; fbOutlier = { cls: "err-box", text: "❌ <strong>Outlier:</strong> You picked the wrong point." }; isOverallPass = false; } else { stats.outlier.has.ign++; fbOutlier = { cls: "err-box", text: "❌ <strong>Outlier:</strong> You missed the anomaly completely." }; isOverallPass = false; } } else { if (userOutlier !== -1) { if (activeScenario.type === 'dots') { stats.outlier.non.wrg++; fbOutlier = { cls: "err-box", text: "❌ <strong>Outlier:</strong> There are no outliers in purely sequential data." }; isOverallPass = false; } else { stats.outlier.non.deb++; fbOutlier = { cls: "meh-box", text: "⚠️ <strong>Outlier:</strong> Debatable. No major anomaly exists here, but it's good you looked closely." }; } } else { stats.outlier.non.cor++; fbOutlier = { cls: "pass-box", text: "✅ <strong>Outlier:</strong> Correctly recognized that no major anomalies exist." }; } }
-        const expTool = { 'linear': 'line', 'curve': 'curve', 'dots': 'join' }[activeScenario.type]; stats.trend[activeScenario.type][currentTool]++;
-        if (currentTool !== expTool) { if ((activeScenario.type === 'linear' && currentTool === 'curve') || (activeScenario.type === 'curve' && currentTool === 'line')) { fbTool = { cls: "meh-box", text: `⚠️ <strong>Trend Selection:</strong> Understandable, but incorrect. ${activeScenario.rationale}` }; } else { fbTool = { cls: "err-box", text: `❌ <strong>Trend Selection:</strong> Wrong tool. ${activeScenario.rationale}` }; isOverallPass = false; } } else { fbTool = { cls: "pass-box", text: `✅ <strong>Trend Selection:</strong> Excellent choice. ${activeScenario.rationale}` }; }
+        
+        let fbOutlier = null, fbTool = null, fbExec = null;
+        let isOverallPass = true; 
 
-        if (drawingNodes.length < 2 && currentTool !== 'join') { fbExec = { cls: "err-box", text: "❌ <strong>Execution:</strong> Please use the tool to draw your line or curve." }; isOverallPass = false; } 
-        else if (currentTool === 'join') { fbExec = { cls: "pass-box", text: "✅ <strong>Execution:</strong> Sequential dots joined successfully." }; }
-        else {
-            let spanPts = points.filter((p, i) => i !== outlierIdx && i !== userOutlier); let minDataX = Math.min(...spanPts.map(p => p.x)), maxDataX = Math.max(...spanPts.map(p => p.x)); let drawMinX = Math.min(...drawingNodes.map(n => n.x)), drawMaxX = Math.max(...drawingNodes.map(n => n.x));
-            if (drawMinX > minDataX + 25 || drawMaxX < maxDataX - 25) { stats.exec[currentTool].far++; fbExec = { cls: "err-box", text: "❌ <strong>Execution:</strong> Line is too short! It must extend across the full span of data." }; isOverallPass = false; } 
-            else {
-                if (currentTool === 'line') { let m = (drawingNodes[1].y - drawingNodes[0].y) / (drawingNodes[1].x - drawingNodes[0].x), c = drawingNodes[0].y - m * drawingNodes[0].x, above = 0, below = 0, totalError = 0; spanPts.forEach(p => { let expY = m * p.x + c; if (p.y < expY - 10) above++; if (p.y > expY + 10) below++; totalError += Math.abs(p.y - expY); }); if (totalError / spanPts.length > tolLineErr) { stats.exec.line.far++; fbExec = { cls: "err-box", text: "❌ <strong>Execution:</strong> The line is too far away from the data points." }; isOverallPass = false; } else if (Math.abs(above - below) >= tolLineBal || (above > 0 && below === 0) || (below > 0 && above === 0)) { stats.exec.line.unb++; fbExec = { cls: "err-box", text: "❌ <strong>Execution:</strong> Line is poorly balanced." }; isOverallPass = false; } else { stats.exec.line.perf++; fbExec = { cls: "pass-box", text: "✅ <strong>Execution:</strong> Beautifully balanced line of best fit!" }; } } else if (currentTool === 'curve') { let totalCurveErr = 0; spanPts.forEach(p => { let minDist = Infinity; for(let i=0; i<drawingNodes.length-1; i++) { let p1 = drawingNodes[i], p2 = drawingNodes[i+1]; let dist = distToSegment(p, p1, p2); if (dist < minDist) minDist = dist; } totalCurveErr += minDist; }); let avgCurveErr = totalCurveErr / spanPts.length; let flowsRight = true, concavityChanges = 0, lastDeltaM = 0; for(let i=1; i<drawingNodes.length; i++) if (drawingNodes[i].x <= drawingNodes[i-1].x) flowsRight = false; for(let i=0; i<drawingNodes.length-2; i++) { let m1 = (drawingNodes[i+1].y - drawingNodes[i].y)/(drawingNodes[i+1].x - drawingNodes[i].x || 0.001), m2 = (drawingNodes[i+2].y - drawingNodes[i+1].y)/(drawingNodes[i+2].x - drawingNodes[i+1].x || 0.001), deltaM = m2 - m1; if (Math.abs(deltaM) > tolCurveWob) { if (lastDeltaM !== 0 && (deltaM * lastDeltaM < 0)) concavityChanges++; lastDeltaM = deltaM; } } if (avgCurveErr > tolCurveErr) { stats.exec.curve.shp++; fbExec = { cls: "err-box", text: `❌ <strong>Execution:</strong> Curve is too far from the data points.` }; isOverallPass = false; } else if (!flowsRight || concavityChanges > 0) { stats.exec.curve.shp++; fbExec = { cls: "err-box", text: "❌ <strong>Execution:</strong> Curve wobbles or loops backward!" }; isOverallPass = false; } else { stats.exec.curve.perf++; fbExec = { cls: "pass-box", text: "✅ <strong>Execution:</strong> Smooth, highly accurate curve!" }; } }
+        // 1. Outlier Logic
+        if (outlierIdx !== -1) {
+            if (userOutlier === outlierIdx) { stats.outlier.has.cor++; fbOutlier = { cls: "pass-box", text: "✅ <strong>Outlier:</strong> You correctly identified the anomaly." }; } 
+            else if (userOutlier !== -1) { stats.outlier.has.wrg++; fbOutlier = { cls: "err-box", text: "❌ <strong>Outlier:</strong> You picked the wrong point." }; isOverallPass = false; } 
+            else { stats.outlier.has.ign++; fbOutlier = { cls: "err-box", text: "❌ <strong>Outlier:</strong> You missed the anomaly completely." }; isOverallPass = false; }
+        } else {
+            if (userOutlier !== -1) {
+                if (activeScenario.type === 'dots') { stats.outlier.non.wrg++; fbOutlier = { cls: "err-box", text: "❌ <strong>Outlier:</strong> There are no outliers in purely sequential data." }; isOverallPass = false; } 
+                else { stats.outlier.non.deb++; fbOutlier = { cls: "meh-box", text: "⚠️ <strong>Outlier:</strong> Debatable. No major anomaly exists here, but it's good you looked closely." }; }
+            } else { 
+                stats.outlier.non.cor++; fbOutlier = { cls: "pass-box", text: "✅ <strong>Outlier:</strong> Correctly recognized that no major anomalies exist." };
             }
         }
 
-        let fbHTML = ""; let errorLog = [];
-        if (fbOutlier) { fbHTML += `<div class="split-fb ${fbOutlier.cls}">${fbOutlier.text}</div>`; if(fbOutlier.cls !== "pass-box") errorLog.push("Outlier: " + fbOutlier.text.replace(/<[^>]*>?/gm, '')); }
-        if (fbTool) { fbHTML += `<div class="split-fb ${fbTool.cls}">${fbTool.text}</div>`; if(fbTool.cls !== "pass-box") errorLog.push("Tool: " + fbTool.text.replace(/<[^>]*>?/gm, '')); }
-        if (fbExec) { fbHTML += `<div class="split-fb ${fbExec.cls}">${fbExec.text}</div>`; if(fbExec.cls !== "pass-box") errorLog.push("Exec: " + fbExec.text.replace(/<[^>]*>?/gm, '')); }
+        // 2. Tool Logic
+        const expTool = { 'linear': 'line', 'curve': 'curve', 'dots': 'join' }[activeScenario.type]; 
+        stats.trend[activeScenario.type][currentTool]++;
+        if (currentTool !== expTool) {
+            if ((activeScenario.type === 'linear' && currentTool === 'curve') || (activeScenario.type === 'curve' && currentTool === 'line')) { 
+                fbTool = { cls: "meh-box", text: `⚠️ <strong>Trend Selection:</strong> Understandable, but incorrect. ${activeScenario.rationale}` }; 
+            } else { 
+                fbTool = { cls: "err-box", text: `❌ <strong>Trend Selection:</strong> Wrong tool. ${activeScenario.rationale}` }; isOverallPass = false; 
+            }
+        } else { 
+            fbTool = { cls: "pass-box", text: `✅ <strong>Trend Selection:</strong> Excellent choice. ${activeScenario.rationale}` }; 
+        }
+
+        // 3. Execution Logic
+        if (drawingNodes.length < 2 && currentTool !== 'join') { 
+            fbExec = { cls: "err-box", text: "❌ <strong>Execution:</strong> Please use the tool to draw your line or curve." }; isOverallPass = false; 
+        } 
+        else if (currentTool === 'join') {
+            fbExec = { cls: "pass-box", text: "✅ <strong>Execution:</strong> Sequential dots joined successfully." };
+        }
+        else {
+            let spanPts = points.filter((p, i) => i !== outlierIdx && i !== userOutlier);
+            let minDataX = Math.min(...spanPts.map(p => p.x)), maxDataX = Math.max(...spanPts.map(p => p.x));
+            let drawMinX = Math.min(...drawingNodes.map(n => n.x)), drawMaxX = Math.max(...drawingNodes.map(n => n.x));
+            
+            if (drawMinX > minDataX + 25 || drawMaxX < maxDataX - 25) { 
+                stats.exec[currentTool].far++; 
+                fbExec = { cls: "err-box", text: "❌ <strong>Execution:</strong> Line is too short! It must extend across the full span of data." }; 
+                isOverallPass = false; 
+            } 
+            else {
+                if (currentTool === 'line') {
+                    let m = (drawingNodes[1].y - drawingNodes[0].y) / (drawingNodes[1].x - drawingNodes[0].x), c = drawingNodes[0].y - m * drawingNodes[0].x, above = 0, below = 0, totalError = 0;
+                    spanPts.forEach(p => { let expY = m * p.x + c; if (p.y < expY - 10) above++; if (p.y > expY + 10) below++; totalError += Math.abs(p.y - expY); });
+                    if (totalError / spanPts.length > tolLineErr) { 
+                        stats.exec.line.far++; fbExec = { cls: "err-box", text: "❌ <strong>Execution:</strong> The line is too far away from the data points." }; isOverallPass = false; 
+                    } 
+                    else if (Math.abs(above - below) >= tolLineBal || (above > 0 && below === 0) || (below > 0 && above === 0)) { 
+                        stats.exec.line.unb++; fbExec = { cls: "err-box", text: "❌ <strong>Execution:</strong> Line is poorly balanced. Too many points are left entirely on one side." }; isOverallPass = false; 
+                    } 
+                    else { 
+                        stats.exec.line.perf++; fbExec = { cls: "pass-box", text: "✅ <strong>Execution:</strong> Beautifully balanced line of best fit!" }; 
+                    }
+                } else if (currentTool === 'curve') {
+                    // Geometric Distance Check for Curves!
+                    let totalCurveErr = 0;
+                    spanPts.forEach(p => {
+                        let minDist = Infinity;
+                        for(let i=0; i<drawingNodes.length-1; i++) {
+                            let p1 = drawingNodes[i], p2 = drawingNodes[i+1];
+                            let dist = distToSegment(p, p1, p2);
+                            if (dist < minDist) minDist = dist;
+                        }
+                        totalCurveErr += minDist;
+                    });
+                    let avgCurveErr = totalCurveErr / spanPts.length;
+
+                    // Shape checking
+                    let flowsRight = true, concavityChanges = 0, lastDeltaM = 0;
+                    for(let i=1; i<drawingNodes.length; i++) if (drawingNodes[i].x <= drawingNodes[i-1].x) flowsRight = false;
+                    for(let i=0; i<drawingNodes.length-2; i++) {
+                        let m1 = (drawingNodes[i+1].y - drawingNodes[i].y)/(drawingNodes[i+1].x - drawingNodes[i].x || 0.001), m2 = (drawingNodes[i+2].y - drawingNodes[i+1].y)/(drawingNodes[i+2].x - drawingNodes[i+1].x || 0.001), deltaM = m2 - m1;
+                        if (Math.abs(deltaM) > tolCurveWob) { if (lastDeltaM !== 0 && (deltaM * lastDeltaM < 0)) concavityChanges++; lastDeltaM = deltaM; }
+                    }
+
+                    if (avgCurveErr > tolCurveErr) {
+                        stats.exec.curve.shp++; // using shape/dist bucket
+                        fbExec = { cls: "err-box", text: `❌ <strong>Execution:</strong> Curve is too far from the data points.` }; isOverallPass = false;
+                    }
+                    else if (!flowsRight || concavityChanges > 0) { 
+                        stats.exec.curve.shp++; 
+                        fbExec = { cls: "err-box", text: "❌ <strong>Execution:</strong> Curve wobbles or loops backward! It must be completely smooth." }; isOverallPass = false; 
+                    } else { 
+                        stats.exec.curve.perf++; fbExec = { cls: "pass-box", text: "✅ <strong>Execution:</strong> Smooth, highly accurate curve!" }; 
+                    }
+                }
+            }
+        }
+
+        // Render Feedback Boxes
+        let fbHTML = "";
+        if (fbOutlier) fbHTML += `<div class="split-fb ${fbOutlier.cls}">${fbOutlier.text}</div>`;
+        if (fbTool) fbHTML += `<div class="split-fb ${fbTool.cls}">${fbTool.text}</div>`;
+        if (fbExec) fbHTML += `<div class="split-fb ${fbExec.cls}">${fbExec.text}</div>`;
         fb.innerHTML = fbHTML;
 
-        totalAttempts += 1; if (isOverallPass) totalPasses += 1;
+        // Save
+        totalAttempts += 1;
+        if (isOverallPass) totalPasses += 1;
+        let modData = { correct: totalPasses, total: totalAttempts, details: stats }; 
+        localStorage.setItem(`gs_mod_${MODULE_ID}`, JSON.stringify(modData));
 
-        // --- TRACKING CODE ---
-        let statusText = isOverallPass ? "Pass" : "Fail";
-        let errorString = errorLog.length > 0 ? errorLog.join(" | ") : "None";
-        let pureScenario = activeScenario.text.replace(/<[^>]*>?/gm, ''); // strip HTML
-        if (window.parent && window.parent.logToTeacher) { window.parent.logToTeacher("Module 6", activeScenario.id, pureScenario, statusText, errorString); }
-        // ---------------------
-
-        localStorage.setItem(`gs_mod_${MODULE_ID}`, JSON.stringify({ correct: totalPasses, total: totalAttempts, details: stats })); updateDashUI(); document.getElementById('next-btn').style.display = "block"; if (currentTool === 'curve') renderDrawing(true);
+        updateDashUI();
+        document.getElementById('next-btn').style.display = "block"; 
+        if (currentTool === 'curve') renderDrawing(true);
     }
 
     function getPctStr(val, total) { return total === 0 ? "0 (-)" : `${val} (${Math.round((val/total)*100)}%)`; }
-    function updateDashUI() { const upd = (id, val, tot, cls) => { let el = document.getElementById(id); if(el) { el.innerText = tot?getPctStr(val,tot):val; el.className = val>0?cls:""; }}; let oH = stats.outlier.has, oN = stats.outlier.non; upd('o-has-cor', oH.cor, oH.cor+oH.wrg+oH.ign, 'mat-match'); upd('o-has-wrg', oH.wrg, null, 'mat-err'); upd('o-has-ign', oH.ign, null, 'mat-err'); upd('o-non-cor', oN.cor, oN.cor+oN.deb+oN.wrg, 'mat-match'); upd('o-non-deb', oN.deb, null, 'mat-meh'); upd('o-non-wrg', oN.wrg, null, 'mat-err'); ['linear','curve','dots'].forEach((t, i) => { let row = stats.trend[t], tot = row.line+row.curve+row.join, pfx = ['lin','cur','dot']; ['line','curve','join'].forEach((tl, j) => { let cell = document.getElementById(`t-${pfx[i]}-${pfx[j]}`); if(!cell) return; cell.innerText = i===j ? getPctStr(row[tl], tot) : row[tl]; cell.className = row[tl]>0 ? (i===j ? "mat-match" : ((i===0&&j===1)||(i===1&&j===0)?"mat-meh":"mat-err")) : ""; }); }); let eL = stats.exec.line, eC = stats.exec.curve; upd('e-lin-perf', eL.perf, eL.perf+eL.unb+eL.far, 'mat-match'); upd('e-lin-unb', eL.unb, null, 'mat-err'); upd('e-lin-far', eL.far, null, 'mat-err'); upd('e-cur-perf', eC.perf, eC.perf+eC.unb+eC.far+eC.shp, 'mat-match'); upd('e-cur-unb', eC.unb, null, 'mat-err'); upd('e-cur-far', eC.far, null, 'mat-err'); upd('e-cur-shp', eC.shp, null, 'mat-err'); }
+    function updateDashUI() {
+        const upd = (id, val, tot, cls) => { let el = document.getElementById(id); if(el) { el.innerText = tot?getPctStr(val,tot):val; el.className = val>0?cls:""; }};
+        let oH = stats.outlier.has, oN = stats.outlier.non;
+        upd('o-has-cor', oH.cor, oH.cor+oH.wrg+oH.ign, 'mat-match'); upd('o-has-wrg', oH.wrg, null, 'mat-err'); upd('o-has-ign', oH.ign, null, 'mat-err');
+        upd('o-non-cor', oN.cor, oN.cor+oN.deb+oN.wrg, 'mat-match'); upd('o-non-deb', oN.deb, null, 'mat-meh'); upd('o-non-wrg', oN.wrg, null, 'mat-err');
+        ['linear','curve','dots'].forEach((t, i) => {
+            let row = stats.trend[t], tot = row.line+row.curve+row.join, pfx = ['lin','cur','dot'];
+            ['line','curve','join'].forEach((tl, j) => {
+                let cell = document.getElementById(`t-${pfx[i]}-${pfx[j]}`); if(!cell) return;
+                cell.innerText = i===j ? getPctStr(row[tl], tot) : row[tl];
+                cell.className = row[tl]>0 ? (i===j ? "mat-match" : ((i===0&&j===1)||(i===1&&j===0)?"mat-meh":"mat-err")) : "";
+            });
+        });
+        let eL = stats.exec.line, eC = stats.exec.curve;
+        upd('e-lin-perf', eL.perf, eL.perf+eL.unb+eL.far, 'mat-match'); upd('e-lin-unb', eL.unb, null, 'mat-err'); upd('e-lin-far', eL.far, null, 'mat-err');
+        upd('e-cur-perf', eC.perf, eC.perf+eC.unb+eC.far+eC.shp, 'mat-match'); upd('e-cur-unb', eC.unb, null, 'mat-err'); upd('e-cur-far', eC.far, null, 'mat-err'); upd('e-cur-shp', eC.shp, null, 'mat-err');
+    }
 
+    // BOOT UP THE ENGINE!
     init();
 </script>
 </body>

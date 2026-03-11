@@ -4,217 +4,45 @@
     <meta charset="UTF-8">
     <title>Physics Graph Skills</title>
     <style>
-        body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            margin: 0; 
-            padding: 0; 
-            display: flex; 
-            height: 100vh; 
-            background-color: #f4f7f6; 
-            color: #333; 
-            overflow: hidden; 
-        }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; display: flex; height: 100vh; background-color: #f4f7f6; color: #333; overflow: hidden; }
         
-        /* Student Login Modal */
-        #login-modal { 
-            position: fixed; 
-            top: 0; left: 0; 
-            width: 100%; height: 100%; 
-            background: rgba(0,0,0,0.8); 
-            z-index: 9999; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-        }
-        .modal-content { 
-            background: white; 
-            padding: 40px; 
-            border-radius: 8px; 
-            width: 400px; 
-            text-align: center; 
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3); 
-        }
-        .modal-content input { 
-            width: 90%; 
-            padding: 12px; 
-            margin: 10px 0; 
-            font-size: 1.1em; 
-            border: 1px solid #ccc; 
-            border-radius: 4px; 
-        }
-        .modal-btn { 
-            background: #28a745; 
-            color: white; 
-            border: none; 
-            padding: 12px 20px; 
-            font-size: 1.1em; 
-            font-weight: bold; 
-            border-radius: 4px; 
-            cursor: pointer; 
-            width: 95%; 
-            margin-top: 15px;
-        }
-        .modal-btn:hover { background: #218838; }
-
         /* Sidebar Styles */
-        .sidebar { 
-            width: 320px; 
-            background-color: #2c3e50; 
-            color: white; 
-            display: flex; 
-            flex-direction: column; 
-            box-shadow: 2px 0 5px rgba(0,0,0,0.1); 
-            z-index: 10; 
-            flex-shrink: 0;
-        }
+        .sidebar { width: 320px; background-color: #2c3e50; color: white; display: flex; flex-direction: column; box-shadow: 2px 0 5px rgba(0,0,0,0.1); z-index: 10; flex-shrink: 0;}
+        .sidebar-header { padding: 20px; background-color: #1a252f; text-align: center; border-bottom: 1px solid #34495e; cursor: pointer; transition: 0.2s;}
+        .sidebar-header:hover { background-color: #121a21; }
+        .sidebar-header h2 { margin: 0; font-size: 1.4em; letter-spacing: 1px; color: #ecf0f1;}
+        .sidebar-header p { margin: 5px 0 0 0; font-size: 0.85em; color: #3498db; font-weight: bold;}
         
-        .sidebar-brand { 
-            padding: 25px 20px; 
-            background-color: #1a252f; 
-            text-align: center; 
-            border-bottom: 1px solid #111820; 
-        }
-        .sidebar-brand h2 { 
-            margin: 0; 
-            font-size: 1.6em; 
-            letter-spacing: 1px; 
-            color: #ecf0f1; 
-            text-transform: uppercase;
-        }
-        
-        .nav-list { 
-            flex: 1; 
-            overflow-y: auto; 
-            padding: 15px 0; 
-            margin: 0; 
-            list-style: none; 
-        }
-        .nav-item { 
-            padding: 12px 20px; 
-            cursor: pointer; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            border-left: 4px solid transparent; 
-            transition: 0.2s; 
-            font-size: 0.95em; 
-            color: #ecf0f1;
-        }
+        .nav-list { flex: 1; overflow-y: auto; padding: 15px 0; margin: 0; list-style: none; }
+        .nav-item { padding: 12px 20px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; border-left: 4px solid transparent; transition: 0.2s; font-size: 0.95em; color: #ecf0f1;}
         .nav-item:hover { background-color: #34495e; }
-        .nav-item.active { 
-            background-color: #34495e; 
-            border-left-color: #3498db; 
-            font-weight: bold; 
-            color: #fff;
-        }
-        .nav-item .mod-num { 
-            font-size: 0.8em; 
-            color: #bdc3c7; 
-            background: #1a252f; 
-            padding: 3px 6px; 
-            border-radius: 4px; 
-            flex-shrink: 0; 
-            margin-left: 10px;
-        }
+        .nav-item.active { background-color: #34495e; border-left-color: #3498db; font-weight: bold; color: #fff;}
+        .nav-item .mod-num { font-size: 0.8em; color: #bdc3c7; background: #1a252f; padding: 3px 6px; border-radius: 4px; flex-shrink: 0; margin-left: 10px;}
         
-        /* Dashboard/Home Buttons */
-        .dash-btn { 
-            color: white; 
-            padding: 16px; 
-            text-align: center; 
-            font-weight: bold; 
-            cursor: pointer; 
-            transition: 0.2s; 
-            font-size: 1.05em; 
-        }
-        
-        .dash-btn.green { background-color: #27ae60; border-bottom: 2px solid #1e8449; }
-        .dash-btn.green:hover { background-color: #2ecc71; border-bottom-color: #27ae60; }
-        .dash-btn.green.active { background-color: #196f3d; border-bottom-color: #145a32; box-shadow: inset 0 3px 6px rgba(0,0,0,0.2); }
-
-        .dash-btn.orange { background-color: #e67e22; border-top: 1px solid #d35400; }
-        .dash-btn.orange:hover { background-color: #d35400; }
-        .dash-btn.orange.active { background-color: #ba4a00; box-shadow: inset 0 3px 6px rgba(0,0,0,0.2); }
-        
-        .dash-btn.blue { background-color: #2980b9; border-top: 1px solid #2471a3; }
-        .dash-btn.blue:hover { background-color: #2471a3; }
-        .dash-btn.blue.active { background-color: #1a5276; box-shadow: inset 0 3px 6px rgba(0,0,0,0.2); }
+        .dash-btn { background-color: #e67e22; color: white; padding: 18px; text-align: center; font-weight: bold; cursor: pointer; transition: 0.2s; border-top: 1px solid #d35400; font-size: 1.1em;}
+        .dash-btn:hover { background-color: #d35400; }
+        .dash-btn.active { background-color: #ba4a00; }
 
         /* Main Content Area */
-        .main-content { 
-            flex: 1; 
-            display: flex; 
-            flex-direction: column; 
-            position: relative; 
-            overflow: hidden;
-        }
-        .top-bar { 
-            height: 60px; 
-            background: white; 
-            border-bottom: 1px solid #dee2e6; 
-            display: flex; 
-            align-items: center; 
-            padding: 0 20px; 
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05); 
-            z-index: 5; 
-            flex-shrink: 0;
-        }
+        .main-content { flex: 1; display: flex; flex-direction: column; position: relative; overflow: hidden;}
+        .top-bar { height: 60px; background: white; border-bottom: 1px solid #dee2e6; display: flex; align-items: center; padding: 0 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); z-index: 5; flex-shrink: 0;}
         .top-bar h3 { margin: 0; color: #2c3e50; }
         
         .content-area { flex: 1; position: relative; overflow: hidden; }
         iframe { width: 100%; height: 100%; border: none; position: absolute; top: 0; left: 0; background: #f4f7f6; }
         
         /* View Panels */
-        .view-panel { 
-            position: absolute; 
-            top: 0; left: 0; 
-            width: 100%; height: 100%; 
-            background: #f4f7f6; 
-            padding: 30px 40px; 
-            box-sizing: border-box; 
-            overflow-y: auto; 
-            display: none; 
-            z-index: 2; 
-        }
-        .dash-header { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            margin-bottom: 20px; 
-            padding-bottom: 10px; 
-            border-bottom: 2px solid #dee2e6;
-        }
+        .view-panel { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #f4f7f6; padding: 30px 40px; box-sizing: border-box; overflow-y: auto; display: none; z-index: 2; }
+        .dash-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid #dee2e6;}
         .dash-header h1 { margin: 0; color: #2c3e50; }
         
-        .notice-banner { 
-            background: #eef2f5; 
-            border-left: 5px solid #3498db; 
-            padding: 15px 20px; 
-            border-radius: 6px; 
-            margin-bottom: 30px; 
-            color: #2c3e50; 
-            font-size: 1em; 
-            line-height: 1.4;
-        }
+        /* Notice Banner */
+        .notice-banner { background: #eef2f5; border-left: 5px solid #3498db; padding: 15px 20px; border-radius: 6px; margin-bottom: 30px; color: #2c3e50; font-size: 1em; line-height: 1.4;}
         .notice-banner strong { color: #2980b9; }
 
         /* Home Screen Cards */
-        .home-grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); 
-            gap: 20px; 
-            padding-bottom: 40px;
-        }
-        .home-card { 
-            background: white; 
-            padding: 20px; 
-            border-radius: 8px; 
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05); 
-            border: 1px solid #e9ecef; 
-            display: flex; 
-            flex-direction: column; 
-            transition: transform 0.2s;
-        }
+        .home-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 20px; padding-bottom: 40px;}
+        .home-card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border: 1px solid #e9ecef; display: flex; flex-direction: column; transition: transform 0.2s;}
         .home-card:hover { transform: translateY(-3px); box-shadow: 0 6px 12px rgba(0,0,0,0.08); }
         .home-card h3 { margin: 0 0 5px 0; color: #2c3e50; font-size: 1.15em;}
         .home-card p { color: #6c757d; font-size: 0.9em; line-height: 1.4; flex-grow: 1; margin: 0 0 15px 0;}
@@ -228,63 +56,31 @@
         .home-card button { background: #f8f9fa; border: 1px solid #ced4da; color: #2c3e50; padding: 10px; border-radius: 4px; cursor: pointer; font-weight: bold; transition: 0.2s; width: 100%;}
         .home-card button:hover { background: #3498db; color: white; border-color: #3498db;}
 
-        /* Diagnostics & Full Stats Specifics */
+        /* Diagnostics Specifics */
         .diag-section { margin-bottom: 30px; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.05); border-top: 4px solid #e67e22;}
-        .diag-section.blue-top { border-top-color: #2980b9; }
         .diag-header { margin: 0 0 10px 0; color: #2c3e50; font-size: 1.2em;}
         .diag-desc { font-size: 0.9em; color: #6c757d; margin-bottom: 15px;}
         
-        .diag-table { width: 100%; border-collapse: collapse; font-size: 0.9em; margin-bottom: 15px; }
+        .diag-table { width: 100%; border-collapse: collapse; font-size: 0.9em; margin-bottom: 5px; }
         .diag-table th, .diag-table td { border: 1px solid #dee2e6; padding: 8px 12px; text-align: left;}
         .diag-table th { background-color: #f8f9fa; color: #495057;}
-        
         .err-val { color: #d9534f; font-weight: bold; text-align: center; width: 80px;}
         .zero-val { color: #ccc; text-align: center; width: 80px;}
-        .corr-val { color: #28a745; font-weight: bold; text-align: center;}
-        .mat-match { background-color: #d4edda; font-weight: bold; color: #155724; text-align: center;} 
-        .mat-meh { background-color: #fff3cd; color: #856404; text-align: center;} 
-        .mat-err { background-color: #f8d7da; color: #721c24; font-weight: bold; text-align: center;}
-        .mat-na { background-color: #e9ecef; color: #aaa; text-align: center;}
-        .mat-actual { font-weight: bold; background: #f8f9fa; }
-        .axis-label { font-weight: bold; background-color: #e9ecef; text-align: center;} 
-        .diagonal { background-color: #f0fdf4; }
-
-        .matrix-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px;}
         
         .btn-clear { background: #dc3545; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-size: 1em; font-weight: bold; margin-top: 20px; display: block; width: 100%;}
         .btn-clear:hover { background: #c82333; }
-        
-        .no-data-msg { font-style: italic; color: #999; padding: 10px; background: #f8f9fa; border-radius: 4px; text-align: center; border: 1px dashed #ccc;}
     </style>
 </head>
 <body>
 
-    <div id="login-modal" style="display:none;">
-        <div class="modal-content">
-            <h2 style="margin-top:0; color:#2c3e50;">Welcome to Graph Skills</h2>
-            <p style="color:#666; font-size:0.9em;">Please enter your details to begin your session.</p>
-            <input type="text" id="student-name" placeholder="First Name & Last Initial (e.g. John S)">
-            <input type="text" id="class-code" placeholder="Class Code (e.g. 10A-PHY)">
-            <button class="modal-btn" onclick="startSession()">Start Practicing</button>
-        </div>
-    </div>
-
     <div class="sidebar">
-        <div class="sidebar-brand">
+        <div class="sidebar-header" onclick="showHome()">
             <h2>Graph Skills</h2>
+            <p>🏠 HOME / SYLLABUS</p>
         </div>
-        
-        <div class="dash-btn green active" id="nav-home" onclick="showHome()">
-            🏠 Home (Syllabus & Stats)
-        </div>
-
         <ul class="nav-list" id="nav-list"></ul>
-        
-        <div class="dash-btn orange" id="nav-dash" onclick="showDiagnostics()">
+        <div class="dash-btn" id="nav-dash" onclick="showDiagnostics()">
             🩺 Diagnostic Breakdown
-        </div>
-        <div class="dash-btn blue" id="nav-full" onclick="showFullStats()">
-            📊 Full Module Statistics
         </div>
     </div>
 
@@ -297,20 +93,312 @@
             <iframe id="module-frame" src=""></iframe>
 
             <div id="home-view" class="view-panel">
-                <div class="dash-header"><h1>Curriculum Modules</h1></div>
-                <div class="notice-banner">
-                    <strong>🎓 Skill-Building Focus:</strong> Practice a module until you feel confident in the specific targeted skills. Your positive accuracy is tracked below. Use the sidebar buttons to view deep analytics.
+                <div class="dash-header">
+                    <h1>Curriculum Modules</h1>
                 </div>
+                
+                <div class="notice-banner">
+                    <strong>🎓 Skill-Building Focus:</strong> Practice a module until you feel confident in the specific targeted skills. Your positive accuracy is tracked below. Your specific errors are logged in the Diagnostic Breakdown.
+                </div>
+
                 <div class="home-grid" id="home-grid"></div>
             </div>
             
             <div id="dashboard-view" class="view-panel">
-                <div class="dash-header"><h1>Error Diagnostic Breakdown</h1></div>
-                <div class="notice-banner" style="border-left-color: #e67e22;">
-                    <strong>🩺 Identify Your Habits:</strong> This page aggregates specific errors you've made across the entire curriculum to help you identify negative habits.
+                <div class="dash-header">
+                    <h1>Error Diagnostic Breakdown</h1>
                 </div>
+                
+                <div class="notice-banner" style="border-left-color: #e67e22;">
+                    <strong>🩺 Identify Your Habits:</strong> This page aggregates specific errors you've made across the entire curriculum to help you identify negative habits (like consistently squashing the scale, or misreading gridlines).
+                </div>
+
                 <div id="dashboard-content"></div>
+                
                 <button class="btn-clear" onclick="clearData()">🗑️ Reset All My Progress Data</button>
             </div>
+        </div>
+    </div>
 
-            <div id="
+<script>
+    const curriculum = [
+        { id: "1", file: "module1.html", title: "Choosing the Graph Type", desc: "Learn when to use scatter plots vs line graphs vs bar charts." },
+        { id: "2", file: "module2.html", title: "Assigning Axes", desc: "Master the rules for assigning independent and dependent variables." },
+        { id: "3", file: "module3.html", title: "Perfect Axis Labels", desc: "Practice writing complete labels containing quantity, units, and precision." },
+        { id: "4a", file: "module4a.html", title: "Scaling Axes (Quick)", desc: "Choose optimal starting values and scales to maximize graph area." },
+        { id: "4b", file: "module4b.html", title: "Scaling Axes (Full)", desc: "Number the axes cleanly and plot data perfectly without falling off the chart." },
+        { id: "5", file: "module5.html", title: "Precision Plotting", desc: "Develop high-precision plotting skills, snapping accurately to half-squares." },
+        { id: "6", file: "module6.html", title: "Trends & Outliers", desc: "Identify anomalies and draw balanced, smooth lines or curves of best fit." },
+        { id: "7", file: "module7.html", title: "Interpolation & Extrapolation", desc: "Use your lines of best fit to carefully extract predicted grid values." },
+        { id: "8", file: "module8.html", title: "Calculating Gradients", desc: "Extract coordinates to accurately calculate physical rates of change." }
+    ];
+
+    const navList = document.getElementById('nav-list');
+    const iframe = document.getElementById('module-frame');
+    const homeView = document.getElementById('home-view');
+    const dashView = document.getElementById('dashboard-view');
+    const topTitle = document.getElementById('top-title');
+    const navDashBtn = document.getElementById('nav-dash');
+    const homeGrid = document.getElementById('home-grid');
+
+    // Build Sidebar
+    curriculum.forEach(mod => {
+        let li = document.createElement('li');
+        li.className = 'nav-item';
+        li.id = `nav-mod-${mod.id}`;
+        li.innerHTML = `${mod.title} <span class="mod-num">M${mod.id}</span>`;
+        li.onclick = () => loadModule(mod);
+        navList.appendChild(li);
+    });
+
+    function hideAllViews() {
+        iframe.style.display = "none";
+        homeView.style.display = "none";
+        dashView.style.display = "none";
+        document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+        navDashBtn.classList.remove('active');
+    }
+
+    function loadModule(mod) {
+        hideAllViews();
+        document.getElementById(`nav-mod-${mod.id}`).classList.add('active');
+        topTitle.innerText = `Module ${mod.id}: ${mod.title}`;
+        iframe.style.display = "block";
+        iframe.src = mod.file; 
+    }
+
+    // Math Format Helper: val/tot (pct%)
+    const fmt = (val, tot) => {
+        let safeVal = val || 0;
+        let safeTot = tot || 0;
+        return safeTot > 0 ? `${safeVal}/${safeTot} (${Math.round((safeVal/safeTot)*100)}%)` : `0/0 (0%)`;
+    };
+
+    const getD = (id) => {
+        try { return (JSON.parse(localStorage.getItem(`gs_mod_${id}`)) || {}).details || {}; } 
+        catch(e) { return {}; }
+    };
+    const getT = (id) => {
+        try { return (JSON.parse(localStorage.getItem(`gs_mod_${id}`)) || {}).total || 0; } 
+        catch(e) { return 0; }
+    };
+
+    // --- HOME SCREEN RENDERER (Granular Positive Stats) ---
+    function showHome() {
+        hideAllViews();
+        iframe.src = ""; 
+        topTitle.innerText = "Curriculum Home";
+        homeView.style.display = "block";
+        
+        homeGrid.innerHTML = "";
+        
+        curriculum.forEach(mod => {
+            let total = getT(mod.id);
+            let d = getD(mod.id);
+            let rawData = JSON.parse(localStorage.getItem(`gs_mod_${mod.id}`)) || {};
+            let correctCount = rawData.correct || 0;
+            
+            let statsHTML = "";
+            
+            if (total === 0) {
+                statsHTML = `<div class="stat-row"><span>Status:</span> <span style="color:#6c757d;">Not Started</span></div>`;
+            } else {
+                // Add the Master Attempt Counter to the top of every stats box
+                statsHTML += `<div class="stat-row"><span>Total Attempts:</span> <span class="stat-att">${total}</span></div>`;
+
+                if (mod.id === "1" || mod.id === "2") {
+                    statsHTML += `<div class="stat-row"><span>Overall Accuracy:</span> <span class="stat-val">${fmt(correctCount, total)}</span></div>`;
+                } 
+                else if (mod.id === "3") {
+                    statsHTML += `<div class="stat-row"><span>Quantity Found:</span> <span class="stat-val">${fmt(d.qtyEarned, d.qtyTotal)}</span></div>
+                                  <div class="stat-row"><span>Unit Found:</span> <span class="stat-val">${fmt(d.unitEarned, d.unitTotal)}</span></div>
+                                  <div class="stat-row"><span>Precision Found:</span> <span class="stat-val">${fmt(d.precEarned, d.precTotal)}</span></div>`;
+                } 
+                else if (mod.id === "4a") {
+                    statsHTML += `<div class="stat-row"><span>Perfect Axes Chosen:</span> <span class="stat-val">${fmt(correctCount, total)}</span></div>`;
+                } 
+                else if (mod.id === "4b") {
+                    statsHTML += `<div class="stat-row"><span>Perfect Grid Numbering:</span> <span class="stat-val">${fmt(correctCount, total)}</span></div>`;
+                } 
+                else if (mod.id === "5") {
+                    let p=0, h=0, b=0;
+                    [1,2,3,4].forEach(l => { p+=d[l]?.p||0; h+=d[l]?.h||0; b+=d[l]?.b||0; });
+                    let tPts = p+h+b; // Number of individual points plotted across all attempts
+                    statsHTML += `<div class="stat-row"><span>Perfect Placements:</span> <span class="stat-val">${fmt(p, tPts)}</span></div>
+                                  <div class="stat-row"><span>Perfect or &le; ½ Box Off:</span> <span class="stat-val">${fmt(p+h, tPts)}</span></div>`;
+                } 
+                else if (mod.id === "6") {
+                    let outCor = (d.outlier?.has?.cor||0) + (d.outlier?.non?.cor||0) + (d.outlier?.non?.deb||0);
+                    let outTot = Object.values(d.outlier?.has||{}).reduce((a,b)=>a+b,0) + Object.values(d.outlier?.non||{}).reduce((a,b)=>a+b,0);
+                    
+                    let toolCor = (d.trend?.linear?.line||0) + (d.trend?.curve?.curve||0) + (d.trend?.dots?.join||0);
+                    let toolTot = Object.values(d.trend?.linear||{}).reduce((a,b)=>a+b,0) + Object.values(d.trend?.curve||{}).reduce((a,b)=>a+b,0) + Object.values(d.trend?.dots||{}).reduce((a,b)=>a+b,0);
+                    
+                    let execCor = (d.exec?.line?.perf||0) + (d.exec?.curve?.perf||0);
+                    let execTot = Object.values(d.exec?.line||{}).reduce((a,b)=>a+b,0) + Object.values(d.exec?.curve||{}).reduce((a,b)=>a+b,0);
+
+                    statsHTML += `<div class="stat-row"><span>Anomaly Detection:</span> <span class="stat-val">${fmt(outCor, outTot)}</span></div>
+                                  <div class="stat-row"><span>Tool Selection:</span> <span class="stat-val">${fmt(toolCor, toolTot)}</span></div>
+                                  <div class="stat-row"><span>Drawing Execution:</span> <span class="stat-val">${fmt(execCor, execTot)}</span></div>`;
+                } 
+                else if (mod.id === "7") {
+                    let modCor = (d.model?.linear?.line||0) + (d.model?.curve?.curve||0);
+                    let modTot = Object.values(d.model?.linear||{}).reduce((a,b)=>a+b,0) + Object.values(d.model?.curve||{}).reduce((a,b)=>a+b,0);
+                    let readCor = (d.pred?.inter?.exa||0) + (d.pred?.extra?.exa||0);
+                    let readTot = Object.values(d.pred?.inter||{}).reduce((a,b)=>a+b,0) + Object.values(d.pred?.extra||{}).reduce((a,b)=>a+b,0);
+
+                    statsHTML += `<div class="stat-row"><span>Correct Model Used:</span> <span class="stat-val">${fmt(modCor, modTot)}</span></div>
+                                  <div class="stat-row"><span>Spot-On Reading Accuracy:</span> <span class="stat-val">${fmt(readCor, readTot)}</span></div>`;
+                } 
+                else if (mod.id === "8") {
+                    let selT = d.sel ? Object.values(d.sel).reduce((a,b)=>a+b,0) : 0;
+                    let rdT = d.rd ? Object.values(d.rd).reduce((a,b)=>a+b,0) : 0;
+                    let triT = d.tri ? Object.values(d.tri).reduce((a,b)=>a+b,0) : 0;
+                    let mathT = d.math ? Object.values(d.math).reduce((a,b)=>a+b,0) : 0;
+                    let unitT = d.unit ? Object.values(d.unit).reduce((a,b)=>a+b,0) : 0;
+
+                    statsHTML += `<div class="stat-row"><span>Safe Point Selection:</span> <span class="stat-val">${fmt(d.sel?.line||0, selT)}</span></div>
+                                  <div class="stat-row"><span>Coord Reading Accuracy:</span> <span class="stat-val">${fmt(d.rd?.perf||0, rdT)}</span></div>
+                                  <div class="stat-row"><span>Triangle Size Rule:</span> <span class="stat-val">${fmt(d.tri?.ok||0, triT)}</span></div>
+                                  <div class="stat-row"><span>Math Execution:</span> <span class="stat-val">${fmt(d.math?.perf||0, mathT)}</span></div>
+                                  <div class="stat-row"><span>Physics Units:</span> <span class="stat-val">${fmt(d.unit?.cor||0, unitT)}</span></div>`;
+                }
+            }
+
+            let card = document.createElement('div');
+            card.className = "home-card";
+            card.innerHTML = `
+                <div style="flex-grow: 1;">
+                    <h3 style="display:flex; justify-content:space-between; align-items:center;">
+                        ${mod.title} <span style="font-size:0.7em; background:#eef2f5; color:#0056b3; padding:2px 6px; border-radius:4px;">Mod ${mod.id}</span>
+                    </h3>
+                    <p>${mod.desc}</p>
+                    <div class="stat-box">${statsHTML}</div>
+                </div>
+                <button onclick="loadModuleById('${mod.id}')">Practice Skill &rarr;</button>
+            `;
+            homeGrid.appendChild(card);
+        });
+    }
+
+    function loadModuleById(id) {
+        const mod = curriculum.find(m => m.id === id);
+        if (mod) loadModule(mod);
+    }
+
+    // --- AGGREGATED DIAGNOSTICS RENDERER ---
+    function showDiagnostics() {
+        hideAllViews();
+        navDashBtn.classList.add('active');
+        topTitle.innerText = "Diagnostic Breakdown";
+        iframe.src = ""; 
+        dashView.style.display = "block";
+        
+        const content = document.getElementById('dashboard-content');
+        const formatCell = (val) => val > 0 ? `<td class="err-val">${val}</td>` : `<td class="zero-val">-</td>`;
+        
+        // Grab all data
+        let m1 = getD('1'), m2 = getD('2'), m3 = getD('3'), m4a = getD('4a'), m4b = getD('4b'), m5 = getD('5'), m6 = getD('6'), m7 = getD('7'), m8 = getD('8');
+
+        let html = "";
+
+        // 1. GRAPH DESIGN & LOGIC
+        html += `
+        <div class="diag-section">
+            <h2 class="diag-header">Graph Design & Logic (Modules 1, 2 & 3)</h2>
+            <p class="diag-desc">Tracks conceptual errors when establishing the foundation of the graph.</p>
+            <table class="diag-table">
+                <tr><th>Error Type</th><th>Description</th><th>Occurrences</th></tr>
+                <tr><td><strong>Wrong Graph Type</strong></td><td>Selecting a line/bar chart instead of a scatter plot, etc.</td>${formatCell(getT('1') - ((JSON.parse(localStorage.getItem('gs_mod_1'))||{}).correct||0))}</tr>
+                <tr><td><strong>Swapped Axes</strong></td><td>Putting the independent variable on the Y-Axis.</td>${formatCell(m2.wrongWayRound||0)}</tr>
+                <tr><td><strong>Assumption Error</strong></td><td>Forcing a causal relationship where only a correlation exists.</td>${formatCell((m2.thoughtMattered||0) + (m2.thoughtDidntMatter||0))}</tr>
+                <tr><td><strong>Missing Quantity</strong></td><td>Failing to state what is being measured in the label.</td>${formatCell((m3.qtyTotal||0) - (m3.qtyEarned||0))}</tr>
+                <tr><td><strong>Missing/Bad Unit</strong></td><td>Leaving out units or using technically incorrect formatting.</td>${formatCell((m3.unitTotal||0) - (m3.unitEarned||0))}</tr>
+                <tr><td><strong>Lacks Precision</strong></td><td>Failing to add contextual detail to the label.</td>${formatCell((m3.precTotal||0) - (m3.precEarned||0))}</tr>
+            </table>
+        </div>`;
+
+        // 2. AXIS SETUP & SCALING
+        html += `
+        <div class="diag-section">
+            <h2 class="diag-header">Axis Setup & Scaling (Modules 4a & 4b)</h2>
+            <p class="diag-desc">Tracks mechanical errors made when establishing the size, spacing, and numbering of an axis.</p>
+            <table class="diag-table">
+                <tr><th>Error Type</th><th>Description</th><th>Occurrences</th></tr>
+                <tr><td><strong>False/Inappropriate Zero</strong></td><td>Starting at 0 when it needlessly squashes data or is physically arbitrary.</td>${formatCell((m4a.falseZero||0) + (m4b.nonZeroStart||0))}</tr>
+                <tr><td><strong>Squashed Scale</strong></td><td>Using less than 50% of the available grid space.</td>${formatCell((m4a.squashed||0) + (m4b.squashed||0))}</tr>
+                <tr><td><strong>Awkward Divisions</strong></td><td>Using a scale that doesn't easily divide by the minor grid lines.</td>${formatCell((m4a.awkward||0) + (m4b.awkwardScale||0))}</tr>
+                <tr><td><strong>Off Chart</strong></td><td>Scale is too small; data falls off the top/side.</td>${formatCell((m4a.offChart||0) + (m4b.offChart||0))}</tr>
+                <tr><td><strong>Categorical vs Continuous Rule</strong></td><td>Putting numbers in spaces or words on lines.</td>${formatCell((m4b.barChartError||0) + (m4b.lineLabelError||0))}</tr>
+                <tr><td><strong>Bar Chart Origin Error</strong></td><td>Breaking the axis on a bar chart (destroys proportions).</td>${formatCell(m4b.barOriginError||0)}</tr>
+                <tr><td><strong>Missing Justification</strong></td><td>Breaking the axis without a valid reason.</td>${formatCell(m4a.badReason||0)}</tr>
+            </table>
+        </div>`;
+
+        // 3. PRECISION EXECUTION
+        let plotMin = (m5['1']?.h||0) + (m5['2']?.h||0) + (m5['3']?.h||0) + (m5['4']?.h||0);
+        let plotBad = (m5['1']?.b||0) + (m5['2']?.b||0) + (m5['3']?.b||0) + (m5['4']?.b||0);
+        
+        html += `
+        <div class="diag-section">
+            <h2 class="diag-header">Grid Execution Profile (Modules 5, 7 & 8)</h2>
+            <p class="diag-desc">Tracks your physical precision when dropping points or reading coordinates from the grid.</p>
+            <table class="diag-table">
+                <tr><th>Error Type</th><th>Description</th><th>Occurrences</th></tr>
+                <tr><td><strong>Minor Misread</strong></td><td>Reading or plotting slightly off the exact gridline (by ~1 minor box).</td>${formatCell(plotMin + (m7.pred?.inter?.clo||0) + (m7.pred?.extra?.clo||0) + (m8.rd?.min||0))}</tr>
+                <tr><td><strong>Severe Inaccuracy</strong></td><td>Plotting/reading wildly far from the correct location.</td>${formatCell(plotBad + (m7.pred?.inter?.wrg||0) + (m7.pred?.extra?.wrg||0) + (m8.rd?.off||0))}</tr>
+                <tr><td><strong>Coordinate Swaps</strong></td><td>Mixing up (X, Y) coordinates or reading points backwards.</td>${formatCell((m8.rd?.sxy||0) + (m8.rd?.sp12||0))}</tr>
+            </table>
+        </div>`;
+
+        // 4. MODELING & TRENDS
+        let modWrong = (m6.trend?.linear?.curve||0) + (m6.trend?.curve?.line||0) + (m7.model?.linear?.curve||0) + (m7.model?.curve?.line||0);
+        
+        html += `
+        <div class="diag-section">
+            <h2 class="diag-header">Modeling Profile (Modules 6, 7 & 8)</h2>
+            <p class="diag-desc">Tracks how well you identify trends and utilize Lines of Best Fit.</p>
+            <table class="diag-table">
+                <tr><th>Error Type</th><th>Description</th><th>Occurrences</th></tr>
+                <tr><td><strong>Wrong Model Used</strong></td><td>Drawing a straight line when physics requires a curve (or vice versa).</td>${formatCell(modWrong)}</tr>
+                <tr><td><strong>Missed Anomaly</strong></td><td>Failing to spot a clear outlier in the data.</td>${formatCell((m6.outlier?.has?.ign||0) + (m6.outlier?.has?.wrg||0))}</tr>
+                <tr><td><strong>Unbalanced Trend</strong></td><td>Leaving too many data points exclusively on one side of the line.</td>${formatCell((m6.exec?.line?.unb||0) + (m6.exec?.curve?.unb||0))}</tr>
+                <tr><td><strong>Short / Far Trend</strong></td><td>Line doesn't cover full data span, or is drawn too far from points.</td>${formatCell((m6.exec?.line?.far||0) + (m6.exec?.curve?.far||0))}</tr>
+                <tr><td><strong>Wobbly Curve</strong></td><td>Drawing a curve that loops backwards or changes concavity.</td>${formatCell(m6.exec?.curve?.shp||0)}</tr>
+                <tr><td><strong>Raw Data Reliance</strong></td><td>Using raw data dots for calculations instead of trusting the Model line.</td>${formatCell((m8.sel?.raw||0) + (m8.sel?.flt||0))}</tr>
+            </table>
+        </div>`;
+
+        // 5. GRADIENT MATH
+        html += `
+        <div class="diag-section">
+            <h2 class="diag-header">Gradient Mathematics (Module 8)</h2>
+            <p class="diag-desc">Tracks mathematical operations and physics units during rate-of-change calculations.</p>
+            <table class="diag-table">
+                <tr><th>Error Type</th><th>Description</th><th>Occurrences</th></tr>
+                <tr><td><strong>Triangle Too Small</strong></td><td>Using points too close together, multiplying grid reading errors.</td>${formatCell(m8.tri?.sml||0)}</tr>
+                <tr><td><strong>Rounding Error</strong></td><td>Making a mistake when rounding the final gradient value.</td>${formatCell(m8.math?.rnd||0)}</tr>
+                <tr><td><strong>Inverse Calc</strong></td><td>Calculating Run divided by Rise (ΔX / ΔY).</td>${formatCell(m8.math?.inv||0)}</tr>
+                <tr><td><strong>Power of 10 Error</strong></td><td>Missing a decimal place or unit multiplier.</td>${formatCell(m8.math?.p10||0)}</tr>
+                <tr><td><strong>Misc Math Error</strong></td><td>General calculation failure.</td>${formatCell(m8.math?.oth||0)}</tr>
+                <tr><td><strong>Physics Unit Error</strong></td><td>Applying the wrong final physics unit to the rate of change.</td>${formatCell(m8.unit?.err||0)}</tr>
+            </table>
+        </div>`;
+
+        content.innerHTML = html;
+    }
+
+    function clearData() {
+        if(confirm("Are you sure you want to reset all your progress data? This cannot be undone!")) {
+            curriculum.forEach(mod => localStorage.removeItem(`gs_mod_${mod.id}`));
+            showHome();
+        }
+    }
+
+    // Load Home Screen on startup!
+    showHome();
+
+</script>
+
+</body>
+</html>

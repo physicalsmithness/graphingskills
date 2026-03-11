@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Graph Skills - Module 4a</title>
     <style>
         body { font-family: Arial, sans-serif; max-width: 1200px; margin: 20px auto; padding: 20px; background-color: #f4f7f6; color: #333; }
@@ -70,16 +71,46 @@
         { s: "Graphing global temperature changes over decades.", xL: "Year", yL: "Temperature (°C)", x: {m: 1990, M: 2020, b: 6}, y: {m: 14.2, M: 14.9, b: 7} },
         { s: "Measuring the voltage of a circuit as resistance increases.", xL: "Resistance (Ohms)", yL: "Voltage (V)", x: {m: 100, M: 800, b: 7}, y: {m: 2.5, M: 24.0, b: 10} },
         { s: "Hooke's Law experiment stretching a metal spring.", xL: "Force (N)", yL: "Extension (cm)", x: {m: 0, M: 10, b: 5}, y: {m: 0, M: 25, b: 5} },
-        { s: "Boiling point of water at various high altitudes.", xL: "Altitude (m)", yL: "Boiling Point (°C)", x: {m: 0, M: 5000, b: 10}, y: {m: 80, M: 100, b: 8} }
-    ]; // Add the rest of your 30 scenarios back here!
+        { s: "Boiling point of water at various high altitudes.", xL: "Altitude (m)", yL: "Boiling Point (°C)", x: {m: 0, M: 5000, b: 10}, y: {m: 80, M: 100, b: 8} },
+        { s: "Plant growth measured carefully over two weeks.", xL: "Time (days)", yL: "Height (cm)", x: {m: 0, M: 14, b: 7}, y: {m: 0, M: 35, b: 7} },
+        { s: "Cooling of a cup of hot coffee.", xL: "Time (min)", yL: "Temp (°C)", x: {m: 0, M: 30, b: 6}, y: {m: 20, M: 80, b: 8} },
+        { s: "Battery drain on a smartphone over a day.", xL: "Time (hrs)", yL: "Battery (%)", x: {m: 0, M: 24, b: 8}, y: {m: 0, M: 100, b: 10} },
+        { s: "Stopping distance of a car vs its speed.", xL: "Speed (m/s)", yL: "Distance (m)", x: {m: 0, M: 30, b: 6}, y: {m: 0, M: 75, b: 8} },
+        { s: "Global population growth projections.", xL: "Year", yL: "Population (Billion)", x: {m: 2000, M: 2050, b: 10}, y: {m: 6.0, M: 9.8, b: 8} },
+        { s: "Capacitor charge over a short duration.", xL: "Time (s)", yL: "Voltage (V)", x: {m: 0, M: 5, b: 10}, y: {m: 0, M: 12, b: 6} },
+        { s: "Ocean pressure vs depth.", xL: "Depth (m)", yL: "Pressure (atm)", x: {m: 0, M: 50, b: 10}, y: {m: 1, M: 6, b: 6} },
+        { s: "Light intensity vs distance from a bulb.", xL: "Distance (m)", yL: "Intensity (Lux)", x: {m: 1, M: 5, b: 8}, y: {m: 10, M: 1000, b: 10} },
+        { s: "Car depreciation value over a decade.", xL: "Age (years)", yL: "Value ($)", x: {m: 0, M: 10, b: 5}, y: {m: 5000, M: 25000, b: 8} },
+        { s: "Radioactive decay of an isotope.", xL: "Time (days)", yL: "Activity (Bq)", x: {m: 0, M: 20, b: 10}, y: {m: 0, M: 500, b: 10} },
+        { s: "Heart rate during an intense exercise session.", xL: "Time (min)", yL: "Heart Rate (bpm)", x: {m: 0, M: 60, b: 12}, y: {m: 60, M: 180, b: 6} },
+        { s: "Fuel economy vs driving speed on a highway.", xL: "Speed (mph)", yL: "Efficiency (mpg)", x: {m: 30, M: 80, b: 10}, y: {m: 15, M: 45, b: 6} },
+        { s: "Ice cream sales vs outdoor temperature.", xL: "Temp (°C)", yL: "Sales", x: {m: 10, M: 35, b: 5}, y: {m: 50, M: 300, b: 10} },
+        { s: "Friction force vs mass of an object.", xL: "Mass (kg)", yL: "Friction (N)", x: {m: 0, M: 10, b: 10}, y: {m: 0, M: 50, b: 10} },
+        { s: "Current vs Voltage in an ohmic resistor.", xL: "Voltage (V)", yL: "Current (A)", x: {m: 0, M: 12, b: 6}, y: {m: 0, M: 2.4, b: 6} },
+        { s: "Gravity vs Distance from Earth's core.", xL: "Distance (km)", yL: "Gravity (m/s²)", x: {m: 6000, M: 20000, b: 7}, y: {m: 1, M: 9.8, b: 10} },
+        { s: "National GDP growth over recent years.", xL: "Year", yL: "GDP (Trillion $)", x: {m: 2010, M: 2024, b: 7}, y: {m: 15, M: 25, b: 10} },
+        { s: "Sound volume vs distance from speakers.", xL: "Distance (m)", yL: "Volume (dB)", x: {m: 0, M: 100, b: 10}, y: {m: 40, M: 120, b: 8} },
+        { s: "Nuclear reactor temp vs control rods inserted.", xL: "Control Rods (%)", yL: "Temp (°C)", x: {m: 0, M: 100, b: 10}, y: {m: 300, M: 800, b: 10} },
+        { s: "Specific heat absorption of a liquid.", xL: "Temp Change (°C)", yL: "Energy (J)", x: {m: 0, M: 100, b: 10}, y: {m: 0, M: 4200, b: 7} },
+        { s: "Star brightness vs distance from earth.", xL: "Distance (ly)", yL: "Brightness (mag)", x: {m: 10, M: 100, b: 9}, y: {m: 0, M: 50, b: 10} },
+        { s: "Tire tread depth vs mileage driven.", xL: "Mileage (1000s)", yL: "Tread (mm)", x: {m: 0, M: 50, b: 10}, y: {m: 2, M: 10, b: 8} },
+        { s: "Amount of solute dissolved vs temp.", xL: "Temp (°C)", yL: "Solute (g)", x: {m: 20, M: 80, b: 6}, y: {m: 100, M: 250, b: 6} },
+        { s: "Ocean temperature vs depth.", xL: "Depth (m)", yL: "Temp (°C)", x: {m: 0, M: 2000, b: 10}, y: {m: 4, M: 20, b: 8} },
+        { s: "Enzyme activity vs pH level.", xL: "pH Level", yL: "Activity Rate", x: {m: 4, M: 9, b: 10}, y: {m: 0, M: 100, b: 10} }
+    ];
 
-    let questionBank = []; let currentQ = 0; let canvas = document.getElementById('graphCanvas'); let ctx = canvas.getContext('2d'); const padL = 75, padB = 60, padT = 20, padR = 25, boxPixelSize = 40; 
+    let questionBank = [];
+    let currentQ = 0; let canvas = document.getElementById('graphCanvas'); let ctx = canvas.getContext('2d');
+    const padL = 75, padB = 60, padT = 20, padR = 25, boxPixelSize = 40; 
 
     function initializeBank() {
         questionBank = templates.map((t, idx) => {
-            let dx = [], dy = []; let isNeg = ["cooling", "depreciation", "decay", "gravity", "sound", "tread", "ocean temp"].some(k => t.s.toLowerCase().includes(k));
+            let dx = [], dy = [];
+            let isNeg = ["cooling", "depreciation", "decay", "gravity", "sound", "tread", "ocean temp"].some(k => t.s.toLowerCase().includes(k));
+            
             let xSpan = t.x.M - t.x.m, actualMinX = t.x.m + (Math.random() * 0.15 * xSpan), actualMaxX = t.x.M - (Math.random() * 0.15 * xSpan);
             let ySpan = t.y.M - t.y.m, actualMinY = t.y.m + (Math.random() * 0.15 * ySpan), actualMaxY = t.y.M - (Math.random() * 0.15 * ySpan);
+
             for(let i=0; i<5; i++) {
                 let pct = i / 4, xJitter = (i > 0 && i < 4) ? (Math.random() * 0.1 - 0.05) : 0, xVal = actualMinX + (pct + xJitter) * (actualMaxX - actualMinX);
                 let yPct = isNeg ? (1 - pct) : pct, yJitter = (Math.random() * 0.2 - 0.1), yVal = actualMinY + (yPct + yJitter) * (actualMaxY - actualMinY);
@@ -87,23 +118,36 @@
                 dx.push(parseFloat(xVal.toFixed(xDec))); dy.push(parseFloat(yVal.toFixed(yDec)));
             }
             dx.sort((a,b) => a - b);
-            let absX = !(t.xL.includes("Year") || (t.xL.includes("°C") && !t.xL.includes("Change"))), absY = !(t.yL.includes("Year") || (t.yL.includes("°C") && !t.yL.includes("Change")));
+
+            // Interval (Arbitrary Zero) Logic!
+            let absX = !(t.xL.includes("Year") || (t.xL.includes("°C") && !t.xL.includes("Change")));
+            let absY = !(t.yL.includes("Year") || (t.yL.includes("°C") && !t.yL.includes("Change")));
+
             return {
                 id: idx + 1, scenario: t.s, dataX: dx, dataY: dy, labelX: t.xL, labelY: t.yL,
                 x: { label: t.xL, minData: Math.min(...dx), maxData: Math.max(...dx), boxes: t.x.b, minors: 10, absZero: absX, validReasons: ["zoom", "spread", "false", "space", "flat", "detail", "blank", "empty", "cluster", "break"] },
                 y: { label: t.yL, minData: Math.min(...dy), maxData: Math.max(...dy), boxes: t.y.b, minors: 10, absZero: absY, validReasons: ["zoom", "spread", "false", "space", "flat", "detail", "blank", "empty", "cluster", "break"] }
             };
         });
+        
         for (let i = questionBank.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [questionBank[i], questionBank[j]] = [questionBank[j], questionBank[i]]; }
     }
 
     const MODULE_ID = "4a"; let stats = { correct: 0, falseZero: 0, offChart: 0, squashed: 0, awkward: 0, badReason: 0 }; let totalPasses = 0; let totalAttempts = 0;
     try { let savedMem = JSON.parse(localStorage.getItem(`gs_mod_${MODULE_ID}`)); if (savedMem) { totalPasses = savedMem.correct || 0; totalAttempts = savedMem.total || 0; if (savedMem.details && savedMem.details.correct !== undefined) stats = savedMem.details; } } catch(e) { localStorage.removeItem(`gs_mod_${MODULE_ID}`); }
 
-    function generateTableHTML(q) { let html = `<table class="data-table"><tr><th>${q.labelX}</th><th>${q.labelY}</th></tr>`; for(let i=0; i<q.dataX.length; i++) html += `<tr><td>${q.dataX[i]}</td><td>${q.dataY[i]}</td></tr>`; return html + `</table>`; }
-    function checkReasonTrigger(axis) { const startVal = parseFloat(document.getElementById(`${axis}-start`).value); document.getElementById(`reason-container-${axis}`).style.display = (!isNaN(startVal) && startVal > 0) ? 'block' : 'none'; }
+    function generateTableHTML(q) {
+        let html = `<table class="data-table"><tr><th>${q.labelX}</th><th>${q.labelY}</th></tr>`;
+        for(let i=0; i<q.dataX.length; i++) html += `<tr><td>${q.dataX[i]}</td><td>${q.dataY[i]}</td></tr>`;
+        return html + `</table>`;
+    }
+
+    function checkReasonTrigger(axis) {
+        const startVal = parseFloat(document.getElementById(`${axis}-start`).value);
+        document.getElementById(`reason-container-${axis}`).style.display = (!isNaN(startVal) && startVal > 0) ? 'block' : 'none';
+    }
+
     function resizeCanvas(q) { canvas.width = padL + (q.x.boxes * boxPixelSize) + padR; canvas.height = padT + (q.y.boxes * boxPixelSize) + padB; }
-    
     function drawGrid(q, startX = null, scaleX = null, startY = null, scaleY = null) {
         ctx.clearRect(0, 0, canvas.width, canvas.height); let w = q.x.boxes * boxPixelSize, h = q.y.boxes * boxPixelSize, originY = canvas.height - padB; ctx.lineWidth = 1;
         for (let i = 0; i <= q.x.boxes * q.x.minors; i++) { let xPos = padL + (i * (boxPixelSize/q.x.minors)); ctx.beginPath(); ctx.strokeStyle = (i % q.x.minors === 0) ? "#aaa" : "#eee"; ctx.moveTo(xPos, padT); ctx.lineTo(xPos, originY); ctx.stroke(); }
@@ -112,9 +156,9 @@
         ctx.fillStyle = "#333";
         if (startX !== null && scaleX !== null) { ctx.font = "12px Arial"; ctx.textAlign = "center"; ctx.textBaseline = "top"; for (let i = 0; i <= q.x.boxes; i++) ctx.fillText(Number((startX + i * scaleX).toFixed(3)), padL + (i * boxPixelSize), originY + 8); }
         if (startY !== null && scaleY !== null) { ctx.font = "12px Arial"; ctx.textAlign = "right"; ctx.textBaseline = "middle"; for (let i = 0; i <= q.y.boxes; i++) ctx.fillText(Number((startY + i * scaleY).toFixed(3)), padL - 8, originY - (i * boxPixelSize)); }
-        ctx.fillStyle = "#000"; ctx.font = "bold 14px Arial"; ctx.textAlign = "center"; ctx.textBaseline = "bottom"; ctx.fillText(q.labelX, padL + (w/2), canvas.height - 5); ctx.save(); ctx.translate(15, originY - (h/2)); ctx.rotate(-Math.PI / 2); ctx.fillText(q.labelY, 0, 0); ctx.restore();
+        ctx.fillStyle = "#000"; ctx.font = "bold 14px Arial"; ctx.textAlign = "center"; ctx.textBaseline = "bottom"; ctx.fillText(q.labelX, padL + (w/2), canvas.height - 5);
+        ctx.save(); ctx.translate(15, originY - (h/2)); ctx.rotate(-Math.PI / 2); ctx.fillText(q.labelY, 0, 0); ctx.restore();
     }
-    
     function plotPoints(userStartX, userScaleX, userStartY, userScaleY, q) {
         let w = q.x.boxes * boxPixelSize, h = q.y.boxes * boxPixelSize, originY = canvas.height - padB, rangeX = userScaleX * q.x.boxes, rangeY = userScaleY * q.y.boxes, offScaleCount = 0; ctx.strokeStyle = "#c0392b"; ctx.lineWidth = 2;
         for(let i=0; i<q.dataX.length; i++) {
@@ -124,10 +168,9 @@
         }
         if (offScaleCount > 0) { ctx.fillStyle = "rgba(217, 83, 79, 0.9)"; ctx.fillRect(padL + 20, padT + 20, 240, 40); ctx.fillStyle = "#fff"; ctx.font = "bold 14px Arial"; ctx.textAlign = "left"; ctx.textBaseline = "middle"; ctx.fillText(`⚠️ ${offScaleCount} point(s) off the scale!`, padL + 35, padT + 40); }
     }
-    
     function loadQuestion() {
         if(questionBank.length === 0) initializeBank();
-        const q = questionBank[currentQ]; document.getElementById('question-text').innerHTML = `<strong>Practice Scenario:</strong><br><br>${q.scenario}`; document.getElementById('table-container').innerHTML = generateTableHTML(q);
+        const q = questionBank[currentQ]; document.getElementById('question-text').innerHTML = `<strong>Question ${currentQ + 1} of ${questionBank.length}</strong><br><br>${q.scenario}`; document.getElementById('table-container').innerHTML = generateTableHTML(q);
         ['x-start', 'x-scale', 'x-reason', 'y-start', 'y-scale', 'y-reason'].forEach(id => { document.getElementById(id).value = ""; document.getElementById(id).disabled = false; });
         document.getElementById('reason-container-x').style.display = 'none'; document.getElementById('reason-container-y').style.display = 'none'; document.getElementById('feedback-text').style.display = "none"; document.getElementById('feedback-text').innerHTML = ""; document.getElementById('next-btn').style.display = "none"; document.getElementById('submit-btn').disabled = false;
         resizeCanvas(q); drawGrid(q); updateDashboard();
@@ -142,10 +185,14 @@
         if (config.maxData > graphMax || config.minData < start) return { outcome: "offChart", cls: "err-box", msg: `❌ Data falls off graph! Your axis ends at ${Number(graphMax.toFixed(3))}.` };
         
         let dataSpreadPct = (config.maxData - config.minData) / graphRange;
+
         if (dataSpreadPct < 0.5) {
             if (start === 0 && config.minData > graphRange * 0.2) {
-                if (!config.absZero) return { outcome: "falseZero", cls: "err-box", msg: `❌ Inappropriate Zero! The value 0 for ${config.label} is arbitrary. Starting at 0 needlessly squashes your data. Start closer to ${Math.floor(config.minData)}.` };
-                else return { outcome: "squashed", cls: "err-box", msg: `❌ Data is squashed! Your points only cover ${Math.round(dataSpreadPct*100)}% of the axis space. Choose a smaller scale.` };
+                if (!config.absZero) {
+                    return { outcome: "falseZero", cls: "err-box", msg: `❌ Inappropriate Zero! The value 0 for ${config.label} is arbitrary (not a true physical zero). Starting at 0 needlessly squashes your data. Start closer to ${Math.floor(config.minData)}.` };
+                } else {
+                    return { outcome: "squashed", cls: "err-box", msg: `❌ Data is squashed! Your points only cover ${Math.round(dataSpreadPct*100)}% of the axis space. Choose a smaller scale.` };
+                }
             }
         }
         
@@ -154,13 +201,16 @@
         if (start > 0) {
             if (reasonText.trim() === "") return { outcome: "badReason", cls: "err-box", msg: "❌ You started > 0 but gave no reason!" };
             if (!checkReason(reasonText, config.validReasons)) return { outcome: "badReason", cls: "meh-box", msg: `⚠️ Reason not accepted. Try terms like "false zero" or "empty space".` };
-            return { outcome: "correct", cls: "pass-box", msg: `✅ Correct. You broke the axis to zoom in.` };
+            return { outcome: "correct", cls: "pass-box", msg: `✅ Correct. You broke the axis to zoom in. <em>(Note: This is permissible, but can easily be misleading by exaggerating trends unless you draw attention to it!)</em>` };
         }
 
         if (start === 0 && config.minData / graphRange > 0.4) {
-            if (!config.absZero) return { outcome: "falseZero", cls: "err-box", msg: `❌ Inappropriate Zero! The value 0 for ${config.label} is arbitrary. Break the axis!` };
-            return { outcome: "correct", cls: "pass-box", msg: `✅ Good scale! Starting at zero is a safe default to prevent misleading proportional visuals.` };
+            if (!config.absZero) {
+                return { outcome: "falseZero", cls: "err-box", msg: `❌ Inappropriate Zero! The value 0 for ${config.label} is arbitrary (like years). Starting at 0 needlessly squashes your data. Break the axis!` };
+            }
+            return { outcome: "correct", cls: "pass-box", msg: `✅ Good scale! Starting at zero is a safe default to prevent misleading proportional visuals. <em>(Note: Because of the empty space, breaking the axis was also permissible here, provided you justify it.)</em>` };
         }
+
         return { outcome: "correct", cls: "pass-box", msg: "✅ Perfect starting point and scale!" };
     }
 
@@ -180,14 +230,6 @@
         document.getElementById('feedback-text').innerHTML = `<div class="split-fb ${resX.cls}"><strong>X-Axis:</strong> ${resX.msg}</div><div class="split-fb ${resY.cls}"><strong>Y-Axis:</strong> ${resY.msg}</div>`;
 
         let isPass = (resX.outcome === "correct" && resY.outcome === "correct"); totalAttempts += 1; if (isPass) totalPasses += 1;
-        
-        // --- TRACKING CODE ---
-        let statusText = isPass ? "Pass" : "Fail"; let errorLog = [];
-        if (resX.outcome !== "correct") errorLog.push(`X: ${resX.outcome}`); if (resY.outcome !== "correct") errorLog.push(`Y: ${resY.outcome}`);
-        let errorString = errorLog.length > 0 ? errorLog.join(" | ") : "None";
-        if (window.parent && window.parent.logToTeacher) { window.parent.logToTeacher("Module 4a", q.id, q.scenario, statusText, errorString); }
-        // ---------------------
-
         localStorage.setItem(`gs_mod_${MODULE_ID}`, JSON.stringify({ correct: totalPasses, total: totalAttempts, details: stats }));
         updateDashboard(); document.getElementById('next-btn').style.display = "block";
     }
