@@ -2,56 +2,165 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Graph Skills - Module 2</title>
     <style>
-        body { font-family: Arial, sans-serif; max-width: 900px; margin: 20px auto; padding: 20px; background-color: #f9f9f9; color: #333; }
-        .module-container { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        .question-box { margin-bottom: 20px; font-size: 1.15em; line-height: 1.4; padding: 15px; background: #eef2f5; border-left: 4px solid #0056b3; border-radius: 4px;}
-        .vars-container { display: flex; gap: 20px; margin-bottom: 20px; }
-        .var-box { flex: 1; background: #fff; border: 2px solid #ccc; padding: 15px; border-radius: 6px; text-align: center; font-weight: bold; font-size: 1.1em; cursor: grab; }
-        .axis-container { display: flex; gap: 20px; margin-bottom: 20px; }
-        .axis-drop { flex: 1; min-height: 80px; background: #f8f9fa; border: 2px dashed #aaa; border-radius: 6px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 1em; color: #666; }
-        .axis-drop.drag-over { background: #e2e6ea; border-color: #0056b3; }
-        .matter-check { margin-bottom: 20px; padding: 15px; background: #fff3cd; border-radius: 6px; border-left: 4px solid #ffc107; font-weight: bold; }
-        button { display: block; padding: 12px 20px; font-size: 1.1em; cursor: pointer; border: none; border-radius: 4px; background-color: #0056b3; color: white; transition: 0.2s; width: 100%; margin-bottom: 10px;}
-        button:hover { background-color: #004494; } button:disabled { opacity: 0.6; cursor: not-allowed; }
-        #next-btn { background-color: #28a745; display: none; } #next-btn:hover { background-color: #218838; }
-        .feedback-container { margin-top: 15px; display: none; padding: 15px; border-radius: 6px; border-left: 5px solid; font-size: 1.05em; line-height: 1.4; }
-        .pass-box { border-color: #28a745; background-color: #f8fff9; color: #155724; } .err-box { border-color: #d9534f; background-color: #fffafa; color: #721c24; }
-        .dashboard { margin-top: 30px; border-top: 2px solid #eee; padding-top: 15px; }
-        table { border-collapse: collapse; width: 100%; font-size: 0.9em; } th, td { border: 1px solid #aaa; padding: 8px; text-align: left;} th { background-color: #e9ecef; }
-        .err-val { color: #d9534f; font-weight: bold; text-align: center;} .corr-val { color: #28a745; font-weight: bold; text-align: center;}
+        body { 
+            font-family: Arial, sans-serif; 
+            max-width: 900px; 
+            margin: 20px auto; 
+            padding: 20px; 
+            background-color: #f9f9f9; 
+            color: #333; 
+        }
+        .module-container { 
+            background: white; 
+            padding: 30px; 
+            border-radius: 8px; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
+        }
+        .question-box { 
+            margin-bottom: 20px; 
+            font-size: 1.15em; 
+            line-height: 1.4; 
+            padding: 15px; 
+            background: #eef2f5; 
+            border-left: 4px solid #0056b3; 
+            border-radius: 4px;
+        }
+        .vars-container { 
+            display: flex; 
+            gap: 20px; 
+            margin-bottom: 20px; 
+        }
+        .var-box { 
+            flex: 1; 
+            background: #fff; 
+            border: 2px solid #ccc; 
+            padding: 15px; 
+            border-radius: 6px; 
+            text-align: center; 
+            font-weight: bold; 
+            font-size: 1.1em; 
+            cursor: grab; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .var-box:active { cursor: grabbing; }
+        .axis-container { 
+            display: flex; 
+            gap: 20px; 
+            margin-bottom: 20px; 
+        }
+        .axis-drop { 
+            flex: 1; 
+            min-height: 100px; 
+            background: #f8f9fa; 
+            border: 2px dashed #aaa; 
+            border-radius: 6px; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 1em; 
+            color: #666; 
+            padding: 10px;
+            transition: 0.2s;
+        }
+        .axis-drop.drag-over { 
+            background: #e2e6ea; 
+            border-color: #0056b3; 
+        }
+        .matter-check { 
+            margin-bottom: 20px; 
+            padding: 15px; 
+            background: #fff3cd; 
+            border-radius: 6px; 
+            border-left: 4px solid #ffc107; 
+            font-weight: bold; 
+        }
+        button { 
+            display: block; 
+            padding: 12px 20px; 
+            font-size: 1.1em; 
+            cursor: pointer; 
+            border: none; 
+            border-radius: 4px; 
+            background-color: #0056b3; 
+            color: white; 
+            transition: 0.2s; 
+            width: 100%; 
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        button:hover { background-color: #004494; } 
+        button:disabled { opacity: 0.6; cursor: not-allowed; }
+        
+        #next-btn { background-color: #28a745; display: none; } 
+        #next-btn:hover { background-color: #218838; }
+        
+        .feedback-container { 
+            margin-top: 15px; 
+            display: none; 
+            padding: 15px; 
+            border-radius: 6px; 
+            border-left: 5px solid; 
+            font-size: 1.05em; 
+            line-height: 1.4; 
+        }
+        .pass-box { border-color: #28a745; background-color: #f8fff9; color: #155724; } 
+        .err-box { border-color: #d9534f; background-color: #fffafa; color: #721c24; }
+        
+        /* Dashboard */
+        .dashboard { margin-top: 40px; border-top: 2px solid #eee; padding-top: 20px; }
+        table { border-collapse: collapse; width: 100%; font-size: 0.95em; } 
+        th, td { border: 1px solid #aaa; padding: 10px; text-align: left;} 
+        th { background-color: #e9ecef; }
+        .err-val { color: #d9534f; font-weight: bold; text-align: center;} 
+        .corr-val { color: #28a745; font-weight: bold; text-align: center;}
     </style>
 </head>
 <body>
 <div class="module-container">
     <h2>Module 2: Assigning Axes</h2>
     <p>Drag the variables to the correct axes. Determine if one is strictly independent (causing the other to change), or if they are just correlated.</p>
+    
     <div class="question-box" id="scenario-text">Loading...</div>
     
-    <div class="vars-container" id="vars-source"></div>
+    <div class="vars-container" id="vars-source">
+        </div>
     
     <div class="axis-container">
-        <div class="axis-drop" id="drop-x" ondragover="allowDrop(event)" ondrop="drop(event, 'x')"><strong>X-Axis (Horizontal)</strong><br><small>Independent / Controlled</small></div>
-        <div class="axis-drop" id="drop-y" ondragover="allowDrop(event)" ondrop="drop(event, 'y')"><strong>Y-Axis (Vertical)</strong><br><small>Dependent / Measured</small></div>
+        <div class="axis-drop" id="drop-x" ondragover="allowDrop(event)" ondrop="drop(event, 'x')">
+            <strong>X-Axis (Horizontal)</strong><br><small>Independent / Controlled</small>
+        </div>
+        <div class="axis-drop" id="drop-y" ondragover="allowDrop(event)" ondrop="drop(event, 'y')">
+            <strong>Y-Axis (Vertical)</strong><br><small>Dependent / Measured</small>
+        </div>
     </div>
 
     <div class="matter-check">
-        <label><input type="checkbox" id="doesnt-matter-chk"> Wait, it doesn't actually matter which way round these go! (No strict cause & effect).</label>
+        <label>
+            <input type="checkbox" id="doesnt-matter-chk"> 
+            Wait, it doesn't actually matter which way round these go! (No strict cause & effect).
+        </label>
     </div>
 
     <button id="submit-btn" onclick="submitAnswer()">Evaluate Assignment</button>
     <button id="next-btn" onclick="nextQuestion()">Next Practice Scenario</button>
+    
     <div class="feedback-container" id="feedback-text"></div>
     
     <div class="dashboard">
         <h3 style="margin-top:0;">Error Tracking</h3>
-        <table><thead><tr><th>Outcome Category</th><th>Count</th></tr></thead><tbody id="stats-body"></tbody></table>
+        <table>
+            <thead><tr><th>Outcome Category</th><th>Count</th></tr></thead>
+            <tbody id="stats-body"></tbody>
+        </table>
     </div>
 </div>
 
 <script>
-    const bank = [
+    const questionBank = [
         { id: 201, s: "A student measures how much a metal spring stretches when different weights are hung from it.", v1: "Weight Hung (N)", v2: "Spring Extension (cm)", ind: "v1", matters: true },
         { id: 202, s: "A doctor plots patients' heights against their shoe sizes to look for a correlation.", v1: "Height (cm)", v2: "Shoe Size", ind: "either", matters: false },
         { id: 203, s: "A chemist tracks the temperature of a liquid every minute as it cools down.", v1: "Time Passed (min)", v2: "Temperature (°C)", ind: "v1", matters: true },
@@ -60,17 +169,35 @@
         { id: 206, s: "A real estate agent graphs the square footage of houses against their sale prices.", v1: "Square Footage", v2: "Sale Price ($)", ind: "v1", matters: true }
     ];
 
-    let currentQ = 0; const MODULE_ID = "2"; 
+    let currentQ = 0; 
+    const MODULE_ID = "2"; 
     let stats = { correctStrict: 0, correctEither: 0, wrongWayRound: 0, thoughtMattered: 0, thoughtDidntMatter: 0, nonsensical: 0 };
     let totalPasses = 0, totalAttempts = 0;
-    try { let savedMem = JSON.parse(localStorage.getItem(`gs_mod_${MODULE_ID}`)); if (savedMem) { totalPasses = savedMem.correct || 0; totalAttempts = savedMem.total || 0; if (savedMem.details) stats = Object.assign(stats, savedMem.details); } } catch(e) { localStorage.removeItem(`gs_mod_${MODULE_ID}`); }
+    
+    try { 
+        let savedMem = JSON.parse(localStorage.getItem(`gs_mod_${MODULE_ID}`)); 
+        if (savedMem) { 
+            totalPasses = savedMem.correct || 0; 
+            totalAttempts = savedMem.total || 0; 
+            if (savedMem.details) stats = Object.assign(stats, savedMem.details); 
+        } 
+    } catch(e) { 
+        localStorage.removeItem(`gs_mod_${MODULE_ID}`); 
+    }
 
-    function shuffleArray(array) { for (let i = array.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [array[i], array[j]] = [array[j], array[i]]; } }
-    shuffleArray(bank);
+    function shuffleArray(array) { 
+        for (let i = array.length - 1; i > 0; i--) { 
+            const j = Math.floor(Math.random() * (i + 1)); 
+            [array[i], array[j]] = [array[j], array[i]]; 
+        } 
+    }
+    shuffleArray(questionBank);
 
     function loadQuestion() {
-        const q = bank[currentQ]; document.getElementById('scenario-text').innerHTML = `<strong>Practice Scenario:</strong><br>${q.s}`;
-        document.getElementById('doesnt-matter-chk').checked = false; document.getElementById('doesnt-matter-chk').disabled = false;
+        const q = questionBank[currentQ]; 
+        document.getElementById('scenario-text').innerHTML = `<strong>Practice Scenario:</strong><br>${q.s}`;
+        document.getElementById('doesnt-matter-chk').checked = false; 
+        document.getElementById('doesnt-matter-chk').disabled = false;
         
         let vs = `<div class="var-box" id="v1" draggable="true" ondragstart="drag(event)">${q.v1}</div><div class="var-box" id="v2" draggable="true" ondragstart="drag(event)">${q.v2}</div>`;
         if(Math.random() > 0.5) vs = `<div class="var-box" id="v2" draggable="true" ondragstart="drag(event)">${q.v2}</div><div class="var-box" id="v1" draggable="true" ondragstart="drag(event)">${q.v1}</div>`;
@@ -78,53 +205,120 @@
         
         document.getElementById('drop-x').innerHTML = `<strong>X-Axis (Horizontal)</strong><br><small>Independent / Controlled</small>`;
         document.getElementById('drop-y').innerHTML = `<strong>Y-Axis (Vertical)</strong><br><small>Dependent / Measured</small>`;
-        document.getElementById('feedback-text').style.display = 'none'; document.getElementById('next-btn').style.display = 'none'; document.getElementById('submit-btn').style.display = 'block';
+        
+        document.getElementById('feedback-text').style.display = 'none'; 
+        document.getElementById('next-btn').style.display = 'none'; 
+        document.getElementById('submit-btn').style.display = 'block';
         updateDash();
     }
 
-    function allowDrop(ev) { ev.preventDefault(); }
-    function drag(ev) { ev.dataTransfer.setData("text", ev.target.id); }
+    function allowDrop(ev) { 
+        ev.preventDefault(); 
+        ev.target.closest('.axis-drop').classList.add('drag-over');
+    }
+    
+    function drag(ev) { 
+        ev.dataTransfer.setData("text", ev.target.id); 
+    }
+    
     function drop(ev, axis) {
-        ev.preventDefault(); let data = ev.dataTransfer.getData("text"); let target = document.getElementById(`drop-${axis}`);
-        if (target.children.length > 2 && target.lastChild.classList && target.lastChild.classList.contains('var-box')) { document.getElementById('vars-source').appendChild(target.lastChild); }
+        ev.preventDefault(); 
+        let target = ev.target.closest('.axis-drop');
+        target.classList.remove('drag-over');
+        
+        let data = ev.dataTransfer.getData("text"); 
+        
+        // If a box is already there, move it back to the source area
+        if (target.children.length > 2 && target.lastChild.classList && target.lastChild.classList.contains('var-box')) { 
+            document.getElementById('vars-source').appendChild(target.lastChild); 
+        }
         target.appendChild(document.getElementById(data));
     }
 
+    // Remove highlight if dragging out
+    document.querySelectorAll('.axis-drop').forEach(dropzone => {
+        dropzone.addEventListener('dragleave', function(e) {
+            this.classList.remove('drag-over');
+        });
+    });
+
     function submitAnswer() {
-        const q = bank[currentQ]; const xBox = document.getElementById('drop-x').querySelector('.var-box'); const yBox = document.getElementById('drop-y').querySelector('.var-box');
-        if (!xBox || !yBox) return alert("Please place both variables on the axes.");
+        const q = questionBank[currentQ]; 
+        const xBox = document.getElementById('drop-x').querySelector('.var-box'); 
+        const yBox = document.getElementById('drop-y').querySelector('.var-box');
         
-        document.getElementById('doesnt-matter-chk').disabled = true; document.getElementById('submit-btn').style.display = 'none';
+        if (!xBox || !yBox) return alert("Please drag both variables onto the axes.");
         
-        const userX = xBox.id, userY = yBox.id; const userChk = document.getElementById('doesnt-matter-chk').checked;
+        document.getElementById('doesnt-matter-chk').disabled = true; 
+        document.getElementById('submit-btn').style.display = 'none';
+        
+        const userX = xBox.id;
+        const userChk = document.getElementById('doesnt-matter-chk').checked;
         let isPass = false, outcome = "", msg = "";
 
         if (q.matters) {
-            if (userChk) { outcome = "thoughtDidntMatter"; msg = `❌ <strong>Assumption Error:</strong> It DOES matter here! You control <strong>${document.getElementById(q.ind).innerText}</strong>, so it must go on the X-Axis.`; }
-            else if (userX === q.ind) { outcome = "correctStrict"; isPass = true; msg = `✅ <strong>Correct!</strong> <strong>${xBox.innerText}</strong> is the independent variable, so it belongs on the X-Axis.`; }
-            else { outcome = "wrongWayRound"; msg = `❌ <strong>Wrong Way Round:</strong> You put the dependent (measured) variable on the X-Axis.`; }
+            if (userChk) { 
+                outcome = "thoughtDidntMatter"; 
+                msg = `❌ <strong>Assumption Error:</strong> It DOES matter here! You control <strong>${document.getElementById(q.ind).innerText}</strong>, so it must go on the X-Axis.`; 
+            }
+            else if (userX === q.ind) { 
+                outcome = "correctStrict"; 
+                isPass = true; 
+                msg = `✅ <strong>Correct!</strong> <strong>${xBox.innerText}</strong> is the independent variable, so it belongs on the X-Axis.`; 
+            }
+            else { 
+                outcome = "wrongWayRound"; 
+                msg = `❌ <strong>Wrong Way Round:</strong> You put the dependent (measured) variable on the X-Axis.`; 
+            }
         } else {
-            if (!userChk) { outcome = "thoughtMattered"; msg = `❌ <strong>Assumption Error:</strong> Neither variable strictly causes the other to change. They are just correlated, so it doesn't matter which axis they go on!`; }
-            else { outcome = "correctEither"; isPass = true; msg = `✅ <strong>Correct!</strong> You recognized this is a correlation study without strict cause-and-effect.`; }
+            if (!userChk) { 
+                outcome = "thoughtMattered"; 
+                msg = `❌ <strong>Assumption Error:</strong> Neither variable strictly causes the other to change. They are just correlated, so it doesn't matter which axis they go on!`; 
+            }
+            else { 
+                outcome = "correctEither"; 
+                isPass = true; 
+                msg = `✅ <strong>Correct!</strong> You recognized this is a correlation study without strict cause-and-effect.`; 
+            }
         }
 
-        stats[outcome]++; totalAttempts++; if (isPass) totalPasses++;
+        stats[outcome]++; 
+        totalAttempts++; 
+        if (isPass) totalPasses++;
         
         // --- TRACKING CODE ---
         let statusText = isPass ? "Pass" : "Fail";
-        if (window.parent && window.parent.logToTeacher) { window.parent.logToTeacher("Module 2", q.id, q.s, statusText, outcome); }
+        if (window.parent && window.parent.logToTeacher) { 
+            window.parent.logToTeacher("Module 2", q.id, q.s, statusText, outcome); 
+        }
         // ---------------------
 
         localStorage.setItem(`gs_mod_${MODULE_ID}`, JSON.stringify({ correct: totalPasses, total: totalAttempts, details: stats }));
         
-        let fb = document.getElementById('feedback-text'); fb.style.display = "block"; fb.className = `feedback-container ${isPass ? 'pass-box' : 'err-box'}`; fb.innerHTML = msg;
-        updateDash(); document.getElementById('next-btn').style.display = "block";
+        let fb = document.getElementById('feedback-text'); 
+        fb.style.display = "block"; 
+        fb.className = `feedback-container ${isPass ? 'pass-box' : 'err-box'}`; 
+        fb.innerHTML = msg;
+        
+        updateDash(); 
+        document.getElementById('next-btn').style.display = "block";
     }
 
-    function nextQuestion() { currentQ = (currentQ + 1) % bank.length; loadQuestion(); }
-    function updateDash() {
-        document.getElementById('stats-body').innerHTML = `<tr><td>Correct (Strict Cause & Effect)</td><td class="corr-val">${stats.correctStrict}</td></tr><tr><td>Correct (Recognized Correlation)</td><td class="corr-val">${stats.correctEither}</td></tr><tr><td>Wrong Way Round (Y on X)</td><td class="err-val">${stats.wrongWayRound}</td></tr><tr><td>Assumed strict cause, but it was just correlation</td><td class="err-val">${stats.thoughtMattered}</td></tr><tr><td>Assumed correlation, but there WAS a strict cause</td><td class="err-val">${stats.thoughtDidntMatter}</td></tr>`;
+    function nextQuestion() { 
+        currentQ = (currentQ + 1) % questionBank.length; 
+        loadQuestion(); 
     }
+    
+    function updateDash() {
+        document.getElementById('stats-body').innerHTML = `
+            <tr><td>Correct (Strict Cause & Effect)</td><td class="corr-val">${stats.correctStrict}</td></tr>
+            <tr><td>Correct (Recognized Correlation)</td><td class="corr-val">${stats.correctEither}</td></tr>
+            <tr><td>Wrong Way Round (Y on X)</td><td class="err-val">${stats.wrongWayRound}</td></tr>
+            <tr><td>Assumed strict cause, but it was just correlation</td><td class="err-val">${stats.thoughtMattered}</td></tr>
+            <tr><td>Assumed correlation, but there WAS a strict cause</td><td class="err-val">${stats.thoughtDidntMatter}</td></tr>
+        `;
+    }
+    
     loadQuestion();
 </script>
 </body>

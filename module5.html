@@ -2,128 +2,362 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Graph Skills - Module 5</title>
     <style>
-        body { font-family: Arial, sans-serif; max-width: 900px; margin: 20px auto; padding: 20px; background-color: #f4f7f6; color: #333; }
-        .module-container { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); display: flex; gap: 30px; }
-        .graph-wrapper { position: relative; width: 500px; height: 500px; background: #fff; border: 1px solid #ccc; cursor: crosshair;}
-        canvas { position: absolute; top: 0; left: 0; } #bgCanvas { z-index: 1; } #drawCanvas { z-index: 2; }
+        body { 
+            font-family: Arial, sans-serif; 
+            max-width: 900px; 
+            margin: 20px auto; 
+            padding: 20px; 
+            background-color: #f4f7f6; 
+            color: #333; 
+        }
+        .module-container { 
+            background: white; 
+            padding: 30px; 
+            border-radius: 8px; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
+            display: flex; 
+            gap: 30px; 
+        }
+        .graph-wrapper { 
+            position: relative; 
+            width: 500px; 
+            height: 500px; 
+            background: #fff; 
+            border: 1px solid #ccc; 
+            cursor: crosshair;
+            box-shadow: inset 0 0 5px rgba(0,0,0,0.05);
+        }
+        canvas { position: absolute; top: 0; left: 0; } 
+        #bgCanvas { z-index: 1; } 
+        #drawCanvas { z-index: 2; }
+        
         .side-panel { flex: 1; }
-        .info-box { padding: 15px; background: #eef2f5; border-left: 4px solid #0056b3; border-radius: 4px; margin-bottom: 20px; }
-        button { padding: 12px; font-size: 1.1em; cursor: pointer; border: none; border-radius: 4px; background-color: #0056b3; color: white; width: 100%; margin-bottom: 10px; font-weight: bold;}
-        button:hover { background-color: #004494; } button:disabled { opacity: 0.6; cursor: not-allowed;}
-        .fb-box { margin-top: 15px; padding: 15px; border-radius: 4px; display: none; font-size: 1.05em; border-left: 5px solid; }
-        .pass { background: #f8fff9; border-color: #28a745; color: #155724; } .meh { background: #fff8e6; border-color: #ffc107; color: #856404; } .fail { background: #fffafa; border-color: #d9534f; color: #721c24; }
-        .coord-list { font-family: monospace; font-size: 1.2em; background: #fff; padding: 10px; border: 1px solid #ccc; text-align: center; margin-bottom: 15px; letter-spacing: 1px;}
-        .dash-table { width: 100%; border-collapse: collapse; font-size: 0.9em; margin-top: 20px;}
-        .dash-table th, .dash-table td { border: 1px solid #aaa; padding: 6px; text-align: center; } .dash-table th { background: #e9ecef; }
-        .c-g { color: #28a745; font-weight: bold;} .c-o { color: #ffc107; font-weight: bold;} .c-r { color: #d9534f; font-weight: bold;}
+        
+        .info-box { 
+            padding: 15px; 
+            background: #eef2f5; 
+            border-left: 4px solid #0056b3; 
+            border-radius: 4px; 
+            margin-bottom: 20px; 
+            font-size: 1.1em;
+            font-weight: bold;
+        }
+        
+        button { 
+            padding: 12px; 
+            font-size: 1.1em; 
+            cursor: pointer; 
+            border: none; 
+            border-radius: 4px; 
+            background-color: #0056b3; 
+            color: white; 
+            width: 100%; 
+            margin-bottom: 10px; 
+            font-weight: bold;
+            transition: 0.2s;
+        }
+        button:hover { background-color: #004494; } 
+        button:disabled { opacity: 0.6; cursor: not-allowed;}
+        
+        .fb-box { 
+            margin-top: 15px; 
+            padding: 15px; 
+            border-radius: 4px; 
+            display: none; 
+            font-size: 1.05em; 
+            border-left: 5px solid; 
+            line-height: 1.4;
+        }
+        .pass { background: #f8fff9; border-color: #28a745; color: #155724; } 
+        .meh { background: #fff8e6; border-color: #ffc107; color: #856404; } 
+        .fail { background: #fffafa; border-color: #d9534f; color: #721c24; }
+        
+        .coord-list { 
+            font-family: monospace; 
+            font-size: 1.4em; 
+            background: #fff; 
+            padding: 15px; 
+            border: 2px solid #ccc; 
+            border-radius: 6px;
+            text-align: center; 
+            margin-bottom: 15px; 
+            letter-spacing: 1px;
+            color: #0056b3;
+            font-weight: bold;
+        }
+        
+        .dash-table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            font-size: 0.95em; 
+            margin-top: 30px;
+        }
+        .dash-table th, .dash-table td { 
+            border: 1px solid #aaa; 
+            padding: 8px; 
+            text-align: center; 
+        } 
+        .dash-table th { background: #e9ecef; }
+        .c-g { color: #28a745; font-weight: bold;} 
+        .c-o { color: #ffc107; font-weight: bold;} 
+        .c-r { color: #d9534f; font-weight: bold;}
     </style>
 </head>
 <body>
 <div class="module-container">
-    <div class="graph-wrapper"><canvas id="bgCanvas" width="500" height="500"></canvas><canvas id="drawCanvas" width="500" height="500"></canvas></div>
+    <div class="graph-wrapper">
+        <canvas id="bgCanvas" width="500" height="500"></canvas>
+        <canvas id="drawCanvas" width="500" height="500"></canvas>
+    </div>
+    
     <div class="side-panel">
-        <h2>Module 5: Precision Plotting</h2>
+        <h2 style="margin-top:0;">Module 5: Precision Plotting</h2>
         <div class="info-box" id="level-info">Level 1: Whole Numbers</div>
-        <p>Plot this coordinate:</p>
+        
+        <p style="margin-bottom: 5px;">Plot this coordinate exactly:</p>
         <div class="coord-list" id="coord-display">(X, Y)</div>
-        <div style="display:flex; gap:10px;"><button id="btn-undo" onclick="undo()" style="background:#6c757d;">Undo</button><button id="btn-clear" onclick="clearPts()" style="background:#dc3545;">Clear</button></div>
+        
+        <div style="display:flex; gap:10px;">
+            <button id="btn-undo" onclick="undo()" style="background:#6c757d;">Undo Target</button>
+            <button id="btn-clear" onclick="clearPts()" style="background:#dc3545;">Clear Grid</button>
+        </div>
+        
         <button id="btn-eval" onclick="evaluatePlot()">Evaluate Accuracy</button>
         <button id="btn-next" onclick="nextLevel()" style="background:#28a745; display:none;">Next Target</button>
+        
         <div id="feedback" class="fb-box"></div>
+        
         <table class="dash-table">
-            <thead><tr><th>Level</th><th>Perfect</th><th>½ Off</th><th>1+ Off</th></tr></thead>
+            <thead>
+                <tr><th>Level</th><th>Perfect</th><th>½ Off</th><th>1+ Off</th></tr>
+            </thead>
             <tbody id="dash-body"></tbody>
         </table>
     </div>
 </div>
 
 <script>
-    const bg = document.getElementById('bgCanvas'), ctxBg = bg.getContext('2d');
-    const fg = document.getElementById('drawCanvas'), ctxFg = fg.getContext('2d');
+    const bg = document.getElementById('bgCanvas');
+    const ctxBg = bg.getContext('2d');
+    const fg = document.getElementById('drawCanvas');
+    const ctxFg = fg.getContext('2d');
+    
     const pad = 40, size = 400, box = 40, minor = 8;
     
-    const MODULE_ID = "5"; let stats = { 1: {p:0,h:0,b:0}, 2: {p:0,h:0,b:0}, 3: {p:0,h:0,b:0}, 4: {p:0,h:0,b:0} };
+    const MODULE_ID = "5"; 
+    let stats = { 
+        1: {p:0, h:0, b:0}, 
+        2: {p:0, h:0, b:0}, 
+        3: {p:0, h:0, b:0}, 
+        4: {p:0, h:0, b:0} 
+    };
+    
     let totalAttempts = 0, totalPasses = 0;
-    try { let mem = JSON.parse(localStorage.getItem(`gs_mod_${MODULE_ID}`)); if(mem && mem.details) { stats = mem.details; totalAttempts = mem.total||0; totalPasses = mem.correct||0; } } catch(e){}
+    
+    try { 
+        let mem = JSON.parse(localStorage.getItem(`gs_mod_${MODULE_ID}`)); 
+        if(mem && mem.details) { 
+            stats = mem.details; 
+            totalAttempts = mem.total || 0; 
+            totalPasses = mem.correct || 0; 
+        } 
+    } catch(e) { }
 
     let currentLevel = 1, targetX = 0, targetY = 0, userPt = null;
 
     function drawGrid() {
-        ctxBg.clearRect(0,0,500,500); ctxBg.lineWidth = 1;
+        ctxBg.clearRect(0,0,500,500); 
+        ctxBg.lineWidth = 1;
+        
         for(let i=0; i<=10; i++) {
-            let p = pad + (i*box); ctxBg.strokeStyle = "#888"; ctxBg.beginPath(); ctxBg.moveTo(p, pad); ctxBg.lineTo(p, pad+size); ctxBg.stroke(); ctxBg.beginPath(); ctxBg.moveTo(pad, p); ctxBg.lineTo(pad+size, p); ctxBg.stroke();
-            if(i<10) { ctxBg.strokeStyle = "#eee"; for(let j=1; j<5; j++) { let m = p + (j*minor); ctxBg.beginPath(); ctxBg.moveTo(m, pad); ctxBg.lineTo(m, pad+size); ctxBg.stroke(); ctxBg.beginPath(); ctxBg.moveTo(pad, m); ctxBg.lineTo(pad+size, m); ctxBg.stroke(); } }
+            let p = pad + (i*box); 
+            // Major Lines
+            ctxBg.strokeStyle = "#888"; 
+            ctxBg.beginPath(); ctxBg.moveTo(p, pad); ctxBg.lineTo(p, pad+size); ctxBg.stroke(); 
+            ctxBg.beginPath(); ctxBg.moveTo(pad, p); ctxBg.lineTo(pad+size, p); ctxBg.stroke();
+            
+            // Minor Lines
+            if(i < 10) { 
+                ctxBg.strokeStyle = "#eee"; 
+                for(let j=1; j<5; j++) { 
+                    let m = p + (j*minor); 
+                    ctxBg.beginPath(); ctxBg.moveTo(m, pad); ctxBg.lineTo(m, pad+size); ctxBg.stroke(); 
+                    ctxBg.beginPath(); ctxBg.moveTo(pad, m); ctxBg.lineTo(pad+size, m); ctxBg.stroke(); 
+                } 
+            }
         }
-        ctxBg.lineWidth = 2; ctxBg.strokeStyle = "#000"; ctxBg.strokeRect(pad, pad, size, size);
-        ctxBg.fillStyle = "#333"; ctxBg.font = "12px Arial"; ctxBg.textAlign = "center"; ctxBg.textBaseline = "top";
-        for(let i=0; i<=10; i++) { ctxBg.fillText(i, pad+(i*box), pad+size+8); }
-        ctxBg.textAlign = "right"; ctxBg.textBaseline = "middle";
-        for(let i=0; i<=10; i++) { ctxBg.fillText(i, pad-8, pad+size-(i*box)); }
+        
+        // Borders
+        ctxBg.lineWidth = 2; 
+        ctxBg.strokeStyle = "#000"; 
+        ctxBg.strokeRect(pad, pad, size, size);
+        
+        // Numbering
+        ctxBg.fillStyle = "#333"; 
+        ctxBg.font = "12px Arial"; 
+        
+        ctxBg.textAlign = "center"; 
+        ctxBg.textBaseline = "top";
+        for(let i=0; i<=10; i++) { 
+            ctxBg.fillText(i, pad+(i*box), pad+size+8); 
+        }
+        
+        ctxBg.textAlign = "right"; 
+        ctxBg.textBaseline = "middle";
+        for(let i=0; i<=10; i++) { 
+            ctxBg.fillText(i, pad-8, pad+size-(i*box)); 
+        }
     }
 
     function initLevel() {
-        if(currentLevel===1) { targetX = Math.floor(Math.random()*9)+1; targetY = Math.floor(Math.random()*9)+1; document.getElementById('level-info').innerText = "Level 1: On the Major Gridlines"; }
-        if(currentLevel===2) { targetX = (Math.floor(Math.random()*45)+2)/5; targetY = (Math.floor(Math.random()*45)+2)/5; document.getElementById('level-info').innerText = "Level 2: On the Minor Gridlines (0.2 jumps)"; }
-        if(currentLevel===3) { targetX = (Math.floor(Math.random()*90)+2)/10; targetY = (Math.floor(Math.random()*90)+2)/10; document.getElementById('level-info').innerText = "Level 3: Half-Squares (0.1 jumps)"; }
-        if(currentLevel===4) { targetX = (Math.floor(Math.random()*45)+2)/5; targetY = (Math.floor(Math.random()*90)+2)/10; document.getElementById('level-info').innerText = "Level 4: Mixed Precision"; }
+        if(currentLevel === 1) { 
+            targetX = Math.floor(Math.random()*9)+1; 
+            targetY = Math.floor(Math.random()*9)+1; 
+            document.getElementById('level-info').innerText = "Level 1: On the Major Gridlines"; 
+        }
+        if(currentLevel === 2) { 
+            targetX = (Math.floor(Math.random()*45)+2)/5; 
+            targetY = (Math.floor(Math.random()*45)+2)/5; 
+            document.getElementById('level-info').innerText = "Level 2: On the Minor Gridlines (0.2 jumps)"; 
+        }
+        if(currentLevel === 3) { 
+            targetX = (Math.floor(Math.random()*90)+2)/10; 
+            targetY = (Math.floor(Math.random()*90)+2)/10; 
+            document.getElementById('level-info').innerText = "Level 3: Half-Squares (0.1 jumps)"; 
+        }
+        if(currentLevel === 4) { 
+            targetX = (Math.floor(Math.random()*45)+2)/5; 
+            targetY = (Math.floor(Math.random()*90)+2)/10; 
+            document.getElementById('level-info').innerText = "Level 4: Mixed Precision"; 
+        }
         
-        targetX = parseFloat(targetX.toFixed(1)); targetY = parseFloat(targetY.toFixed(1));
+        targetX = parseFloat(targetX.toFixed(1)); 
+        targetY = parseFloat(targetY.toFixed(1));
+        
         document.getElementById('coord-display').innerText = `(${targetX.toFixed(1)}, ${targetY.toFixed(1)})`;
-        userPt = null; document.getElementById('feedback').style.display = 'none'; document.getElementById('btn-eval').style.display = 'block'; document.getElementById('btn-next').style.display = 'none';
-        drawGrid(); renderPt(); updateDash();
+        
+        userPt = null; 
+        document.getElementById('feedback').style.display = 'none'; 
+        document.getElementById('btn-eval').style.display = 'block'; 
+        document.getElementById('btn-next').style.display = 'none';
+        
+        drawGrid(); 
+        renderPt(); 
+        updateDash();
     }
 
     fg.addEventListener('mousedown', e => {
         if(document.getElementById('btn-next').style.display === 'block') return;
-        let r = fg.getBoundingClientRect(); userPt = { x: e.clientX - r.left, y: e.clientY - r.top }; renderPt();
+        let r = fg.getBoundingClientRect(); 
+        userPt = { x: e.clientX - r.left, y: e.clientY - r.top }; 
+        renderPt();
     });
 
-    function undo() { if(document.getElementById('btn-next').style.display === 'block') return; userPt = null; renderPt(); }
+    function undo() { 
+        if(document.getElementById('btn-next').style.display === 'block') return; 
+        userPt = null; 
+        renderPt(); 
+    }
+    
     function clearPts() { undo(); }
 
     function renderPt() {
-        ctxFg.clearRect(0,0,500,500); if(!userPt) return;
-        ctxFg.strokeStyle = "#c0392b"; ctxFg.lineWidth = 2; ctxFg.beginPath(); ctxFg.moveTo(userPt.x-5, userPt.y-5); ctxFg.lineTo(userPt.x+5, userPt.y+5); ctxFg.moveTo(userPt.x+5, userPt.y-5); ctxFg.lineTo(userPt.x-5, userPt.y+5); ctxFg.stroke();
+        ctxFg.clearRect(0,0,500,500); 
+        if(!userPt) return;
+        
+        // Draw user cross
+        ctxFg.strokeStyle = "#c0392b"; 
+        ctxFg.lineWidth = 2; 
+        ctxFg.beginPath(); 
+        ctxFg.moveTo(userPt.x-5, userPt.y-5); ctxFg.lineTo(userPt.x+5, userPt.y+5); 
+        ctxFg.moveTo(userPt.x+5, userPt.y-5); ctxFg.lineTo(userPt.x-5, userPt.y+5); 
+        ctxFg.stroke();
     }
 
     function evaluatePlot() {
         if(!userPt) return alert("Click on the grid to plot the point.");
-        let expPxX = pad + (targetX * box), expPxY = pad + size - (targetY * box);
+        
+        let expPxX = pad + (targetX * box);
+        let expPxY = pad + size - (targetY * box);
         let errDist = Math.hypot(userPt.x - expPxX, userPt.y - expPxY);
         
-        let fb = document.getElementById('feedback'), msg = "", outcome = "";
+        let fb = document.getElementById('feedback');
+        let msg = "", outcome = "";
         let isPass = false;
 
-        if(errDist <= minor/2 + 1) { stats[currentLevel].p++; outcome = "Perfect"; isPass = true; msg = "✅ <strong>Perfect!</strong> Right on the exact pixel."; fb.className = "fb-box pass"; }
-        else if(errDist <= minor*1.5) { stats[currentLevel].h++; outcome = "Half-Off"; isPass = true; msg = "⚠️ <strong>Close.</strong> You are off by about half a small square. In an exam, this is the maximum allowed tolerance!"; fb.className = "fb-box meh"; }
-        else { stats[currentLevel].b++; outcome = "Missed"; msg = "❌ <strong>Missed.</strong> You are off by more than a full small square. Look closely at what each small line represents."; fb.className = "fb-box fail"; }
+        if(errDist <= minor/2 + 1) { 
+            stats[currentLevel].p++; 
+            outcome = "Perfect"; 
+            isPass = true; 
+            msg = "✅ <strong>Perfect!</strong> Right on the exact pixel."; 
+            fb.className = "fb-box pass"; 
+        }
+        else if(errDist <= minor*1.5) { 
+            stats[currentLevel].h++; 
+            outcome = "Half-Off"; 
+            isPass = true; 
+            msg = "⚠️ <strong>Close.</strong> You are off by about half a small square. In an exam, this is the maximum allowed tolerance!"; 
+            fb.className = "fb-box meh"; 
+        }
+        else { 
+            stats[currentLevel].b++; 
+            outcome = "Missed"; 
+            msg = "❌ <strong>Missed.</strong> You are off by more than a full small square. Look closely at what each small line represents."; 
+            fb.className = "fb-box fail"; 
+        }
 
-        // Draw true target in green to show them
-        ctxFg.strokeStyle = "rgba(40,167,69,0.5)"; ctxFg.lineWidth = 4; ctxFg.beginPath(); ctxFg.arc(expPxX, expPxY, 8, 0, 7); ctxFg.stroke();
+        // Draw true target circle in green to show them where they should have clicked
+        ctxFg.strokeStyle = "rgba(40,167,69,0.7)"; 
+        ctxFg.lineWidth = 3; 
+        ctxFg.beginPath(); 
+        ctxFg.arc(expPxX, expPxY, 8, 0, 7); 
+        ctxFg.stroke();
         
-        fb.innerHTML = msg; fb.style.display = "block"; document.getElementById('btn-eval').style.display = "none"; document.getElementById('btn-next').style.display = "block";
+        fb.innerHTML = msg; 
+        fb.style.display = "block"; 
+        document.getElementById('btn-eval').style.display = "none"; 
+        document.getElementById('btn-next').style.display = "block";
         
-        totalAttempts++; if(isPass) totalPasses++;
+        totalAttempts++; 
+        if(isPass) totalPasses++;
         
         // --- TRACKING CODE ---
         let statusText = isPass ? "Pass" : "Fail";
-        if (window.parent && window.parent.logToTeacher) { window.parent.logToTeacher("Module 5", currentLevel, `Level ${currentLevel} Plotting`, statusText, outcome); }
+        let trackingScenario = `Level ${currentLevel} Coordinate Plotting: (${targetX}, ${targetY})`;
+        if (window.parent && window.parent.logToTeacher) { 
+            window.parent.logToTeacher("Module 5", 500 + currentLevel, trackingScenario, statusText, outcome); 
+        }
         // ---------------------
 
-        localStorage.setItem(`gs_mod_${MODULE_ID}`, JSON.stringify({ correct: totalPasses, total: totalAttempts, details: stats })); updateDash();
+        localStorage.setItem(`gs_mod_${MODULE_ID}`, JSON.stringify({ correct: totalPasses, total: totalAttempts, details: stats })); 
+        updateDash();
     }
 
-    function nextQuestion() { currentLevel = (currentLevel % 4) + 1; initLevel(); } // loops 1,2,3,4,1,2...
+    function nextQuestion() { 
+        currentLevel = (currentLevel % 4) + 1; // loops 1,2,3,4,1,2...
+        initLevel(); 
+    } 
+    
     function nextLevel() { nextQuestion(); }
     
     function updateDash() {
         let h = "";
-        [1,2,3,4].forEach(l => { let d = stats[l]; h += `<tr><td>Level ${l}</td><td class="${d.p>0?'c-g':''}">${d.p}</td><td class="${d.h>0?'c-o':''}">${d.h}</td><td class="${d.b>0?'c-r':''}">${d.b}</td></tr>`; });
+        [1,2,3,4].forEach(l => { 
+            let d = stats[l]; 
+            h += `<tr>
+                <td>Level ${l}</td>
+                <td class="${d.p > 0 ? 'c-g' : ''}">${d.p}</td>
+                <td class="${d.h > 0 ? 'c-o' : ''}">${d.h}</td>
+                <td class="${d.b > 0 ? 'c-r' : ''}">${d.b}</td>
+            </tr>`; 
+        });
         document.getElementById('dash-body').innerHTML = h;
     }
     
+    // Boot sequence
     initLevel();
 </script>
 </body>
