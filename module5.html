@@ -2,191 +2,129 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Graph Skills - Module 5</title>
     <style>
-        body { font-family: Arial, sans-serif; max-width: 1200px; margin: 20px auto; padding: 20px; background-color: #f4f7f6; color: #333; }
-        .module-container { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        .header-controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 2px solid #eee; padding-bottom: 15px;}
-        .level-selector { font-size: 1.1em; padding: 8px; border-radius: 4px; border: 1px solid #0056b3; font-weight: bold; background: #eef2f5;}
-        .app-layout { display: grid; grid-template-columns: auto 400px; gap: 30px; margin-top: 10px; }
-        .graph-wrapper { position: relative; width: 620px; height: 620px; background: #fff; border: 1px solid #ccc; border-radius: 4px; cursor: crosshair;}
-        canvas { display: block; position: absolute; top: 0; left: 0; } #bgCanvas { z-index: 1; } #plotCanvas { z-index: 2; } 
-        .info-panel { background: #f8f9fa; padding: 20px; border-radius: 8px; border: 1px solid #ddd; align-self: start; }
-        .question-box { font-size: 1.1em; line-height: 1.4; margin-bottom: 15px; min-height: 50px;}
-        .data-table { border-collapse: collapse; width: 100%; margin-bottom: 15px; background: #fff; font-size: 0.9em;}
-        .data-table th, .data-table td { border: 1px solid #ccc; padding: 6px; text-align: center; } .data-table th { background-color: #e9ecef; } .row-header { text-align: left !important; font-weight: bold; background-color: #dee2e6; width: 35%;}
-        .controls { display: flex; gap: 10px; margin-bottom: 20px; } .controls button { flex: 1; padding: 8px 10px; font-size: 0.9em; cursor: pointer; border: none; border-radius: 4px; background-color: #6c757d; color: white; }
-        .btn-main { display: block; padding: 12px 20px; font-size: 1.1em; cursor: pointer; border: none; border-radius: 4px; background-color: #0056b3; color: white; width: 100%; margin-bottom: 10px;}
-        .btn-success { background-color: #28a745; }
-        .feedback-container { margin-top: 15px; max-height: 200px; overflow-y: auto;} .fb-box { margin-bottom: 8px; padding: 8px 12px; border-radius: 4px; background: #fff; border: 1px solid #eee; font-size: 0.9em; border-left: 4px solid #ccc;}
-        .score-grid { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 0.85em; } .score-grid th, .score-grid td { border: 1px solid #aaa; padding: 4px; text-align: center; } .score-grid th { background: #eee; }
-        .footer { text-align: center; margin-top: 30px; border-top: 1px solid #eee; padding-top: 15px; font-size: 0.9em; } .footer a { color: #6c757d; text-decoration: none; }
+        body { font-family: Arial, sans-serif; max-width: 900px; margin: 20px auto; padding: 20px; background-color: #f4f7f6; color: #333; }
+        .module-container { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); display: flex; gap: 30px; }
+        .graph-wrapper { position: relative; width: 500px; height: 500px; background: #fff; border: 1px solid #ccc; cursor: crosshair;}
+        canvas { position: absolute; top: 0; left: 0; } #bgCanvas { z-index: 1; } #drawCanvas { z-index: 2; }
+        .side-panel { flex: 1; }
+        .info-box { padding: 15px; background: #eef2f5; border-left: 4px solid #0056b3; border-radius: 4px; margin-bottom: 20px; }
+        button { padding: 12px; font-size: 1.1em; cursor: pointer; border: none; border-radius: 4px; background-color: #0056b3; color: white; width: 100%; margin-bottom: 10px; font-weight: bold;}
+        button:hover { background-color: #004494; } button:disabled { opacity: 0.6; cursor: not-allowed;}
+        .fb-box { margin-top: 15px; padding: 15px; border-radius: 4px; display: none; font-size: 1.05em; border-left: 5px solid; }
+        .pass { background: #f8fff9; border-color: #28a745; color: #155724; } .meh { background: #fff8e6; border-color: #ffc107; color: #856404; } .fail { background: #fffafa; border-color: #d9534f; color: #721c24; }
+        .coord-list { font-family: monospace; font-size: 1.2em; background: #fff; padding: 10px; border: 1px solid #ccc; text-align: center; margin-bottom: 15px; letter-spacing: 1px;}
+        .dash-table { width: 100%; border-collapse: collapse; font-size: 0.9em; margin-top: 20px;}
+        .dash-table th, .dash-table td { border: 1px solid #aaa; padding: 6px; text-align: center; } .dash-table th { background: #e9ecef; }
+        .c-g { color: #28a745; font-weight: bold;} .c-o { color: #ffc107; font-weight: bold;} .c-r { color: #d9534f; font-weight: bold;}
     </style>
 </head>
 <body>
 <div class="module-container">
-    <div class="header-controls">
-        <div><h2 style="margin: 0;">Module 5: Precision Plotting</h2><p style="margin: 5px 0 0 0;">Snap to half-squares. Accuracy is everything.</p></div>
-        <select id="level-select" class="level-selector" onchange="loadNewQuestion()"><option value="1">Level 1</option><option value="2">Level 2</option><option value="3">Level 3</option><option value="4">Level 4</option></select>
+    <div class="graph-wrapper"><canvas id="bgCanvas" width="500" height="500"></canvas><canvas id="drawCanvas" width="500" height="500"></canvas></div>
+    <div class="side-panel">
+        <h2>Module 5: Precision Plotting</h2>
+        <div class="info-box" id="level-info">Level 1: Whole Numbers</div>
+        <p>Plot this coordinate:</p>
+        <div class="coord-list" id="coord-display">(X, Y)</div>
+        <div style="display:flex; gap:10px;"><button id="btn-undo" onclick="undo()" style="background:#6c757d;">Undo</button><button id="btn-clear" onclick="clearPts()" style="background:#dc3545;">Clear</button></div>
+        <button id="btn-eval" onclick="evaluatePlot()">Evaluate Accuracy</button>
+        <button id="btn-next" onclick="nextLevel()" style="background:#28a745; display:none;">Next Target</button>
+        <div id="feedback" class="fb-box"></div>
+        <table class="dash-table">
+            <thead><tr><th>Level</th><th>Perfect</th><th>½ Off</th><th>1+ Off</th></tr></thead>
+            <tbody id="dash-body"></tbody>
+        </table>
     </div>
-    <div class="app-layout">
-        <div class="graph-wrapper" id="graph-wrapper"><canvas id="bgCanvas" width="620" height="620"></canvas><canvas id="plotCanvas" width="620" height="620"></canvas></div>
-        <div class="info-panel">
-            <div class="question-box" id="question-text">Initializing...</div>
-            <div id="table-container"></div>
-            <div class="controls"><button onclick="undoLastPoint()">Undo</button><button onclick="clearAllPoints()">Clear All</button></div>
-            <button class="btn-main" id="submit-btn" onclick="evaluatePlot()">Evaluate My Plot</button>
-            <button class="btn-main btn-success" id="next-btn" style="display:none;" onclick="loadNewQuestion()">Next Question</button>
-            <div class="feedback-container" id="feedback-text"></div>
-            <div class="dashboard"><h3 style="margin-top:0; font-size:1em;">Performance Matrix</h3>
-                <table class="score-grid"><thead><tr><th>Level</th><th>Perf.</th><th>½ Off</th><th>1+ Off</th></tr></thead><tbody id="score-body"></tbody></table>
-            </div>
-        </div>
-    </div>
-    <div class="footer"><a href="feedback.html" target="_blank">🐛 Report an Issue / Leave Feedback</a></div>
 </div>
 
 <script>
-    let activeQuestion = null, userPoints = [], isEvaluating = false, inBounds = false;
-    let snapX, snapY, hoverColIndex, boxSizeX, boxSizeY;
-    const bgCanvas = document.getElementById('bgCanvas'), ctxBg = bgCanvas.getContext('2d'), plotCanvas = document.getElementById('plotCanvas'), ctxPlot = plotCanvas.getContext('2d'), padL = 85, padB = 85, padT = 40, padR = 40;
+    const bg = document.getElementById('bgCanvas'), ctxBg = bg.getContext('2d');
+    const fg = document.getElementById('drawCanvas'), ctxFg = fg.getContext('2d');
+    const pad = 40, size = 400, box = 40, minor = 8;
+    
+    const MODULE_ID = "5"; let stats = { 1: {p:0,h:0,b:0}, 2: {p:0,h:0,b:0}, 3: {p:0,h:0,b:0}, 4: {p:0,h:0,b:0} };
+    let totalAttempts = 0, totalPasses = 0;
+    try { let mem = JSON.parse(localStorage.getItem(`gs_mod_${MODULE_ID}`)); if(mem && mem.details) { stats = mem.details; totalAttempts = mem.total||0; totalPasses = mem.correct||0; } } catch(e){}
 
-    // DATA HYDRATION
-    const MODULE_ID = "5";
-    let mastery = { 1: {p:0, h:0, b:0}, 2: {p:0, h:0, b:0}, 3: {p:0, h:0, b:0}, 4: {p:0, h:0, b:0} };
-    let totalPasses = 0, totalAttempts = 0;
-    let savedMem = JSON.parse(localStorage.getItem(`gs_mod_${MODULE_ID}`));
-    if (savedMem) { totalPasses = savedMem.correct || 0; totalAttempts = savedMem.total || 0; if (savedMem.details) mastery = savedMem.details; }
+    let currentLevel = 1, targetX = 0, targetY = 0, userPt = null;
 
-    const configPool = {
-        1: { xScales: [1, 2, 5, 10], yScales: [1, 2, 5, 10], barProb: 0.4, msg: "Standard scale plotting." },
-        2: { xScales: [0.1, 0.2, 0.5], yScales: [0.1, 0.2, 0.5], barProb: 0.3, msg: "Decimal scale precision." },
-        3: { xScales: [4, 8, 20, 25], yScales: [4, 8, 20, 25], barProb: 0, msg: "Calculating awkward minor divisions." },
-        4: { xScales: [1, 10], yScales: [1, 5, 10], barProb: 0, msg: "Unit conversion challenge (mm to 10⁻² m)." }
-    };
-
-    function generateData() {
-        const lvl = document.getElementById('level-select').value, cfg = configPool[lvl], isBar = Math.random() < cfg.barProb;
-        let q = { level: lvl, type: isBar ? "categorical" : "continuous", dataX: [], dataY: [], scenario: cfg.msg,
-            x: { label: "Time (s)", start: 0, scale: cfg.xScales[Math.floor(Math.random()*cfg.xScales.length)], boxes: 6, minors: 10, mult: 1 },
-            y: { label: "Temp (°C)", start: 0, scale: cfg.yScales[Math.floor(Math.random()*cfg.yScales.length)], boxes: 6, minors: 10, mult: 1 }
-        };
-        if (lvl == 4) { q.x.label = "Length (x 10⁻² m)"; q.x.mult = 10; q.x.scale = 10; q.y.label = "Force (N)"; }
-        if (isBar) { q.x.label = "Sample"; q.x.cats = ["A", "B", "C", "D", "E"]; }
-        for (let i = 0; i < 5; i++) {
-            q.dataY.push(parseFloat((Math.round((Math.random() * q.y.scale * 6) / (q.y.scale/20)) * (q.y.scale/20)).toFixed(3)));
-            if (isBar) q.dataX.push(q.x.cats[i]);
-            else { let sx = Math.round((Math.random() * q.x.scale * 6) / (q.x.scale/20)) * (q.x.scale/20); q.dataX.push(lvl == 4 ? parseFloat((sx * 10).toFixed(1)) : parseFloat(sx.toFixed(3))); }
+    function drawGrid() {
+        ctxBg.clearRect(0,0,500,500); ctxBg.lineWidth = 1;
+        for(let i=0; i<=10; i++) {
+            let p = pad + (i*box); ctxBg.strokeStyle = "#888"; ctxBg.beginPath(); ctxBg.moveTo(p, pad); ctxBg.lineTo(p, pad+size); ctxBg.stroke(); ctxBg.beginPath(); ctxBg.moveTo(pad, p); ctxBg.lineTo(pad+size, p); ctxBg.stroke();
+            if(i<10) { ctxBg.strokeStyle = "#eee"; for(let j=1; j<5; j++) { let m = p + (j*minor); ctxBg.beginPath(); ctxBg.moveTo(m, pad); ctxBg.lineTo(m, pad+size); ctxBg.stroke(); ctxBg.beginPath(); ctxBg.moveTo(pad, m); ctxBg.lineTo(pad+size, m); ctxBg.stroke(); } }
         }
-        return q;
+        ctxBg.lineWidth = 2; ctxBg.strokeStyle = "#000"; ctxBg.strokeRect(pad, pad, size, size);
+        ctxBg.fillStyle = "#333"; ctxBg.font = "12px Arial"; ctxBg.textAlign = "center"; ctxBg.textBaseline = "top";
+        for(let i=0; i<=10; i++) { ctxBg.fillText(i, pad+(i*box), pad+size+8); }
+        ctxBg.textAlign = "right"; ctxBg.textBaseline = "middle";
+        for(let i=0; i<=10; i++) { ctxBg.fillText(i, pad-8, pad+size-(i*box)); }
     }
 
-    function drawBackground(q) {
-        ctxBg.clearRect(0, 0, 620, 620); let w = 620 - padL - padR, h = 620 - padB - padT; boxSizeX = w / 6; boxSizeY = h / 6; let oX = padL, oY = 620 - padB;
-        ctxBg.lineWidth = 1;
-        for (let i = 0; i <= 60; i++) {
-            let x = oX + (i * (w/60)); ctxBg.strokeStyle = (i % 10 === 0) ? "#999" : "#eee"; ctxBg.beginPath(); ctxBg.moveTo(x, oY); ctxBg.lineTo(x, oY - h); ctxBg.stroke();
-            let y = oY - (i * (h/60)); ctxBg.strokeStyle = (i % 10 === 0) ? "#999" : "#eee"; ctxBg.beginPath(); ctxBg.moveTo(oX, y); ctxBg.lineTo(oX + w, y); ctxBg.stroke();
-        }
-        ctxBg.lineWidth = 2; ctxBg.strokeStyle = "#000"; ctxBg.strokeRect(oX, oY - h, w, h); ctxBg.fillStyle = "#333"; ctxBg.font = "12px Arial"; ctxBg.textAlign = "center";
-        for (let i = 0; i <= 6; i++) {
-            if (q.type == "continuous") ctxBg.fillText(Number((q.x.start + i*q.x.scale).toFixed(3)), oX + i*boxSizeX, oY + 15);
-            else if (i < 5) ctxBg.fillText(q.x.cats[i], oX + i*boxSizeX + boxSizeX/2, oY + 15);
-            ctxBg.textAlign = "right"; ctxBg.fillText(Number((q.y.start + i*q.y.scale).toFixed(3)), oX - 10, oY - i*boxSizeY + 5); ctxBg.textAlign = "center";
-        }
-        ctxBg.fillStyle = "#000"; ctxBg.font = "bold 14px Arial"; ctxBg.fillText(q.x.label, oX + w/2, 620 - 10); ctxBg.save(); ctxBg.translate(20, oY - h/2); ctxBg.rotate(-Math.PI/2); ctxBg.fillText(q.y.label, 0, 0); ctxBg.restore();
+    function initLevel() {
+        if(currentLevel===1) { targetX = Math.floor(Math.random()*9)+1; targetY = Math.floor(Math.random()*9)+1; document.getElementById('level-info').innerText = "Level 1: On the Major Gridlines"; }
+        if(currentLevel===2) { targetX = (Math.floor(Math.random()*45)+2)/5; targetY = (Math.floor(Math.random()*45)+2)/5; document.getElementById('level-info').innerText = "Level 2: On the Minor Gridlines (0.2 jumps)"; }
+        if(currentLevel===3) { targetX = (Math.floor(Math.random()*90)+2)/10; targetY = (Math.floor(Math.random()*90)+2)/10; document.getElementById('level-info').innerText = "Level 3: Half-Squares (0.1 jumps)"; }
+        if(currentLevel===4) { targetX = (Math.floor(Math.random()*45)+2)/5; targetY = (Math.floor(Math.random()*90)+2)/10; document.getElementById('level-info').innerText = "Level 4: Mixed Precision"; }
+        
+        targetX = parseFloat(targetX.toFixed(1)); targetY = parseFloat(targetY.toFixed(1));
+        document.getElementById('coord-display').innerText = `(${targetX.toFixed(1)}, ${targetY.toFixed(1)})`;
+        userPt = null; document.getElementById('feedback').style.display = 'none'; document.getElementById('btn-eval').style.display = 'block'; document.getElementById('btn-next').style.display = 'none';
+        drawGrid(); renderPt(); updateDash();
     }
 
-    function renderPlot() {
-        ctxPlot.clearRect(0, 0, 620, 620); if (!activeQuestion) return; let oX = padL, oY = 620 - padB, w = 6 * boxSizeX, h = 6 * boxSizeY;
-        if (isEvaluating) {
-            ctxPlot.strokeStyle = "rgba(40, 167, 69, 0.7)"; ctxPlot.lineWidth = 2;
-            activeQuestion.dataX.forEach((dx, i) => {
-                let gx = activeQuestion.level == 4 ? dx / 10 : dx, tx = activeQuestion.type == "continuous" ? oX + ((gx - activeQuestion.x.start)/(activeQuestion.x.scale * 6)) * w : oX + i*boxSizeX + boxSizeX/2, ty = oY - ((activeQuestion.dataY[i] - activeQuestion.y.start)/(activeQuestion.y.scale * 6)) * h;
-                ctxPlot.beginPath(); ctxPlot.arc(tx, ty, 8, 0, 7); ctxPlot.stroke();
-            });
-        }
-        if (!isEvaluating && inBounds) {
-            ctxPlot.strokeStyle = "rgba(0, 86, 179, 0.3)"; ctxPlot.setLineDash([4,4]); ctxPlot.beginPath(); 
-            let cx = activeQuestion.type == "continuous" ? snapX : oX + hoverColIndex*boxSizeX + boxSizeX/2;
-            ctxPlot.moveTo(cx, oY); ctxPlot.lineTo(cx, oY - h); ctxPlot.moveTo(oX, snapY); ctxPlot.lineTo(oX + w, snapY); ctxPlot.stroke(); ctxPlot.setLineDash([]);
-        }
-        userPoints.forEach(p => {
-            if (activeQuestion.type == "continuous") { ctxPlot.strokeStyle = "#c0392b"; ctxPlot.lineWidth = 2; ctxPlot.beginPath(); ctxPlot.moveTo(p.x-5, p.y-5); ctxPlot.lineTo(p.x+5, p.y+5); ctxPlot.moveTo(p.x+5, p.y-5); ctxPlot.lineTo(p.x-5, p.y+5); ctxPlot.stroke(); } 
-            else { ctxPlot.fillStyle = "rgba(0, 86, 179, 0.6)"; ctxPlot.fillRect(oX + p.col*boxSizeX + boxSizeX*0.2, p.y, boxSizeX*0.6, oY - p.y); }
-        });
+    fg.addEventListener('mousedown', e => {
+        if(document.getElementById('btn-next').style.display === 'block') return;
+        let r = fg.getBoundingClientRect(); userPt = { x: e.clientX - r.left, y: e.clientY - r.top }; renderPt();
+    });
+
+    function undo() { if(document.getElementById('btn-next').style.display === 'block') return; userPt = null; renderPt(); }
+    function clearPts() { undo(); }
+
+    function renderPt() {
+        ctxFg.clearRect(0,0,500,500); if(!userPt) return;
+        ctxFg.strokeStyle = "#c0392b"; ctxFg.lineWidth = 2; ctxFg.beginPath(); ctxFg.moveTo(userPt.x-5, userPt.y-5); ctxFg.lineTo(userPt.x+5, userPt.y+5); ctxFg.moveTo(userPt.x+5, userPt.y-5); ctxFg.lineTo(userPt.x-5, userPt.y+5); ctxFg.stroke();
     }
 
     function evaluatePlot() {
-        if (userPoints.length < 5) return alert("Plot all 5 points first!");
-        isEvaluating = true; let oX = padL, oY = 620 - padB, w = 6 * boxSizeX, h = 6 * boxSizeY, feedback = "", lvl = activeQuestion.level;
-        let targets = activeQuestion.dataX.map((dx, i) => {
-            let gx = activeQuestion.level == 4 ? dx / 10 : dx;
-            return { tx: activeQuestion.type == "continuous" ? oX + ((gx - activeQuestion.x.start)/(activeQuestion.x.scale * 6)) * w : oX + i*boxSizeX + boxSizeX/2, ty: oY - ((activeQuestion.dataY[i] - activeQuestion.y.start)/(activeQuestion.y.scale * 6)) * h, used: false, col: i };
-        });
-        let currentB = 0;
-        userPoints.forEach((p) => {
-            let closest = null, minDist = Infinity;
-            targets.forEach(t => {
-                if (activeQuestion.type == "categorical") { if (p.col === t.col) { closest = t; } } 
-                else if (!t.used) { let d = Math.sqrt(Math.pow(p.x - t.tx, 2) + Math.pow(p.y - t.ty, 2)); if (d < minDist) { minDist = d; closest = t; } }
-            });
-            if (closest) {
-                closest.used = true; let err = Math.max(Math.abs(closest.tx - p.x || 0) / (boxSizeX/10), Math.abs(closest.ty - p.y) / (boxSizeY/10));
-                if (err < 0.25) { mastery[lvl].p++; feedback += "<div class='fb-box' style='border-left-color:green'>Perfect match</div>"; }
-                else if (err <= 0.6) { mastery[lvl].h++; feedback += "<div class='fb-box' style='border-left-color:orange'>Off by ½ square</div>"; }
-                else { mastery[lvl].b++; currentB++; feedback += "<div class='fb-box' style='border-left-color:red'>Inaccurate</div>"; }
-            }
-        });
+        if(!userPt) return alert("Click on the grid to plot the point.");
+        let expPxX = pad + (targetX * box), expPxY = pad + size - (targetY * box);
+        let errDist = Math.hypot(userPt.x - expPxX, userPt.y - expPxY);
+        
+        let fb = document.getElementById('feedback'), msg = "", outcome = "";
+        let isPass = false;
 
-        // --- SAVE TO HYDRATED MEMORY ---
-        let isPass = (currentB === 0); 
-        totalAttempts += 1;
-        if (isPass) totalPasses += 1;
-        let modData = { correct: totalPasses, total: totalAttempts, details: mastery }; 
-        localStorage.setItem(`gs_mod_${MODULE_ID}`, JSON.stringify(modData));
-        // -------------------------------
+        if(errDist <= minor/2 + 1) { stats[currentLevel].p++; outcome = "Perfect"; isPass = true; msg = "✅ <strong>Perfect!</strong> Right on the exact pixel."; fb.className = "fb-box pass"; }
+        else if(errDist <= minor*1.5) { stats[currentLevel].h++; outcome = "Half-Off"; isPass = true; msg = "⚠️ <strong>Close.</strong> You are off by about half a small square. In an exam, this is the maximum allowed tolerance!"; fb.className = "fb-box meh"; }
+        else { stats[currentLevel].b++; outcome = "Missed"; msg = "❌ <strong>Missed.</strong> You are off by more than a full small square. Look closely at what each small line represents."; fb.className = "fb-box fail"; }
 
-        document.getElementById('feedback-text').innerHTML = feedback; document.getElementById('submit-btn').style.display = "none"; document.getElementById('next-btn').style.display = "block";
-        updateDashboard(); renderPlot();
+        // Draw true target in green to show them
+        ctxFg.strokeStyle = "rgba(40,167,69,0.5)"; ctxFg.lineWidth = 4; ctxFg.beginPath(); ctxFg.arc(expPxX, expPxY, 8, 0, 7); ctxFg.stroke();
+        
+        fb.innerHTML = msg; fb.style.display = "block"; document.getElementById('btn-eval').style.display = "none"; document.getElementById('btn-next').style.display = "block";
+        
+        totalAttempts++; if(isPass) totalPasses++;
+        
+        // --- TRACKING CODE ---
+        let statusText = isPass ? "Pass" : "Fail";
+        if (window.parent && window.parent.logToTeacher) { window.parent.logToTeacher("Module 5", currentLevel, `Level ${currentLevel} Plotting`, statusText, outcome); }
+        // ---------------------
+
+        localStorage.setItem(`gs_mod_${MODULE_ID}`, JSON.stringify({ correct: totalPasses, total: totalAttempts, details: stats })); updateDash();
     }
 
-    function updateDashboard() {
-        let html = "";
-        for (let l=1; l<=4; l++) {
-            let m = mastery[l], total = m.p + m.h + m.b; const pct = (v) => total ? Math.round(v/total*100) + "%" : "-";
-            html += `<tr><td>Level ${l}</td><td style='color:green'>${m.p} (${pct(m.p)})</td><td style='color:orange'>${m.h} (${pct(m.h)})</td><td style='color:red'>${m.b} (${pct(m.b)})</td></tr>`;
-        }
-        document.getElementById('score-body').innerHTML = html;
+    function nextQuestion() { currentLevel = (currentLevel % 4) + 1; initLevel(); } // loops 1,2,3,4,1,2...
+    function nextLevel() { nextQuestion(); }
+    
+    function updateDash() {
+        let h = "";
+        [1,2,3,4].forEach(l => { let d = stats[l]; h += `<tr><td>Level ${l}</td><td class="${d.p>0?'c-g':''}">${d.p}</td><td class="${d.h>0?'c-o':''}">${d.h}</td><td class="${d.b>0?'c-r':''}">${d.b}</td></tr>`; });
+        document.getElementById('dash-body').innerHTML = h;
     }
-
-    function loadNewQuestion() {
-        activeQuestion = generateData(); document.getElementById('question-text').innerText = activeQuestion.scenario;
-        let tbl = "<table class='data-table'><tr><th class='row-header'>"+activeQuestion.x.label.replace(' (x 10⁻² m)', ' (mm)')+"</th>"; activeQuestion.dataX.forEach(d => tbl += "<td>"+d+"</td>");
-        tbl += "</tr><tr><th class='row-header'>"+activeQuestion.y.label+"</th>"; activeQuestion.dataY.forEach(d => tbl += "<td>"+d+"</td>"); document.getElementById('table-container').innerHTML = tbl + "</tr></table>";
-        document.getElementById('feedback-text').innerHTML = ""; document.getElementById('submit-btn').style.display = "block"; document.getElementById('next-btn').style.display = "none";
-        userPoints = []; isEvaluating = false; drawBackground(activeQuestion); renderPlot();
-    }
-
-    plotCanvas.addEventListener('mousemove', e => {
-        if (isEvaluating) return; const rect = plotCanvas.getBoundingClientRect(); let rx = e.clientX - rect.left, ry = e.clientY - rect.top;
-        if (rx > padL-5 && rx < 620-padR+5 && ry > padT-5 && ry < 620-padB+5) {
-            inBounds = true; let mX = boxSizeX/10, mY = boxSizeY/10; snapY = (620-padB) - Math.round(((620-padB)-ry)/mY*2)/2 * mY;
-            if (activeQuestion.type == "continuous") snapX = padL + Math.round((rx-padL)/mX*2)/2 * mX;
-            else { hoverColIndex = Math.min(Math.max(Math.floor((rx - padL)/boxSizeX), 0), 4); snapX = padL + hoverColIndex*boxSizeX + boxSizeX/2; }
-        } else inBounds = false; renderPlot();
-    });
-
-    plotCanvas.addEventListener('mousedown', () => {
-        if (!inBounds || isEvaluating || userPoints.length >= 5) return;
-        if (activeQuestion.type == "categorical") { let idx = userPoints.findIndex(p => p.col === hoverColIndex); if (idx > -1) userPoints.splice(idx, 1); userPoints.push({ x: snapX, y: snapY, col: hoverColIndex }); } 
-        else userPoints.push({ x: snapX, y: snapY }); renderPlot();
-    });
-
-    function undoLastPoint() { if(!isEvaluating) { userPoints.pop(); renderPlot(); } }
-    function clearAllPoints() { if(!isEvaluating) { userPoints = []; renderPlot(); } }
-    window.onload = () => { updateDashboard(); loadNewQuestion(); };
+    
+    initLevel();
 </script>
 </body>
 </html>

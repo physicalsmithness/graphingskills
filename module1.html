@@ -55,7 +55,6 @@
 
 <script>
     const questionBank = [
-        // Original Set (Mixed)
         { id: 1, scenario: "Comparing the resting heart rates of five different mammal species.", correct: "bar", explanation: "Bar charts are best for comparing distinct, categorical groups." },
         { id: 2, scenario: "Investigating if there is a relationship between hours spent studying and final exam scores for 50 students.", correct: "scatter", explanation: "Scatter plots are used to look for correlation between two continuous variables." },
         { id: 3, scenario: "Showing the percentage breakdown of gases that make up the Earth's atmosphere.", correct: "pie", explanation: "Pie charts are ideal for showing parts of a whole (percentages that add up to 100%)." },
@@ -86,8 +85,6 @@
         { id: 28, scenario: "Showing how a person spends their 24-hour day (sleep, work, leisure, eating).", correct: "pie", explanation: "Showing parts of a whole (24 hours)." },
         { id: 29, scenario: "Monitoring the population of an endangered species year by year since 1990.", correct: "line", explanation: "Tracking continuous change in a population over time." },
         { id: 30, scenario: "Comparing the average daily attendance of four different theme parks.", correct: "bar", explanation: "Comparing distinct categories (theme parks) against a single numerical value." },
-        
-        // New Set (Experimental Physics/Science Flooding)
         { id: 31, scenario: "A physics student hangs different weights from a metal spring and measures its extension.", correct: "scatter", explanation: "In experimental physics, when you manipulate a continuous independent variable (Force) to measure a continuous dependent variable (Extension) to find a trend, you plot raw data as a scatter graph." },
         { id: 32, scenario: "An engineer changes the voltage across a resistor and measures the resulting electrical current.", correct: "scatter", explanation: "You are plotting individual experimental data points comparing two continuous variables (Voltage and Current) to eventually find a line of best fit. This requires a scatter plot." },
         { id: 33, scenario: "A chemist measures the pressure of a gas trapped in a syringe as they compress it to smaller volumes.", correct: "scatter", explanation: "Plotting a continuous manipulated variable (Volume) against a continuous measured variable (Pressure) requires a scatter plot so you can look for the curve of best fit." },
@@ -115,7 +112,6 @@
     const graphTypes = ['scatter', 'bar', 'line', 'pie'];
     let currentQuestionIndex = 0;
 
-    // BULLETPROOF HYDRATION
     const MODULE_ID = "1";
     let matrix = { scatter: { scatter: 0, bar: 0, line: 0, pie: 0 }, bar: { scatter: 0, bar: 0, line: 0, pie: 0 }, line: { scatter: 0, bar: 0, line: 0, pie: 0 }, pie: { scatter: 0, bar: 0, line: 0, pie: 0 } };
     let allTimeCorrect = 0; let allTimeTotal = 0; let historyLast10 = []; 
@@ -123,32 +119,19 @@
     try {
         let savedMem = JSON.parse(localStorage.getItem(`gs_mod_${MODULE_ID}`));
         if (savedMem) {
-            allTimeCorrect = savedMem.correct || 0;
-            allTimeTotal = savedMem.total || 0;
+            allTimeCorrect = savedMem.correct || 0; allTimeTotal = savedMem.total || 0;
             if (savedMem.details && savedMem.details.scatter) matrix = savedMem.details;
             if (savedMem.history) historyLast10 = savedMem.history;
         }
-    } catch(e) {
-        console.warn("Corrupted memory cleared.");
-        localStorage.removeItem(`gs_mod_${MODULE_ID}`);
-    }
+    } catch(e) { localStorage.removeItem(`gs_mod_${MODULE_ID}`); }
 
-    function shuffleArray(array) {
-        for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]];
-        }
-    }
+    function shuffleArray(array) { for (let i = array.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [array[i], array[j]] = [array[j], array[i]]; } }
     shuffleArray(questionBank);
 
     function loadQuestion() {
         const q = questionBank[currentQuestionIndex];
-        
-        // Removed the "Question X of Y" to prevent grind-fatigue.
         document.getElementById('question-text').innerHTML = `<strong>Practice Scenario:</strong><br><br>${q.scenario}`;
-        
-        document.getElementById('feedback-text').innerHTML = "";
-        document.getElementById('next-btn').style.display = "none";
+        document.getElementById('feedback-text').innerHTML = ""; document.getElementById('next-btn').style.display = "none";
         document.querySelectorAll('.options button').forEach(btn => btn.disabled = false);
     }
 
@@ -164,59 +147,45 @@
             ? `<span style="color:green; font-weight:bold; font-size:1.1em;">Correct!</span><br><br>${q.explanation}`
             : `<span style="color:red; font-weight:bold; font-size:1.1em;">Incorrect.</span><br><br>The correct choice was <strong>${q.correct.toUpperCase()}</strong>.<br><br>${q.explanation}`;
 
-        feedbackEl.innerHTML = `
-            <div style="display:flex; align-items: center; gap: 20px; background: #fff; padding: 15px; border-radius: 8px; border-left: 5px solid ${borderColor}; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
-                <div style="flex-shrink: 0; background: #f8f9fa; padding: 10px; border-radius: 8px; border: 1px solid #ddd;">${icon}</div>
-                <div>${resultText}</div>
-            </div>`;
+        feedbackEl.innerHTML = `<div style="display:flex; align-items: center; gap: 20px; background: #fff; padding: 15px; border-radius: 8px; border-left: 5px solid ${borderColor}; box-shadow: 0 2px 4px rgba(0,0,0,0.05);"><div style="flex-shrink: 0; background: #f8f9fa; padding: 10px; border-radius: 8px; border: 1px solid #ddd;">${icon}</div><div>${resultText}</div></div>`;
 
-        allTimeTotal++;
-        if (isCorrect) allTimeCorrect++;
-        historyLast10.push(isCorrect);
-        if (historyLast10.length > 10) historyLast10.shift();
+        allTimeTotal++; if (isCorrect) allTimeCorrect++;
+        historyLast10.push(isCorrect); if (historyLast10.length > 10) historyLast10.shift();
         matrix[q.correct][chosenType]++; 
 
-        // --- SAVE TO HYDRATED MEMORY ---
+        // --- TRACKING CODE ---
+        let statusText = isCorrect ? "Pass" : "Fail";
+        let errorString = isCorrect ? "None" : `Chose ${chosenType} instead of ${q.correct}`;
+        if (window.parent && window.parent.logToTeacher) {
+            window.parent.logToTeacher("Module 1", q.id, q.scenario, statusText, errorString);
+        }
+        // ---------------------
+
         let modData = { correct: allTimeCorrect, total: allTimeTotal, details: matrix, history: historyLast10 };
         localStorage.setItem(`gs_mod_${MODULE_ID}`, JSON.stringify(modData));
 
-        updateDashboard();
-        document.getElementById('next-btn').style.display = "inline-block";
+        updateDashboard(); document.getElementById('next-btn').style.display = "inline-block";
     }
 
-    function nextQuestion() {
-        currentQuestionIndex = (currentQuestionIndex + 1) % questionBank.length;
-        loadQuestion();
-    }
+    function nextQuestion() { currentQuestionIndex = (currentQuestionIndex + 1) % questionBank.length; loadQuestion(); }
 
     function updateDashboard() {
         const allTimePct = Math.round((allTimeCorrect / allTimeTotal) * 100) || 0;
         document.getElementById('stat-alltime').innerText = `${allTimeCorrect}/${allTimeTotal} (${allTimePct}%)`;
-        const last10Correct = historyLast10.filter(Boolean).length;
-        const last10Total = historyLast10.length;
-        const last10Pct = Math.round((last10Correct / last10Total) * 100) || 0;
+        const last10Correct = historyLast10.filter(Boolean).length; const last10Total = historyLast10.length; const last10Pct = Math.round((last10Correct / last10Total) * 100) || 0;
         document.getElementById('stat-last10').innerText = `${last10Correct}/${last10Total} (${last10Pct}%)`;
 
-        const tbody = document.getElementById('matrix-body');
-        tbody.innerHTML = ""; 
+        const tbody = document.getElementById('matrix-body'); tbody.innerHTML = ""; 
         graphTypes.forEach((correctType, index) => {
             let tr = document.createElement('tr');
-            if (index === 0) {
-                let sideLabel = document.createElement('th'); sideLabel.rowSpan = 4; sideLabel.className = "axis-label"; sideLabel.innerHTML = "Correct<br>Type<br>&darr;"; tr.appendChild(sideLabel);
-            }
+            if (index === 0) { let sideLabel = document.createElement('th'); sideLabel.rowSpan = 4; sideLabel.className = "axis-label"; sideLabel.innerHTML = "Correct<br>Type<br>&darr;"; tr.appendChild(sideLabel); }
             let rowLabel = document.createElement('th'); rowLabel.innerText = correctType.charAt(0).toUpperCase() + correctType.slice(1); tr.appendChild(rowLabel);
-
             graphTypes.forEach(chosenType => {
-                let td = document.createElement('td');
-                let count = matrix[correctType][chosenType];
-                let isDiagonal = (correctType === chosenType);
+                let td = document.createElement('td'); let count = matrix[correctType][chosenType]; let isDiagonal = (correctType === chosenType);
                 if (isDiagonal) td.classList.add('diagonal');
-
-                if (count > 0) { td.innerText = count; td.classList.add(isDiagonal ? 'correct-val' : 'wrong-val'); } 
-                else { td.innerText = "-"; td.classList.add('empty-val'); }
+                if (count > 0) { td.innerText = count; td.classList.add(isDiagonal ? 'correct-val' : 'wrong-val'); } else { td.innerText = "-"; td.classList.add('empty-val'); }
                 tr.appendChild(td);
-            });
-            tbody.appendChild(tr);
+            }); tbody.appendChild(tr);
         });
     }
 

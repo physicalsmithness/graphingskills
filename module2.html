@@ -2,242 +2,130 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Graph Skills - Module 2</title>
     <style>
-        body { font-family: Arial, sans-serif; max-width: 800px; margin: 20px auto; padding: 20px; background-color: #f9f9f9; color: #333; }
+        body { font-family: Arial, sans-serif; max-width: 900px; margin: 20px auto; padding: 20px; background-color: #f9f9f9; color: #333; }
         .module-container { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        .question-box { margin-bottom: 20px; font-size: 1.2em; font-weight: bold; }
-        .axis-group { background-color: #f0f0f0; padding: 15px; border-radius: 8px; margin-bottom: 20px; }
-        .axis-row { display: flex; align-items: center; margin-bottom: 10px; }
-        .axis-label { font-weight: bold; width: 150px; }
-        select { padding: 8px; font-size: 1em; border-radius: 4px; border: 1px solid #ccc; }
-        button { padding: 10px 20px; font-size: 1em; cursor: pointer; border: 1px solid #ccc; border-radius: 4px; background-color: #0056b3; color: white; transition: background 0.2s; margin-right: 10px; }
-        button:hover { background-color: #004494; } button:disabled { cursor: not-allowed; opacity: 0.6; }
+        .question-box { margin-bottom: 20px; font-size: 1.15em; line-height: 1.4; padding: 15px; background: #eef2f5; border-left: 4px solid #0056b3; border-radius: 4px;}
+        .vars-container { display: flex; gap: 20px; margin-bottom: 20px; }
+        .var-box { flex: 1; background: #fff; border: 2px solid #ccc; padding: 15px; border-radius: 6px; text-align: center; font-weight: bold; font-size: 1.1em; cursor: grab; }
+        .axis-container { display: flex; gap: 20px; margin-bottom: 20px; }
+        .axis-drop { flex: 1; min-height: 80px; background: #f8f9fa; border: 2px dashed #aaa; border-radius: 6px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 1em; color: #666; }
+        .axis-drop.drag-over { background: #e2e6ea; border-color: #0056b3; }
+        .matter-check { margin-bottom: 20px; padding: 15px; background: #fff3cd; border-radius: 6px; border-left: 4px solid #ffc107; font-weight: bold; }
+        button { display: block; padding: 12px 20px; font-size: 1.1em; cursor: pointer; border: none; border-radius: 4px; background-color: #0056b3; color: white; transition: 0.2s; width: 100%; margin-bottom: 10px;}
+        button:hover { background-color: #004494; } button:disabled { opacity: 0.6; cursor: not-allowed; }
         #next-btn { background-color: #28a745; display: none; } #next-btn:hover { background-color: #218838; }
-        .feedback { margin-bottom: 20px; font-weight: bold; min-height: 24px; padding-top: 20px;}
-        .dashboard { margin-top: 40px; border-top: 2px solid #eee; padding-top: 20px; }
-        .stats { display: flex; gap: 40px; margin-bottom: 20px; font-size: 1.1em; }
-        table { border-collapse: collapse; width: 100%; max-width: 600px; text-align: center; }
-        th, td { border: 1px solid #aaa; padding: 12px; } th { background-color: #e9ecef; font-size: 0.9em; }
-        .row-header { font-weight: bold; background-color: #dee2e6; text-align: left; }
-        .correct-val { color: green; font-weight: bold; font-size: 1.2em; } .wrong-val { color: red; font-weight: bold; font-size: 1.2em; } .empty-val { color: #ccc; }
-        .footer { text-align: center; margin-top: 30px; border-top: 1px solid #eee; padding-top: 15px; font-size: 0.9em; } .footer a { color: #6c757d; text-decoration: none; }
+        .feedback-container { margin-top: 15px; display: none; padding: 15px; border-radius: 6px; border-left: 5px solid; font-size: 1.05em; line-height: 1.4; }
+        .pass-box { border-color: #28a745; background-color: #f8fff9; color: #155724; } .err-box { border-color: #d9534f; background-color: #fffafa; color: #721c24; }
+        .dashboard { margin-top: 30px; border-top: 2px solid #eee; padding-top: 15px; }
+        table { border-collapse: collapse; width: 100%; font-size: 0.9em; } th, td { border: 1px solid #aaa; padding: 8px; text-align: left;} th { background-color: #e9ecef; }
+        .err-val { color: #d9534f; font-weight: bold; text-align: center;} .corr-val { color: #28a745; font-weight: bold; text-align: center;}
     </style>
 </head>
 <body>
-
 <div class="module-container">
-    <h2>Module 2: Axis Assignment</h2>
-    <p>Read the scenario and decide which variable belongs on which axis. Remember, if it's just an observational correlation rather than a controlled experiment, either axis works.</p>
-    <div class="question-box" id="question-text">Loading question...</div>
+    <h2>Module 2: Assigning Axes</h2>
+    <p>Drag the variables to the correct axes. Determine if one is strictly independent (causing the other to change), or if they are just correlated.</p>
+    <div class="question-box" id="scenario-text">Loading...</div>
     
-    <div class="axis-group">
-        <div class="axis-row">
-            <div class="axis-label">Horizontal (X-Axis):</div>
-            <select id="select-horizontal">
-                <option value="none">-- Select Variable --</option>
-                <option value="v1" id="opt-h-v1"></option>
-                <option value="v2" id="opt-h-v2"></option>
-                <option value="either">Either (Just looking for a correlation)</option>
-            </select>
-        </div>
-        <div class="axis-row">
-            <div class="axis-label">Vertical (Y-Axis):</div>
-            <select id="select-vertical">
-                <option value="none">-- Select Variable --</option>
-                <option value="v1" id="opt-v-v1"></option>
-                <option value="v2" id="opt-v-v2"></option>
-                <option value="either">Either (Just looking for a correlation)</option>
-            </select>
-        </div>
+    <div class="vars-container" id="vars-source"></div>
+    
+    <div class="axis-container">
+        <div class="axis-drop" id="drop-x" ondragover="allowDrop(event)" ondrop="drop(event, 'x')"><strong>X-Axis (Horizontal)</strong><br><small>Independent / Controlled</small></div>
+        <div class="axis-drop" id="drop-y" ondragover="allowDrop(event)" ondrop="drop(event, 'y')"><strong>Y-Axis (Vertical)</strong><br><small>Dependent / Measured</small></div>
     </div>
+
+    <div class="matter-check">
+        <label><input type="checkbox" id="doesnt-matter-chk"> Wait, it doesn't actually matter which way round these go! (No strict cause & effect).</label>
+    </div>
+
+    <button id="submit-btn" onclick="submitAnswer()">Evaluate Assignment</button>
+    <button id="next-btn" onclick="nextQuestion()">Next Practice Scenario</button>
+    <div class="feedback-container" id="feedback-text"></div>
     
-    <button id="submit-btn" onclick="submitAnswer()">Submit Assignment</button>
-    <button id="next-btn" onclick="nextQuestion()">Next Question</button>
-
-    <div class="feedback" id="feedback-text"></div>
-
     <div class="dashboard">
-        <h3>Performance Dashboard</h3>
-        <div class="stats">
-            <div><strong>All-Time:</strong> <span id="stat-alltime">0/0 (0%)</span></div>
-            <div><strong>Last 10:</strong> <span id="stat-last10">0/0 (0%)</span></div>
-        </div>
-        <h4>Outcome Matrix</h4>
-        <table>
-            <thead><tr><th class="row-header">Outcome Category</th><th>Count</th></tr></thead>
-            <tbody id="matrix-body"></tbody>
-        </table>
+        <h3 style="margin-top:0;">Error Tracking</h3>
+        <table><thead><tr><th>Outcome Category</th><th>Count</th></tr></thead><tbody id="stats-body"></tbody></table>
     </div>
-    <div class="footer"><a href="feedback.html" target="_blank">🐛 Report an Issue / Leave Feedback</a></div>
 </div>
 
 <script>
-    const questionBank = [
-        { "id": 1, "scenario": "A botanist tracks how tall a plant grows over a period of 4 weeks.", "v1": "Time (Weeks)", "v2": "Height of Plant", "correctHorizontal": "v1", "correctVertical": "v2", "canSwap": false, "explanation": "Time is almost always the independent variable (horizontal). The height depends on the time that has passed." },
-        { "id": 2, "scenario": "A runner measures their heart rate at different running speeds.", "v1": "Running Speed", "v2": "Heart Rate", "correctHorizontal": "v1", "correctVertical": "v2", "canSwap": false, "explanation": "The runner controls their speed (independent variable). Their heart rate changes as a result." },
-        { "id": 3, "scenario": "You are plotting the shoe size and the height of 50 different adults to see if taller people have larger feet.", "v1": "Shoe Size", "v2": "Height", "correctHorizontal": "either", "correctVertical": "either", "canSwap": true, "explanation": "Because we are just looking for a correlation and there is no strict cause-and-effect, you can place these on either axis." },
-        { "id": 4, "scenario": "A student investigates how the temperature of water affects the amount of salt that can dissolve in it.", "v1": "Water Temperature", "v2": "Amount of Dissolved Salt", "correctHorizontal": "v1", "correctVertical": "v2", "canSwap": false, "explanation": "The temperature is what the student is choosing to change (independent)." },
-        { "id": 5, "scenario": "A city planner compares the population of 10 different cities in the state.", "v1": "Name of City", "v2": "Population", "correctHorizontal": "v1", "correctVertical": "v2", "canSwap": false, "explanation": "Categories act as the independent groups on the horizontal axis." },
-        { "id": 6, "scenario": "You are looking to see if there is a relationship between how many hours a student studies and what their final exam score is.", "v1": "Exam Score", "v2": "Hours Studied", "correctHorizontal": "v2", "correctVertical": "v1", "canSwap": false, "explanation": "The hours studied is the input (independent), and the exam score is the resulting output." },
-        { "id": 7, "scenario": "An astronomer plots the distance of various stars from Earth against their brightness to see if there is a trend.", "v1": "Star Brightness", "v2": "Distance from Earth", "correctHorizontal": "either", "correctVertical": "either", "canSwap": true, "explanation": "We are just looking for a correlation, not testing a direct cause-and-effect relationship, so either axis works." },
-        { "id": 8, "scenario": "A chef records how long it takes for a pot of water to boil at different altitudes.", "v1": "Altitude", "v2": "Time to Boil", "correctHorizontal": "v1", "correctVertical": "v2", "canSwap": false, "explanation": "Altitude is the condition being changed (independent variable)." },
-        { "id": 9, "scenario": "You plot the weight of 30 different dogs against their daily food intake to see if heavier dogs eat more.", "v1": "Dog Weight", "v2": "Daily Food Intake", "correctHorizontal": "either", "correctVertical": "either", "canSwap": true, "explanation": "While they are related, one doesn't strictly cause the other in a controlled experiment setting here; there is no controlled independent variable, so axes can be swapped." },
-        { "id": 10, "scenario": "A physics student measures the distance a spring stretches when different weights are hung from it.", "v1": "Weight Added", "v2": "Distance Stretched", "correctHorizontal": "v1", "correctVertical": "v2", "canSwap": false, "explanation": "The weight is the chosen input (independent), and the stretch is the resulting measurement." },
-        { "id": 11, "scenario": "A farmer tracks the amount of rainfall and the yield of their wheat crop over 10 years.", "v1": "Crop Yield", "v2": "Amount of Rainfall", "correctHorizontal": "v2", "correctVertical": "v1", "canSwap": false, "explanation": "The rainfall determines the yield. You cannot change the yield to control the rainfall." },
-        { "id": 12, "scenario": "Comparing the number of pages in different novels to see if longer books cost more money.", "v1": "Number of Pages", "v2": "Book Price", "correctHorizontal": "either", "correctVertical": "either", "canSwap": true, "explanation": "This is an observational correlation. While page count might influence price, the relationship isn't a strict cause-and-effect." },
-        { "id": 13, "scenario": "A chemist measures the pressure of a gas as they decrease the volume of its container.", "v1": "Volume of Container", "v2": "Gas Pressure", "correctHorizontal": "v1", "correctVertical": "v2", "canSwap": false, "explanation": "The volume is the condition being manipulated (independent), which forces the pressure to change." },
-        { "id": 14, "scenario": "You record the temperature of a cup of coffee every 5 minutes as it cools down.", "v1": "Time", "v2": "Temperature", "correctHorizontal": "v1", "correctVertical": "v2", "canSwap": false, "explanation": "Time progresses independently on the horizontal axis, while the temperature drops as a result." },
-        { "id": 15, "scenario": "Plotting the engine size of various cars against their top speed.", "v1": "Top Speed", "v2": "Engine Size", "correctHorizontal": "v2", "correctVertical": "v1", "canSwap": false, "explanation": "The physical engine size determines the top speed capability, not the other way around." },
-        { "id": 16, "scenario": "Investigating if there is a relationship between a person's age and the amount of money they have in savings.", "v1": "Age", "v2": "Savings Amount", "correctHorizontal": "either", "correctVertical": "either", "canSwap": true, "explanation": "This is purely looking for a correlation, and since there is no controlled independent variable, the axes can be swapped without breaking physical logic." },
-        { "id": 17, "scenario": "A biologist measures the rate of photosynthesis in a leaf under different colors of light.", "v1": "Light Color", "v2": "Photosynthesis Rate", "correctHorizontal": "v1", "correctVertical": "v2", "canSwap": false, "explanation": "The light color is the chosen condition (independent), and the rate is the measured effect." },
-        { "id": 18, "scenario": "Comparing the average lifespan of people living in 20 different countries.", "v1": "Country Name", "v2": "Average Lifespan", "correctHorizontal": "v1", "correctVertical": "v2", "canSwap": false, "explanation": "In a bar chart, the distinct categories (Countries) act as the independent groups on the horizontal axis." },
-        { "id": 19, "scenario": "Plotting the scores of students on a Math test against their scores on an English test to look for a trend.", "v1": "Math Score", "v2": "English Score", "correctHorizontal": "either", "correctVertical": "either", "canSwap": true, "explanation": "There is no strict cause-and-effect link; one score doesn't dictate the other, so the axes are interchangeable." },
-        { "id": 20, "scenario": "An engineer tests how much weight a bridge can hold before it collapses, testing bridges of different lengths.", "v1": "Weight Held", "v2": "Bridge Length", "correctHorizontal": "v2", "correctVertical": "v1", "canSwap": false, "explanation": "The length of the bridge (independent) dictates its structural capacity to hold weight." },
-        { "id": 21, "scenario": "Recording the battery percentage of a smartphone every hour while watching a video.", "v1": "Time (Hours)", "v2": "Battery Percentage", "correctHorizontal": "v1", "correctVertical": "v2", "canSwap": false, "explanation": "Time is the independent variable on the horizontal axis, causing the battery to drain." },
-        { "id": 22, "scenario": "Investigating the correlation between the number of ice cream cones sold in a city and the number of sunglasses sold on different days.", "v1": "Ice Cream Sold", "v2": "Sunglasses Sold", "correctHorizontal": "either", "correctVertical": "either", "canSwap": true, "explanation": "This is a classic correlation. Both are likely caused by a third variable (the sun), but neither directly causes the other (no strict cause-and-effect), so axes can swap." },
-        { "id": 23, "scenario": "A driver records the distance they have traveled at different milestones during a road trip.", "v1": "Distance Traveled", "v2": "Time (Milestones)", "correctHorizontal": "v2", "correctVertical": "v1", "canSwap": false, "explanation": "Time is the independent variable. The distance traveled depends on how much time has passed." },
-        { "id": 24, "scenario": "Plotting the daily attendance at a theme park against the daily high temperature.", "v1": "Daily High Temperature", "v2": "Daily Attendance", "correctHorizontal": "v1", "correctVertical": "v2", "canSwap": false, "explanation": "The temperature is an independent environmental factor that influences people's decision to attend." },
-        { "id": 25, "scenario": "Comparing the wingspan of different bird species against their average body length to look for a ratio.", "v1": "Wingspan", "v2": "Body Length", "correctHorizontal": "either", "correctVertical": "either", "canSwap": true, "explanation": "This is looking for an anatomical correlation; since there is no controlled independent variable, they are interchangeable." },
-        { "id": 26, "scenario": "A baker measures the height of a loaf of bread based on how much yeast was added to the dough.", "v1": "Amount of Yeast", "v2": "Height of Bread", "correctHorizontal": "v1", "correctVertical": "v2", "canSwap": false, "explanation": "The yeast is the input controlled by the baker (independent), and the resulting height is the dependent variable." },
-        { "id": 27, "scenario": "Plotting the number of hours of sleep a person gets against their reaction time in a reflex test.", "v1": "Reaction Time", "v2": "Hours of Sleep", "correctHorizontal": "v2", "correctVertical": "v1", "canSwap": false, "explanation": "The amount of sleep (input/independent) affects the resulting reaction time (output/dependent)." },
-        { "id": 28, "scenario": "A mechanic checks the tire pressure of cars against the depth of their tire tread to see if people who neglect one neglect the other.", "v1": "Tire Pressure", "v2": "Tread Depth", "correctHorizontal": "either", "correctVertical": "either", "canSwap": true, "explanation": "This is looking for a correlation in behavior, not a strict cause-and-effect, so the axes can be swapped." },
-        { "id": 29, "scenario": "A teacher records the number of absences a student has and their final grade in the class.", "v1": "Number of Absences", "v2": "Final Grade", "correctHorizontal": "v1", "correctVertical": "v2", "canSwap": false, "explanation": "The absences are the independent action, which impacts the resulting final grade." },
-        { "id": 30, "scenario": "Tracking the total rainfall per month over the course of a year.", "v1": "Month", "v2": "Total Rainfall", "correctHorizontal": "v1", "correctVertical": "v2", "canSwap": false, "explanation": "Time (months) progresses independently, and the rainfall is the measured result for each of those periods." },
-        { "id": 31, "scenario": "A physics student rolls a toy car down a ramp and measures its speed at the bottom based on how steep the ramp is.", "v1": "Speed of Car", "v2": "Angle of Ramp", "correctHorizontal": "v2", "correctVertical": "v1", "canSwap": false, "explanation": "The angle of the ramp is what the student controls (independent), which dictates the resulting speed (dependent)." },
-        { "id": 32, "scenario": "A chemist investigates how the concentration of a reactant affects the time it takes for a chemical reaction to finish.", "v1": "Reaction Time", "v2": "Concentration of Reactant", "correctHorizontal": "v2", "correctVertical": "v1", "canSwap": false, "explanation": "The concentration is the condition chosen by the chemist (independent), which causes the reaction time to change (dependent)." },
-        { "id": 33, "scenario": "A tech reviewer plots the price of 40 different laptops against their advertised battery life.", "v1": "Laptop Price", "v2": "Battery Life", "correctHorizontal": "either", "correctVertical": "either", "canSwap": true, "explanation": "This is an observational correlation. Since there is no controlled independent variable being manipulated, either axis works." },
-        { "id": 34, "scenario": "A biologist tests how the pH level of a solution impacts the activity rate of a specific digestive enzyme.", "v1": "Enzyme Activity Rate", "v2": "pH Level", "correctHorizontal": "v2", "correctVertical": "v1", "canSwap": false, "explanation": "The pH level is the manipulated environmental factor (independent), which directly affects how fast the enzyme works (dependent)." },
-        { "id": 35, "scenario": "An electrician cuts wires to different lengths and measures the electrical resistance of each piece.", "v1": "Length of Wire", "v2": "Electrical Resistance", "correctHorizontal": "v1", "correctVertical": "v2", "canSwap": false, "explanation": "The physical length of the wire (independent) determines how much resistance it has (dependent)." },
-        { "id": 36, "scenario": "A contractor records the number of workers assigned to a site and how many days it takes to build a brick wall.", "v1": "Number of Workers", "v2": "Days to Build", "correctHorizontal": "v1", "correctVertical": "v2", "canSwap": false, "explanation": "The number of workers provided is the input (independent), which determines the time required to finish the job (dependent)." },
-        { "id": 37, "scenario": "A forester measures the overall height of 50 pine trees and compares it to the circumference of their trunks.", "v1": "Tree Height", "v2": "Trunk Circumference", "correctHorizontal": "either", "correctVertical": "either", "canSwap": true, "explanation": "These are two biological traits growing together. We are just looking for a correlation, making them interchangeable on the axes." },
-        { "id": 38, "scenario": "A geologist drills a deep borehole and records the temperature of the rock at various depths.", "v1": "Rock Temperature", "v2": "Depth Underground", "correctHorizontal": "v2", "correctVertical": "v1", "canSwap": false, "explanation": "The depth is the independent location variable, and the temperature is the measurement taken as a result of being at that depth." },
-        { "id": 39, "scenario": "A student heats a sealed balloon and measures how much its volume expands as it gets hotter.", "v1": "Temperature of Gas", "v2": "Volume of Balloon", "correctHorizontal": "v1", "correctVertical": "v2", "canSwap": false, "explanation": "The temperature is the input condition being manipulated (independent), which forces the volume to change (dependent)." },
-        { "id": 40, "scenario": "Comparing the total population size of various countries against their total number of internet users.", "v1": "Number of Internet Users", "v2": "Population Size", "correctHorizontal": "either", "correctVertical": "either", "canSwap": true, "explanation": "We are looking for a demographic correlation. Since there is no strict cause-and-effect being tested in a lab, axes can be swapped." },
-        { "id": 41, "scenario": "A medical researcher treats bacterial colonies with different doses of an antibiotic to see how many bacteria survive.", "v1": "Number of Surviving Bacteria", "v2": "Antibiotic Dose", "correctHorizontal": "v2", "correctVertical": "v1", "canSwap": false, "explanation": "The dose is the applied treatment (independent), and the survival count is the resulting effect (dependent)." },
-        { "id": 42, "scenario": "A student drags a wooden block across different grits of sandpaper to see how the roughness affects the friction force.", "v1": "Sandpaper Grit (Roughness)", "v2": "Friction Force", "correctHorizontal": "v1", "correctVertical": "v2", "canSwap": false, "explanation": "The roughness of the sandpaper is the chosen independent variable, and the friction is the resulting dependent force." },
-        { "id": 43, "scenario": "Tracking the mass of a radioactive isotope remaining in a sample as the weeks go by.", "v1": "Time Passed", "v2": "Mass Remaining", "correctHorizontal": "v1", "correctVertical": "v2", "canSwap": false, "explanation": "Time marches on independently (horizontal), while the mass decays as a consequence of time passing (vertical)." },
-        { "id": 44, "scenario": "Plotting the average resting heart rate against the average resting breathing rate of 100 different athletes.", "v1": "Resting Heart Rate", "v2": "Resting Breathing Rate", "correctHorizontal": "either", "correctVertical": "either", "canSwap": true, "explanation": "Both are physiological measurements. Since there is no controlled independent variable, they are correlational." },
-        { "id": 45, "scenario": "Measuring the thickness of the ash layer left on the ground at various distances away from an erupted volcano.", "v1": "Thickness of Ash", "v2": "Distance from Volcano", "correctHorizontal": "v2", "correctVertical": "v1", "canSwap": false, "explanation": "The distance from the volcano is the independent location, which dictates how much ash settles there (dependent)." },
-        { "id": 46, "scenario": "Shining a laser into a glass block at different angles of incidence and measuring the resulting angle of refraction.", "v1": "Angle of Incidence", "v2": "Angle of Refraction", "correctHorizontal": "v1", "correctVertical": "v2", "canSwap": false, "explanation": "The angle of incidence is the input beam controlled by the student (independent), and the refraction is the resulting output (dependent)." },
-        { "id": 47, "scenario": "Looking at the resale value of a specific model of car based on how many years old it is.", "v1": "Resale Value", "v2": "Age of Car", "correctHorizontal": "v2", "correctVertical": "v1", "canSwap": false, "explanation": "The age of the car (independent) is what drives the depreciation of its value (dependent)." },
-        { "id": 48, "scenario": "Comparing students' final grades in History against their final grades in Geography.", "v1": "History Grade", "v2": "Geography Grade", "correctHorizontal": "either", "correctVertical": "either", "canSwap": true, "explanation": "There is no strict cause-and-effect link; doing well in History doesn't physically force you to do well in Geography, making the axes swappable." },
-        { "id": 49, "scenario": "An ecologist counts how many fish eggs successfully hatch in rivers of varying temperatures.", "v1": "Water Temperature", "v2": "Number of Eggs Hatched", "correctHorizontal": "v1", "correctVertical": "v2", "canSwap": false, "explanation": "The water temperature is the environmental condition (independent) that determines the hatching success rate (dependent)." },
-        { "id": 50, "scenario": "Measuring the gravitational pull exerted by Earth on objects of different masses.", "v1": "Gravitational Pull (Weight)", "v2": "Mass of Object", "correctHorizontal": "v2", "correctVertical": "v1", "canSwap": false, "explanation": "The mass of the object (independent) directly causes the amount of gravitational pull it experiences (dependent)." },
-        { "id": 51, "scenario": "Plotting the total number of words in a movie script against the final running time of the movie.", "v1": "Movie Running Time", "v2": "Script Word Count", "correctHorizontal": "either", "correctVertical": "either", "canSwap": true, "explanation": "While related, this is an observational correlation with no controlled independent variable. You could argue either way." },
-        { "id": 52, "scenario": "A student adds different amounts of magnesium powder to acid and measures the maximum temperature the mixture reaches.", "v1": "Mass of Magnesium Added", "v2": "Maximum Temperature Reached", "correctHorizontal": "v1", "correctVertical": "v2", "canSwap": false, "explanation": "The mass of magnesium is the controlled input (independent), and the resulting heat is the dependent reaction." },
-        { "id": 53, "scenario": "A city engineer uses a traffic camera to count the number of cars on a highway at different times of the day.", "v1": "Traffic Volume", "v2": "Time of Day", "correctHorizontal": "v2", "correctVertical": "v1", "canSwap": false, "explanation": "Time progresses independently (horizontal), while the traffic volume changes as a dependent result of the time." },
-        { "id": 54, "scenario": "Graphing the number of goals scored by a hockey team throughout the season against the number of fans attending their games.", "v1": "Goals Scored", "v2": "Fans Attending", "correctHorizontal": "either", "correctVertical": "either", "canSwap": true, "explanation": "This is a classic correlation. Winning might attract fans, or loud fans might encourage winning, but it's not a strict cause-and-effect." },
-        { "id": 55, "scenario": "Wrapping wire around an iron nail to make an electromagnet, testing how the number of coils affects the magnetic field strength.", "v1": "Magnetic Field Strength", "v2": "Number of Coils", "correctHorizontal": "v2", "correctVertical": "v1", "canSwap": false, "explanation": "The number of coils is the variable the student physically changes (independent), which dictates the resulting strength (dependent)." },
-        { "id": 56, "scenario": "A marine biologist tests how the concentration of dissolved oxygen in a tank affects how rapidly a fish flaps its gills.", "v1": "Oxygen Concentration", "v2": "Gill Flapping Rate", "correctHorizontal": "v1", "correctVertical": "v2", "canSwap": false, "explanation": "The oxygen level is the controlled environment (independent), and the gill flapping is the biological response (dependent)." },
-        { "id": 57, "scenario": "Plotting the total number of pages in different textbooks against the physical thickness of the books.", "v1": "Thickness of Book", "v2": "Number of Pages", "correctHorizontal": "either", "correctVertical": "either", "canSwap": true, "explanation": "While obviously linked, this is a simple proportional correlation. With no controlled independent variable, you can plot either on the X-axis." },
-        { "id": 58, "scenario": "Measuring the electrical power output of a solar panel on days with varying percentages of cloud cover.", "v1": "Power Output", "v2": "Cloud Cover Percentage", "correctHorizontal": "v2", "correctVertical": "v1", "canSwap": false, "explanation": "The cloud cover is the independent environmental factor, which restricts the dependent power output of the panel." },
-        { "id": 59, "scenario": "Tracking the number of miles driven on a road trip against the number of gallons of gas remaining in the tank.", "v1": "Miles Driven", "v2": "Gas Remaining", "correctHorizontal": "v1", "correctVertical": "v2", "canSwap": false, "explanation": "The distance driven (independent action) causes the remaining gas to decrease (dependent result)." },
-        { "id": 60, "scenario": "Comparing the average hours per week teenagers spend playing video games against the hours they spend watching TV.", "v1": "Hours Playing Games", "v2": "Hours Watching TV", "correctHorizontal": "either", "correctVertical": "either", "canSwap": true, "explanation": "These are two behavioral measurements. We are just looking for a correlation, so they are entirely swappable." }
+    const bank = [
+        { id: 201, s: "A student measures how much a metal spring stretches when different weights are hung from it.", v1: "Weight Hung (N)", v2: "Spring Extension (cm)", ind: "v1", matters: true },
+        { id: 202, s: "A doctor plots patients' heights against their shoe sizes to look for a correlation.", v1: "Height (cm)", v2: "Shoe Size", ind: "either", matters: false },
+        { id: 203, s: "A chemist tracks the temperature of a liquid every minute as it cools down.", v1: "Time Passed (min)", v2: "Temperature (°C)", ind: "v1", matters: true },
+        { id: 204, s: "A biologist compares the wingspan of birds to their total body weight.", v1: "Wingspan (cm)", v2: "Body Weight (g)", ind: "either", matters: false },
+        { id: 205, s: "An engineer changes the voltage across a circuit and records the resulting electrical current.", v1: "Voltage (V)", v2: "Current (A)", ind: "v1", matters: true },
+        { id: 206, s: "A real estate agent graphs the square footage of houses against their sale prices.", v1: "Square Footage", v2: "Sale Price ($)", ind: "v1", matters: true }
     ];
 
-    let currentQuestionIndex = 0;
+    let currentQ = 0; const MODULE_ID = "2"; 
+    let stats = { correctStrict: 0, correctEither: 0, wrongWayRound: 0, thoughtMattered: 0, thoughtDidntMatter: 0, nonsensical: 0 };
+    let totalPasses = 0, totalAttempts = 0;
+    try { let savedMem = JSON.parse(localStorage.getItem(`gs_mod_${MODULE_ID}`)); if (savedMem) { totalPasses = savedMem.correct || 0; totalAttempts = savedMem.total || 0; if (savedMem.details) stats = Object.assign(stats, savedMem.details); } } catch(e) { localStorage.removeItem(`gs_mod_${MODULE_ID}`); }
 
-    // DATA HYDRATION
-    const MODULE_ID = "2";
-    let outcomeMatrix = { correctStrict: 0, correctEither: 0, wrongWayRound: 0, thoughtMattered: 0, thoughtDidntMatter: 0, nonsensical: 0 };
-    let allTimeCorrect = 0; let allTimeTotal = 0; let historyLast10 = []; 
-
-    let savedMem = JSON.parse(localStorage.getItem(`gs_mod_${MODULE_ID}`));
-    if (savedMem) {
-        allTimeCorrect = savedMem.correct || 0;
-        allTimeTotal = savedMem.total || 0;
-        if (savedMem.details) outcomeMatrix = savedMem.details;
-        if (savedMem.history) historyLast10 = savedMem.history;
-    }
-
-    function shuffleArray(array) {
-        for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]];
-        }
-    }
-    shuffleArray(questionBank);
+    function shuffleArray(array) { for (let i = array.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [array[i], array[j]] = [array[j], array[i]]; } }
+    shuffleArray(bank);
 
     function loadQuestion() {
-        const q = questionBank[currentQuestionIndex];
-        document.getElementById('question-text').innerText = q.scenario;
-        document.getElementById('opt-h-v1').innerText = q.v1; document.getElementById('opt-h-v2').innerText = q.v2;
-        document.getElementById('opt-v-v1').innerText = q.v1; document.getElementById('opt-v-v2').innerText = q.v2;
-        document.getElementById('select-horizontal').value = "none"; document.getElementById('select-vertical').value = "none";
-        document.getElementById('feedback-text').innerText = ""; document.getElementById('next-btn').style.display = "none";
-        document.getElementById('submit-btn').disabled = false; document.getElementById('select-horizontal').disabled = false; document.getElementById('select-vertical').disabled = false;
+        const q = bank[currentQ]; document.getElementById('scenario-text').innerHTML = `<strong>Practice Scenario:</strong><br>${q.s}`;
+        document.getElementById('doesnt-matter-chk').checked = false; document.getElementById('doesnt-matter-chk').disabled = false;
+        
+        let vs = `<div class="var-box" id="v1" draggable="true" ondragstart="drag(event)">${q.v1}</div><div class="var-box" id="v2" draggable="true" ondragstart="drag(event)">${q.v2}</div>`;
+        if(Math.random() > 0.5) vs = `<div class="var-box" id="v2" draggable="true" ondragstart="drag(event)">${q.v2}</div><div class="var-box" id="v1" draggable="true" ondragstart="drag(event)">${q.v1}</div>`;
+        document.getElementById('vars-source').innerHTML = vs;
+        
+        document.getElementById('drop-x').innerHTML = `<strong>X-Axis (Horizontal)</strong><br><small>Independent / Controlled</small>`;
+        document.getElementById('drop-y').innerHTML = `<strong>Y-Axis (Vertical)</strong><br><small>Dependent / Measured</small>`;
+        document.getElementById('feedback-text').style.display = 'none'; document.getElementById('next-btn').style.display = 'none'; document.getElementById('submit-btn').style.display = 'block';
+        updateDash();
+    }
+
+    function allowDrop(ev) { ev.preventDefault(); }
+    function drag(ev) { ev.dataTransfer.setData("text", ev.target.id); }
+    function drop(ev, axis) {
+        ev.preventDefault(); let data = ev.dataTransfer.getData("text"); let target = document.getElementById(`drop-${axis}`);
+        if (target.children.length > 2 && target.lastChild.classList && target.lastChild.classList.contains('var-box')) { document.getElementById('vars-source').appendChild(target.lastChild); }
+        target.appendChild(document.getElementById(data));
     }
 
     function submitAnswer() {
-        const q = questionBank[currentQuestionIndex];
-        const userH = document.getElementById('select-horizontal').value;
-        const userV = document.getElementById('select-vertical').value;
+        const q = bank[currentQ]; const xBox = document.getElementById('drop-x').querySelector('.var-box'); const yBox = document.getElementById('drop-y').querySelector('.var-box');
+        if (!xBox || !yBox) return alert("Please place both variables on the axes.");
         
-        if (userH === "none" || userV === "none") return alert("Please make a selection for both axes.");
+        document.getElementById('doesnt-matter-chk').disabled = true; document.getElementById('submit-btn').style.display = 'none';
+        
+        const userX = xBox.id, userY = yBox.id; const userChk = document.getElementById('doesnt-matter-chk').checked;
+        let isPass = false, outcome = "", msg = "";
 
-        document.getElementById('submit-btn').disabled = true; document.getElementById('select-horizontal').disabled = true; document.getElementById('select-vertical').disabled = true;
-
-        let isCorrect = false, outcomeKey = "", customFeedback = "";
-
-        if ((userH === "v1" && userV === "v1") || (userH === "v2" && userV === "v2") || (userH === "either" && userV !== "either") || (userH !== "either" && userV === "either")) {
-            isCorrect = false; outcomeKey = "nonsensical"; customFeedback = `<span style="color:red;">Nonsensical choice.</span> You cannot plot a variable against itself, and if one axis is 'Either', the other must be too.`;
+        if (q.matters) {
+            if (userChk) { outcome = "thoughtDidntMatter"; msg = `❌ <strong>Assumption Error:</strong> It DOES matter here! You control <strong>${document.getElementById(q.ind).innerText}</strong>, so it must go on the X-Axis.`; }
+            else if (userX === q.ind) { outcome = "correctStrict"; isPass = true; msg = `✅ <strong>Correct!</strong> <strong>${xBox.innerText}</strong> is the independent variable, so it belongs on the X-Axis.`; }
+            else { outcome = "wrongWayRound"; msg = `❌ <strong>Wrong Way Round:</strong> You put the dependent (measured) variable on the X-Axis.`; }
         } else {
-            if (q.canSwap) {
-                if (userH === "either" && userV === "either") { isCorrect = true; outcomeKey = "correctEither"; } 
-                else { isCorrect = false; outcomeKey = "thoughtMattered"; }
-            } else {
-                if (userH === "either" || userV === "either") { isCorrect = false; outcomeKey = "thoughtDidntMatter"; } 
-                else if (userH === q.correctHorizontal && userV === q.correctVertical) { isCorrect = true; outcomeKey = "correctStrict"; } 
-                else { isCorrect = false; outcomeKey = "wrongWayRound"; }
-            }
+            if (!userChk) { outcome = "thoughtMattered"; msg = `❌ <strong>Assumption Error:</strong> Neither variable strictly causes the other to change. They are just correlated, so it doesn't matter which axis they go on!`; }
+            else { outcome = "correctEither"; isPass = true; msg = `✅ <strong>Correct!</strong> You recognized this is a correlation study without strict cause-and-effect.`; }
         }
 
-        const feedbackEl = document.getElementById('feedback-text');
-        if (outcomeKey === "nonsensical") feedbackEl.innerHTML = customFeedback;
-        else if (isCorrect) feedbackEl.innerHTML = `<span style="color:green;">Correct!</span> ${q.explanation}`;
-        else feedbackEl.innerHTML = `<span style="color:red;">Incorrect.</span> ${q.explanation}`;
+        stats[outcome]++; totalAttempts++; if (isPass) totalPasses++;
+        
+        // --- TRACKING CODE ---
+        let statusText = isPass ? "Pass" : "Fail";
+        if (window.parent && window.parent.logToTeacher) { window.parent.logToTeacher("Module 2", q.id, q.s, statusText, outcome); }
+        // ---------------------
 
-        allTimeTotal++;
-        if (isCorrect) allTimeCorrect++;
-        historyLast10.push(isCorrect);
-        if (historyLast10.length > 10) historyLast10.shift(); 
-        outcomeMatrix[outcomeKey]++; 
-
-        // --- SAVE TO HYDRATED MEMORY ---
-        let modData = { correct: allTimeCorrect, total: allTimeTotal, details: outcomeMatrix, history: historyLast10 };
-        localStorage.setItem(`gs_mod_${MODULE_ID}`, JSON.stringify(modData));
-        // -------------------------------
-
-        updateDashboard();
-        document.getElementById('next-btn').style.display = "inline-block";
+        localStorage.setItem(`gs_mod_${MODULE_ID}`, JSON.stringify({ correct: totalPasses, total: totalAttempts, details: stats }));
+        
+        let fb = document.getElementById('feedback-text'); fb.style.display = "block"; fb.className = `feedback-container ${isPass ? 'pass-box' : 'err-box'}`; fb.innerHTML = msg;
+        updateDash(); document.getElementById('next-btn').style.display = "block";
     }
 
-    function nextQuestion() {
-        currentQuestionIndex = (currentQuestionIndex + 1) % questionBank.length;
-        loadQuestion();
+    function nextQuestion() { currentQ = (currentQ + 1) % bank.length; loadQuestion(); }
+    function updateDash() {
+        document.getElementById('stats-body').innerHTML = `<tr><td>Correct (Strict Cause & Effect)</td><td class="corr-val">${stats.correctStrict}</td></tr><tr><td>Correct (Recognized Correlation)</td><td class="corr-val">${stats.correctEither}</td></tr><tr><td>Wrong Way Round (Y on X)</td><td class="err-val">${stats.wrongWayRound}</td></tr><tr><td>Assumed strict cause, but it was just correlation</td><td class="err-val">${stats.thoughtMattered}</td></tr><tr><td>Assumed correlation, but there WAS a strict cause</td><td class="err-val">${stats.thoughtDidntMatter}</td></tr>`;
     }
-
-    function updateDashboard() {
-        const allTimePct = Math.round((allTimeCorrect / allTimeTotal) * 100) || 0;
-        document.getElementById('stat-alltime').innerText = `${allTimeCorrect}/${allTimeTotal} (${allTimePct}%)`;
-        const last10Correct = historyLast10.filter(Boolean).length;
-        const last10Total = historyLast10.length;
-        const last10Pct = Math.round((last10Correct / last10Total) * 100) || 0;
-        document.getElementById('stat-last10').innerText = `${last10Correct}/${last10Total} (${last10Pct}%)`;
-
-        document.getElementById('matrix-body').innerHTML = `
-            <tr><td class="row-header">Correct (Assigned correctly)</td><td class="${outcomeMatrix.correctStrict > 0 ? 'correct-val' : 'empty-val'}">${outcomeMatrix.correctStrict}</td></tr>
-            <tr><td class="row-header">Correct (Recognized it didn't matter)</td><td class="${outcomeMatrix.correctEither > 0 ? 'correct-val' : 'empty-val'}">${outcomeMatrix.correctEither}</td></tr>
-            <tr><td class="row-header">Wrong Way Round</td><td class="${outcomeMatrix.wrongWayRound > 0 ? 'wrong-val' : 'empty-val'}">${outcomeMatrix.wrongWayRound}</td></tr>
-            <tr><td class="row-header">Thought it mattered (but it didn't)</td><td class="${outcomeMatrix.thoughtMattered > 0 ? 'wrong-val' : 'empty-val'}">${outcomeMatrix.thoughtMattered}</td></tr>
-            <tr><td class="row-header">Thought it didn't matter (but it did)</td><td class="${outcomeMatrix.thoughtDidntMatter > 0 ? 'wrong-val' : 'empty-val'}">${outcomeMatrix.thoughtDidntMatter}</td></tr>
-            <tr><td class="row-header">Nonsensical (e.g., plotted same variable twice)</td><td class="${outcomeMatrix.nonsensical > 0 ? 'wrong-val' : 'empty-val'}">${outcomeMatrix.nonsensical}</td></tr>
-        `;
-    }
-
-    updateDashboard(); loadQuestion();
+    loadQuestion();
 </script>
 </body>
 </html>
