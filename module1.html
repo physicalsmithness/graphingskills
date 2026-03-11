@@ -143,7 +143,10 @@
 
     function loadQuestion() {
         const q = questionBank[currentQuestionIndex];
-        document.getElementById('question-text').innerHTML = `<strong>Question ${currentQuestionIndex + 1} of ${questionBank.length}</strong><br><br>${q.scenario}`;
+        
+        // Removed the "Question X of Y" to prevent grind-fatigue.
+        document.getElementById('question-text').innerHTML = `<strong>Practice Scenario:</strong><br><br>${q.scenario}`;
+        
         document.getElementById('feedback-text').innerHTML = "";
         document.getElementById('next-btn').style.display = "none";
         document.querySelectorAll('.options button').forEach(btn => btn.disabled = false);
